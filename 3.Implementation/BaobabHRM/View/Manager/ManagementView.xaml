@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="BaobabHRM.ManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BaobabHRM"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    
+    <UserControl.Resources>
+        <DataTemplate x:Key="StatisticsViewTemplateKey">
+            <local:StatisticsManagementView/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StaffViewTemplateKey">
+            <local:StaffManagementView/>
+        </DataTemplate>
+        <!--<DataTemplate x:Key="LoginViewTemplateKey">
+            <local:LoginView/>
+        </DataTemplate>-->
+    </UserControl.Resources>
+    
+    <Grid>
+        <ContentControl>
+            <ContentControl.Style>
+                <Style TargetType="{x:Type ContentControl}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Dept">
+                            <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Rank">
+                            <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Staff">
+                            <Setter Property="ContentTemplate" Value="{StaticResource StaffViewTemplateKey}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Attendance">
+                            <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Statistics">
+                            <Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Etc">
+                            <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+    </Grid>
+</UserControl>

@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="BaobabHRM.StatisticsManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BaobabHRM"
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="1920">
+
+    <UserControl.DataContext>
+        <local:StatisticsManagementViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <!-- 상단 그리드 -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 부서 리스트 그리드 -->
+            <Grid Grid.Column="0">
+                <ListBox>
+
+                </ListBox>
+            </Grid>
+
+            <!-- 사원 리스트 그리드 -->
+            <Grid Grid.Column="1">
+                <ListBox>
+
+                </ListBox>
+            </Grid>
+
+            <Button Grid.Column="2" Content="조회"/>
+            <Button Grid.Column="3" Content="전체보기"/>
+            <Button Grid.Column="4" Content="수정"/>
+            <Button Grid.Column="5" Content="뒤로가기" Command="{Binding Path=BackCommand}"/>
+        </Grid>
+
+        <!-- 중간 그리드 -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="날짜" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Grid.Column="2" Content=" ~ " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <DatePicker Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Grid.Column="4" Content="검색"/>
+        </Grid>
+
+        <!--<ListView Grid.Row="2" ItemsSource="{Binding }" SelectedItem="{Binding }">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Height" Value="60"/>
+                    <Setter Property="BorderBrush" Value="LightGray"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    --><!-- 날짜 --><!--
+                    <GridViewColumn Header="날짜" Width="240" DisplayMemberBinding="{Binding Path=SHOW_LASTUSED}"/>
+
+                    --><!-- 부서 --><!--
+                    <GridViewColumn Header="부서" Width="240" DisplayMemberBinding="{Binding Path=SHOW_LASTUSED}"/>
+
+                    --><!-- 이름 --><!--
+                    <GridViewColumn Header="이름" Width="240" DisplayMemberBinding="{Binding Path=SHOW_LASTUSED}"/>
+
+                    --><!-- 사번 --><!--
+                    <GridViewColumn Header="사번" Width="240" DisplayMemberBinding="{Binding Path=SHOW_LASTUPDATE}"/>
+
+                    --><!-- 지각 --><!--
+                    <GridViewColumn Header="지각" Width="240" DisplayMemberBinding="{Binding Path=SHOW_CREATETIME}"/>
+
+                    --><!-- 야근 --><!--
+                    <GridViewColumn Header="야근" Width="240" DisplayMemberBinding="{Binding Path=SHOW_WRITER}"/>
+
+                    --><!-- 초과근무시간 --><!--
+                    <GridViewColumn Header="초과근무시간" Width="240" DisplayMemberBinding="{Binding Path=SHOW_WRITER}"/>
+
+                    --><!-- 휴가 --><!--
+                    <GridViewColumn Header="휴가" Width="240" DisplayMemberBinding="{Binding Path=SHOW_WRITER}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+    </Grid>
+
+</UserControl>

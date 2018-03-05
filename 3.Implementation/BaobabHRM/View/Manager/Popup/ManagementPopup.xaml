@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="BaobabHRM.ManagementPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BaobabHRM"
+             mc:Ignorable="d" 
+             Name="uc"
+             Background="White"
+             d:DesignHeight="400" d:DesignWidth="300">
+    
+    <UserControl.DataContext>
+        <local:ManagementPopupViewModel/>
+    </UserControl.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Row="0" Grid.Column="0" Height="50" Width="100" Content="부서관리" Command="{Binding Path=DeptManagementCommand}" CommandParameter="{Binding ElementName=uc}"/>
+        <Button Grid.Row="0" Grid.Column="1" Height="50" Width="100" Content="직급관리" Command="{Binding Path=RankManagementCommand}" CommandParameter="{Binding ElementName=uc}"/>
+        <Button Grid.Row="1" Grid.Column="0" Height="50" Width="100" Content="사원관리" Command="{Binding Path=StaffManagementCommand}" CommandParameter="{Binding ElementName=uc}"/>
+        <Button Grid.Row="1" Grid.Column="1" Height="50" Width="100" Content="출결관리" Command="{Binding Path=AttendanceManagementCommand}" CommandParameter="{Binding ElementName=uc}"/>
+        <Button Grid.Row="2" Grid.Column="0" Height="50" Width="100" Content="통계" Command="{Binding Path=StatisticsCommand}" CommandParameter="{Binding ElementName=uc}"/>
+        <Button Grid.Row="2" Grid.Column="1" Height="50" Width="100" Content="기타" Command="{Binding Path=EtcManagementCommand}" CommandParameter="{Binding ElementName=uc}"/>
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Height="50" Width="150" Content="뒤로가기" Command="{Binding Path=BackCommand}" CommandParameter="{Binding ElementName=uc}"/>
+    </Grid>
+</UserControl>
