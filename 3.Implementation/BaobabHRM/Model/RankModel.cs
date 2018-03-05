@@ -32,7 +32,7 @@ namespace BaobabHRM
         /// <summary>
         /// 부서 코드
         /// </summary>
-        public int RANK_CODE
+        public string RANK_CODE
         {
             get
             {

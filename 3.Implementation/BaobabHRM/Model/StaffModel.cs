@@ -14,6 +14,8 @@ namespace BaobabHRM
             this.Dto = dto;
         }
 
+        #region property (dto wrapper)
+
         private StaffDTO m_Dto;
         public StaffDTO Dto
         {
@@ -41,7 +43,7 @@ namespace BaobabHRM
             }
         }
         
-        public int STAFF_DEPT
+        public string STAFF_DEPT
         {
             get
             {
@@ -54,7 +56,7 @@ namespace BaobabHRM
             }
         }
         
-        public int STAFF_RANK
+        public string STAFF_RANK
         {
             get
             {
@@ -131,6 +133,19 @@ namespace BaobabHRM
                 RaisePropertyChanged("STAFF_RETIREMENT_DAY");
             }
         }
+        
+        public string STAFF_STATE
+        {
+            get
+            {
+                return Dto.STAFF_STATE;
+            }
+            set
+            {
+                Dto.STAFF_STATE = value;
+                RaisePropertyChanged("STAFF_STATE");
+            }
+        }
 
 
         private string m_STAFF_NameAndIdnumber;
@@ -147,5 +162,6 @@ namespace BaobabHRM
             }
         }
 
+        #endregion
     }
 }

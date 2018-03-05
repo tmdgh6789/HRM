@@ -8,7 +8,7 @@ namespace BaobabHRM
 {
     public class DeptDTO
     {
-        public int DEPT_CODE { get; set; }
+        public string DEPT_CODE { get; set; }
         public string DEPT_NAME { get; set; }
     }
 }

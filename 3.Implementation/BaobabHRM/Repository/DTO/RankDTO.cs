@@ -8,7 +8,7 @@ namespace BaobabHRM
 {
     public class RankDTO
     {
-        public int RANK_CODE { get; set; }
+        public string RANK_CODE { get; set; }
         public string RANK_NAME { get; set; }
     }
 }

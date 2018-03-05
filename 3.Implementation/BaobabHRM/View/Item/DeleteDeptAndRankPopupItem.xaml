@@ -17,7 +17,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <prism:InvokeCommandAction Command="{Binding Path=LoadedCommand}"/>
+            <prism:InvokeCommandAction Command="{Binding Path=LoadedCommand}" CommandParameter="{Binding ElementName=uc}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
@@ -27,7 +27,21 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Row="0" ItemsSource="{Binding Path=DeptList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedDept}">
+        <ListView Grid.Row="0">
+            <ListView.Style>
+                <Style TargetType="{x:Type ListView}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Title}" Value="DEPT">
+                            <Setter Property="ItemsSource" Value="{Binding Path=DeptList, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Setter Property="SelectedItem" Value="{Binding Path=SelectedDept}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Title}" Value="RANK">
+                            <Setter Property="ItemsSource" Value="{Binding Path=RankList, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Setter Property="SelectedItem" Value="{Binding Path=SelectedRank}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Style>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Height" Value="60"/>
@@ -48,7 +62,20 @@
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Path=DEPT_CODE}" HorizontalAlignment="Center"/>
+                                                        <TextBlock HorizontalAlignment="Center">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="{x:Type TextBlock}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}" Value="DEPT">
+                                                                            <Setter Property="Text" Value="{Binding Path=DEPT_CODE}"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}" Value="RANK">
+                                                                            <Setter Property="Text" Value="{Binding Path=RANK_CODE}"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>
@@ -58,10 +85,9 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    
+
                     <!--이름-->
                     <GridViewColumn Header="이름" Width="200">
-
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -70,7 +96,20 @@
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Path=DEPT_NAME}" HorizontalAlignment="Center"/>
+                                                        <TextBlock HorizontalAlignment="Center">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="{x:Type TextBlock}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}" Value="DEPT">
+                                                                            <Setter Property="Text" Value="{Binding Path=DEPT_NAME}"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}" Value="RANK">
+                                                                            <Setter Property="Text" Value="{Binding Path=RANK_NAME}"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>
@@ -84,9 +123,13 @@
             </ListView.View>
         </ListView>
 
+
+
+
+
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Height="30" Width="100" Content="취소" Command="{Binding Path=CancelCommand}" CommandParameter="{Binding ElementName=uc}" Margin="35, 0, 15, 0"/>
-            <Button Height="30" Width="100" Content="삭제" Command="{Binding Path=DeleteCommand}" Margin="15, 0, 30, 0"/>
+            <Button Height="30" Width="100" Content="삭제" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding ElementName=uc}" Margin="15, 0, 30, 0"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -86,7 +86,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.View>
                         <GridView>
-                            <!--부서이름-->
+                            <!--사원이름(사번)-->
                             <GridViewColumn Header="이름(사번)" Width="309">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -110,7 +110,7 @@
                     </ListView.View>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding }"/>
+                            <i:InvokeCommandAction Command="{Binding Path=SelectionStaffChanged}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ListView>

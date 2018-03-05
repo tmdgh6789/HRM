@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="BaobabHRM.AddStaffPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BaobabHRM"
+             mc:Ignorable="d" 
+             Name="uc"
+             Background="White"
+             d:DesignHeight="400" d:DesignWidth="300">
+    
+    <UserControl.DataContext>
+        <local:AddStaffPopupViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="330"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="1" Content="부서" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="0" Grid.Column="2" Height="30" Width="150" HorizontalAlignment="Left" ItemsSource="{Binding Path=DeptName}" SelectedItem="{Binding Path=SelectedDept}">
+                    <ComboBox.ItemTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock Text="{Binding Path=DEPT_NAME}" VerticalAlignment="Center"/>
+                        </ItemContainerTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Label Grid.Row="1" Grid.Column="1" Content="직급" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="1" Grid.Column="2" Height="30" Width="150" HorizontalAlignment="Left" ItemsSource="{Binding Path=RankName}" SelectedItem="{Binding Path=SelectedRank}">
+                    <ComboBox.ItemTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock Text="{Binding Path=RANK_NAME}" VerticalAlignment="Center"/>
+                        </ItemContainerTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Label Grid.Row="2" Grid.Column="1" Content="이름" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2" Grid.Column="2" Padding="5" Text="{Binding Path=StaffName}" Height="30" Width="150" HorizontalAlignment="Left"/>
+
+                <Label Grid.Row="3" Grid.Column="1" Content="주소" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="3" Grid.Column="2" Padding="5" Text="{Binding Path=StaffAddress}" Height="30" Width="150" HorizontalAlignment="Left"/>
+
+                <Label Grid.Row="4" Grid.Column="1" Content="연락처" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="4" Grid.Column="2" Padding="5" Text="{Binding Path=StaffTel}" Height="30" Width="150" HorizontalAlignment="Left"/>
+                
+                <Label Grid.Row="5" Grid.Column="1" Content="입사날짜" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <DatePicker Grid.Row="5" Grid.Column="2" Padding="5" Text="{Binding Path=StaffJoinDay}" Height="30" Width="150" HorizontalAlignment="Left"/>
+            </Grid>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button Height="30" Width="100" Content="취소" Command="{Binding Path=CancelCommand}" CommandParameter="{Binding ElementName=uc}" Margin="35, 0, 15, 0"/>
+                <Button Height="30" Width="100" Content="확인" Command="{Binding Path=OkCommand}" CommandParameter="{Binding ElementName=uc}" Margin="15, 0, 30, 0"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -17,8 +17,23 @@ namespace BaobabHRM
 
         #region property
 
-        private int m_Code;
-        public int Code
+
+        private string m_Title;
+        public string Title
+        {
+            get
+            {
+                return m_Title;
+            }
+            set
+            {
+                m_Title = value;
+                RaisePropertyChanged("Title");
+            }
+        }
+        
+        private string m_Code;
+        public string Code
         {
             get
             {
@@ -147,14 +162,22 @@ namespace BaobabHRM
 
         #region command
 
-        public DelegateCommand LoadedCommand
+        public DelegateCommand<UserControl> LoadedCommand
         {
             get
             {
-                return new DelegateCommand(delegate ()
+                return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
-                    LoadDept();
-                    LoadRank();
+                    if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "부서관리")
+                    {
+                        Title = "DEPT";
+                        LoadDept();
+                    }
+                    else if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "직급관리")
+                    {
+                        Title = "RANK";
+                        LoadRank();
+                    }
                 });
             }
         }
@@ -192,12 +215,16 @@ namespace BaobabHRM
                             DeptList.Add(new DeptModel(dto));
                             new DeptQuery().Insert(dto);
                             MessageBox.Show("부서를 추가하셨습니다.");
-                            Code = 0;
+                            Code = "";
                             Name = "";
                         }
                         catch (Exception e)
                         {
                             MessageBox.Show("부서 추가를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                            {
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
                         }
                     }
                     else if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "직급관리")
@@ -214,12 +241,16 @@ namespace BaobabHRM
                             RankList.Add(new RankModel(dto));
                             new RankQuery().Insert(dto);
                             MessageBox.Show("직급을 추가하셨습니다.");
-                            Code = 0;
+                            Code = "";
                             Name = "";
                         }
                         catch (Exception e)
                         {
                             MessageBox.Show("직급 추가를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                            {
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
                         }
                     }
                 });
@@ -250,6 +281,10 @@ namespace BaobabHRM
                         catch (Exception e)
                         {
                             MessageBox.Show("부서 삭제를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                            {
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
                         }
                     }
                     else if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "직급관리")
@@ -270,6 +305,10 @@ namespace BaobabHRM
                         catch (Exception e)
                         {
                             MessageBox.Show("직급 삭제를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                            {
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
                         }
                     }
                 });

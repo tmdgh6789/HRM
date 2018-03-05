@@ -105,6 +105,10 @@
       <DependentUpon>ManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Manager\ManagementViewModel.cs" />
+    <Compile Include="View\Manager\Popup\AddStaffPopup.xaml.cs">
+      <DependentUpon>AddStaffPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Manager\Popup\AddStaffPopupViewModel.cs" />
     <Compile Include="View\Manager\Popup\RankManagementPopup.xaml.cs">
       <DependentUpon>RankManagementPopup.xaml</DependentUpon>
     </Compile>
@@ -160,6 +164,10 @@
     <Page Include="View\Manager\ManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Manager\Popup\AddStaffPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Manager\Popup\RankManagementPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -228,6 +236,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\img_close_white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\img_change.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

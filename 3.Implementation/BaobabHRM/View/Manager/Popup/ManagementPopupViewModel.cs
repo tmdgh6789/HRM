@@ -13,6 +13,30 @@ namespace BaobabHRM
     public class ManagementPopupViewModel : BindableBase
     {
 
+
+        public DelegateCommand LoadedCommand
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    if (SharedPreference.Instance.SelectedDept != null)
+                    {
+                        SharedPreference.Instance.SelectedDept = null;
+                    }
+                    if (SharedPreference.Instance.SelectedStaff != null)
+                    {
+                        SharedPreference.Instance.SelectedStaff = null;
+                    }
+                    if (SharedPreference.Instance.SelectedRank != null)
+                    {
+                        SharedPreference.Instance.SelectedRank = null;
+                    }
+                });
+            }
+        }
+
+
         public DelegateCommand<UserControl> DeptManagementCommand
         {
             get

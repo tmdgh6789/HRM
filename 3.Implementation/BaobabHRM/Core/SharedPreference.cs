@@ -208,7 +208,26 @@ namespace BaobabHRM
                 RaisePropertyChanged("StaffList");
             }
         }
-        
+
+        private ObservableCollection<StaffModel> m_StaffViewStaffList;
+        public ObservableCollection<StaffModel> StaffViewStaffList
+        {
+            get
+            {
+                if (m_StaffViewStaffList == null)
+                {
+                    m_StaffViewStaffList = new ObservableCollection<StaffModel>();
+                }
+                return m_StaffViewStaffList;
+            }
+            set
+            {
+                m_StaffViewStaffList = value;
+                RaisePropertyChanged("StaffViewStaffList");
+            }
+        }
+
+
         /// <summary>
         /// 선택한 사원
         /// </summary>

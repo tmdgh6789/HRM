@@ -68,7 +68,7 @@
                     </ListView.View>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding }"/>
+                            <i:InvokeCommandAction Command="{Binding Source={x:Static local:SharedPreference.Instance}, Path=SelectionDeptChanged}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ListView>
@@ -119,12 +119,12 @@
 
             <Button Grid.Column="2" Content="조회"/>
             <Button Grid.Column="3" Content="전체보기"/>
-            <Button Grid.Column="4" Content="추가"/>
-            <Button Grid.Column="5" Content="수정"/>
+            <Button Grid.Column="4" Content="추가" Command="{Binding Path=AddStaffCommand}"/>
+            <Button Grid.Column="5" Content="수정" Command="{Binding Path=EditStaffCommand}"/>
             <Button Grid.Column="6" Content="뒤로가기" Command="{Binding Path=BackCommand}"/>
         </Grid>
 
-        <!--<ListView Grid.Row="2" ItemsSource="{Binding }" SelectedItem="{Binding }">
+        <ListView Grid.Row="2" ItemsSource="{Binding Source={x:Static local:SharedPreference.Instance}, Path=StaffViewStaffList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedStaff}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Height" Value="60"/>
@@ -135,47 +135,71 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    -->
-        <!-- 날짜 -->
-        <!--
-                    <GridViewColumn Header="날짜" Width="240" DisplayMemberBinding="{Binding Path=SHOW_LASTUSED}"/>
-
-                    -->
-        <!-- 부서 -->
-        <!--
-                    <GridViewColumn Header="부서" Width="240" DisplayMemberBinding="{Binding Path=SHOW_LASTUSED}"/>
-
-                    -->
-        <!-- 이름 -->
-        <!--
-                    <GridViewColumn Header="이름" Width="240" DisplayMemberBinding="{Binding Path=SHOW_LASTUSED}"/>
-
-                    -->
-        <!-- 사번 -->
-        <!--
-                    <GridViewColumn Header="사번" Width="240" DisplayMemberBinding="{Binding Path=SHOW_LASTUPDATE}"/>
-
-                    -->
-        <!-- 지각 -->
-        <!--
-                    <GridViewColumn Header="지각" Width="240" DisplayMemberBinding="{Binding Path=SHOW_CREATETIME}"/>
-
-                    -->
-        <!-- 야근 -->
-        <!--
-                    <GridViewColumn Header="야근" Width="240" DisplayMemberBinding="{Binding Path=SHOW_WRITER}"/>
-
-                    -->
-        <!-- 초과근무시간 -->
-        <!--
-                    <GridViewColumn Header="초과근무시간" Width="240" DisplayMemberBinding="{Binding Path=SHOW_WRITER}"/>
-
-                    -->
-        <!-- 휴가 -->
-        <!--
-                    <GridViewColumn Header="휴가" Width="240" DisplayMemberBinding="{Binding Path=SHOW_WRITER}"/>
+                    <GridViewColumn Header="부서" Width="180">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_DEPT}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="직급" Width="180">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_RANK}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="사번" Width="210">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_IDNUMBER}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="성명" Width="180" DisplayMemberBinding="{Binding Path=STAFF_NAME}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_NAME}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="주소" Width="310">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_ADDRESS}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="연락처" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_TEL}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="입사날짜" Width="210">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_JOIN_DAY}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="퇴사날짜" Width="210">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_RETIREMENT_DAY}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="상태" Width="210">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=STAFF_STATE}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
-        </ListView>-->
+        </ListView>
     </Grid>
 </UserControl>

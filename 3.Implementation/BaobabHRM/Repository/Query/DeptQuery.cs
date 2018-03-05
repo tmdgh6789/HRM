@@ -22,7 +22,7 @@ namespace BaobabHRM
         public void Insert(DeptDTO dto)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();
-            string query = $"INSERT INTO tbl_department (code, name) VALUES ({dto.DEPT_CODE}, '{dto.DEPT_NAME}');";
+            string query = $"INSERT INTO tbl_department (code, name) VALUES ('{dto.DEPT_CODE}', '{dto.DEPT_NAME}');";
             SharedPreference.Instance.DBM.SqlComm.CommandText = query;
             SharedPreference.Instance.DBM.SqlComm.ExecuteNonQuery();
             SharedPreference.Instance.DBM.SqlConn.Close();
@@ -31,7 +31,7 @@ namespace BaobabHRM
         public void Delete(DeptDTO dto)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();
-            string query = $"DELETE FROM tbl_department WHERE code = {dto.DEPT_CODE};";
+            string query = $"DELETE FROM tbl_department WHERE code = '{dto.DEPT_CODE}';";
             SharedPreference.Instance.DBM.SqlComm.CommandText = query;
             SharedPreference.Instance.DBM.SqlComm.ExecuteNonQuery();
             SharedPreference.Instance.DBM.SqlConn.Close();

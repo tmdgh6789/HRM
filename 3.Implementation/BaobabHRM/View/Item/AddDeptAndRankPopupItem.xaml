@@ -31,9 +31,9 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="1" Content="코드" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Label Grid.Row="1" Grid.Column="1" Content="이름" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-
             <TextBox Grid.Row="0" Grid.Column="2" Padding="5" Text="{Binding Path=Code}" Height="30" Width="150" HorizontalAlignment="Left"/>
+            
+            <Label Grid.Row="1" Grid.Column="1" Content="이름" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox Grid.Row="1" Grid.Column="2" Padding="5" Text="{Binding Path=Name}" Height="30" Width="150" HorizontalAlignment="Left"/>
         </Grid>
 

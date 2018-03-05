@@ -53,10 +53,29 @@ namespace BaobabHRM
             {
                 var dto = new DeptDTO()
                 {
-                    DEPT_CODE = (int)sqlData["code"],
+                    DEPT_CODE = sqlData["code"].ToString(),
                     DEPT_NAME = sqlData["name"].ToString()
                 };
                 SharedPreference.Instance.DeptList.Add(new DeptModel(dto));
+            }
+            sqlData.Close();
+            SharedPreference.Instance.DBM.SqlConn.Close();
+
+        }
+
+        private void LoadRank()
+        {
+            SharedPreference.Instance.RankList.Clear();
+
+            var sqlData = new RankQuery().SelectAll();
+            while (sqlData.Read())
+            {
+                var dto = new RankDTO()
+                {
+                    RANK_CODE = sqlData["code"].ToString(),
+                    RANK_NAME = sqlData["name"].ToString()
+                };
+                SharedPreference.Instance.RankList.Add(new RankModel(dto));
             }
             sqlData.Close();
             SharedPreference.Instance.DBM.SqlConn.Close();
@@ -75,8 +94,8 @@ namespace BaobabHRM
                     var dto = new StaffDTO()
                     {
                         STAFF_IDNUMBER = sqlData["idnumber"].ToString(),
-                        STAFF_DEPT = (int)sqlData["dept"],
-                        STAFF_RANK = (int)sqlData["rank"],
+                        STAFF_DEPT = sqlData["dept"].ToString(),
+                        STAFF_RANK = sqlData["rank"].ToString(),
                         STAFF_NAME = sqlData["name"].ToString(),
                         STAFF_ADDRESS = sqlData["address"].ToString(),
                         STAFF_TEL = sqlData["tel"].ToString(),
@@ -102,6 +121,7 @@ namespace BaobabHRM
                 return new DelegateCommand(delegate ()
                 {
                     LoadDept();
+                    LoadRank();
                     LoadStaff();
                 });
             }
