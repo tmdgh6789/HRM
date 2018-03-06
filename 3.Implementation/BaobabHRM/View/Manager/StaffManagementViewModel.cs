@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BaobabHRM
 {
@@ -91,7 +92,6 @@ namespace BaobabHRM
                     var popup = new AddStaffPopup();
                     if (WindowHelper.CreatePopup(popup, "사원추가", true) == true)
                     {
-                        var vm = popup.DataContext as StaffManagementViewModel;
                     }
                 });
             }
@@ -106,7 +106,18 @@ namespace BaobabHRM
             {
                 return new DelegateCommand(delegate ()
                 {
-                    
+                    var popup = new EditStaffPopup();
+                    if (SharedPreference.Instance.DeptList != null && SharedPreference.Instance.RankList != null && SharedPreference.Instance.SelectedStaff != null)
+                    {
+                        if (WindowHelper.CreatePopup(popup, "사원수정", true) == true)
+                        {
+                            
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("수정할 사원을 선택해주세요.");
+                    }
                 });
             }
         }

@@ -48,6 +48,15 @@ namespace BaobabHRM
             SharedPreference.Instance.DBM.SqlConn.Close();
         }
 
+        public void Update(StaffDTO dto)
+        {
+            SharedPreference.Instance.DBM.SqlConn.Open();
+            string query = $"UPDATE tbl_staff SET dept = '{dto.STAFF_DEPT}', rank = '{dto.STAFF_RANK}', name = '{dto.STAFF_NAME}', address = '{dto.STAFF_ADDRESS}', tel = '{dto.STAFF_TEL}', join_day = '{dto.STAFF_JOIN_DAY}', retirement_day = '{dto.STAFF_RETIREMENT_DAY}', state = '{dto.STAFF_STATE}' WHERE idnumber = '{dto.STAFF_IDNUMBER}';";
+            SharedPreference.Instance.DBM.SqlComm.CommandText = query;
+            SharedPreference.Instance.DBM.SqlComm.ExecuteNonQuery();
+            SharedPreference.Instance.DBM.SqlConn.Close();
+        }
+
         public void Delete(DeptDTO dto)
         {
             //SharedPreference.Instance.DBM.SqlConn.Open();

@@ -18,6 +18,9 @@
             <TabItem Header="추가">
                 <local:AddDeptAndRankPopupItem/>
             </TabItem>
+            <TabItem Header="수정">
+                <local:EditDeptAndRankPopupItem/>
+            </TabItem>
             <TabItem Header="삭제">
                 <local:DeleteDeptAndRankPopupItem/>
             </TabItem>

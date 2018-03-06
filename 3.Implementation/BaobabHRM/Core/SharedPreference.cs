@@ -258,9 +258,11 @@ namespace BaobabHRM
             //var results = new UserQuery().SELECT(id, pwd);
             //if (results.Count > 0)
             //{
-                UserDTO dto = new UserDTO();
-                dto.USER_ID = id;
-                dto.USER_PW = pwd;
+                UserDTO dto = new UserDTO
+                {
+                    USER_ID = id,
+                    USER_PW = pwd
+                };
                 SharedPreference.Instance.LoginUser = new UserModel(dto);
                 SharedPreference.Instance.IsLoginCompleted = true;
                 SharedPreference.Instance.IsManagement = true;

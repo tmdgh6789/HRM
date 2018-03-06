@@ -63,7 +63,7 @@
                 <TextBox Grid.Row="4" Grid.Column="2" Padding="5" Text="{Binding Path=StaffTel}" Height="30" Width="150" HorizontalAlignment="Left"/>
                 
                 <Label Grid.Row="5" Grid.Column="1" Content="입사날짜" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <DatePicker Grid.Row="5" Grid.Column="2" Padding="5" Text="{Binding Path=StaffJoinDay}" Height="30" Width="150" HorizontalAlignment="Left"/>
+                <DatePicker Grid.Row="5" Grid.Column="2" Padding="5" SelectedDate="{Binding Path=StaffJoinDay}" Height="30" Width="150" HorizontalAlignment="Left"/>
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal">

@@ -17,7 +17,9 @@ namespace BaobabHRM
 
         #region property
 
-
+        /// <summary>
+        /// 타이틀
+        /// </summary>
         private string m_Title;
         public string Title
         {
@@ -31,7 +33,10 @@ namespace BaobabHRM
                 RaisePropertyChanged("Title");
             }
         }
-        
+
+        /// <summary>
+        /// 부서 / 직급 코드
+        /// </summary>
         private string m_Code;
         public string Code
         {
@@ -46,6 +51,9 @@ namespace BaobabHRM
             }
         }
         
+        /// <summary>
+        /// 부서 / 직급 이름
+        /// </summary>
         private string m_Name;
         public string Name
         {
@@ -60,6 +68,23 @@ namespace BaobabHRM
             }
         }
 
+        /// <summary>
+        /// 수정 사유
+        /// </summary>
+        private string m_Reason;
+        public string Reason
+        {
+            get
+            {
+                return m_Reason;
+            }
+            set
+            {
+                m_Reason = value;
+                RaisePropertyChanged("Reason");
+            }
+        }
+        
         /// <summary>
         /// 부서 리스트
         /// </summary>
@@ -146,6 +171,7 @@ namespace BaobabHRM
             foreach (var model in SharedPreference.Instance.DeptList)
             {
                 DeptList.Add(model);
+                Title = "DEPT";
             }
         }
 
@@ -155,6 +181,7 @@ namespace BaobabHRM
             foreach (var model in SharedPreference.Instance.RankList)
             {
                 RankList.Add(model);
+                Title = "RANK";
             }
         }
 
@@ -170,12 +197,10 @@ namespace BaobabHRM
                 {
                     if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "부서관리")
                     {
-                        Title = "DEPT";
                         LoadDept();
                     }
                     else if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "직급관리")
                     {
-                        Title = "RANK";
                         LoadRank();
                     }
                 });
@@ -195,7 +220,10 @@ namespace BaobabHRM
             }
         }
 
-        public DelegateCommand<UserControl> OkCommand
+        /// <summary>
+        /// 추가 커맨드
+        /// </summary>
+        public DelegateCommand<UserControl> AddCommand
         {
             get
             {
@@ -214,9 +242,33 @@ namespace BaobabHRM
                             SharedPreference.Instance.DeptList.Add(new DeptModel(dto));
                             DeptList.Add(new DeptModel(dto));
                             new DeptQuery().Insert(dto);
-                            MessageBox.Show("부서를 추가하셨습니다.");
-                            Code = "";
-                            Name = "";
+
+                            // 수정 내역 저장
+                            try
+                            {
+                                AllLogDTO logDto = new AllLogDTO
+                                {
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_WHAT = "부서",
+                                    ALLLOG_LOG = Name + " 부서 생성",
+                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                                };
+
+                                new AllLogQuery().Insert(logDto);
+
+                                MessageBox.Show("부서를 추가하셨습니다.");
+                                Code = "";
+                                Name = "";
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("부서 생성을 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                                if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                                {
+                                    SharedPreference.Instance.DBM.SqlConn.Close();
+                                }
+                            }
                         }
                         catch (Exception e)
                         {
@@ -240,9 +292,33 @@ namespace BaobabHRM
                             SharedPreference.Instance.RankList.Add(new RankModel(dto));
                             RankList.Add(new RankModel(dto));
                             new RankQuery().Insert(dto);
-                            MessageBox.Show("직급을 추가하셨습니다.");
-                            Code = "";
-                            Name = "";
+
+                            // 수정 내역 저장
+                            try
+                            {
+                                AllLogDTO logDto = new AllLogDTO
+                                {
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_WHAT = "직급",
+                                    ALLLOG_LOG = Name + " 직급 생성",
+                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                                };
+
+                                new AllLogQuery().Insert(logDto);
+
+                                MessageBox.Show("직급을 추가하셨습니다.");
+                                Code = "";
+                                Name = "";
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("직급 생성을 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                                if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                                {
+                                    SharedPreference.Instance.DBM.SqlConn.Close();
+                                }
+                            }
                         }
                         catch (Exception e)
                         {
@@ -257,6 +333,133 @@ namespace BaobabHRM
             }
         }
 
+        /// <summary>
+        /// 수정 커맨드
+        /// </summary>
+        public DelegateCommand<UserControl> EditCommand
+        {
+            get
+            {
+                return new DelegateCommand<UserControl>(delegate (UserControl uc)
+                {
+                    if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "부서관리")
+                    {
+                        var index = SharedPreference.Instance.DeptList.IndexOf(SelectedDept);
+                        var beforeName = SelectedDept.DEPT_NAME;
+                        DeptDTO deptDto = new DeptDTO
+                        {
+                            DEPT_CODE = SelectedDept.DEPT_CODE,
+                            DEPT_NAME = Name
+                        };
+
+                        // 부서 테이블 수정
+                        try
+                        {
+                            DeptList.Remove(SelectedDept);
+                            SharedPreference.Instance.DeptList.Remove(SelectedDept);
+                            DeptList.Insert(index, new DeptModel(deptDto));
+                            SharedPreference.Instance.DeptList.Insert(index, new DeptModel(deptDto));
+                            new DeptQuery().Update(deptDto);
+
+                            // 수정 내역 저장
+                            try
+                            {
+                                AllLogDTO logDto = new AllLogDTO
+                                {
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_WHAT = "부서 이름",
+                                    ALLLOG_LOG = beforeName + " -> " + Name,
+                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                                };
+
+                                new AllLogQuery().Insert(logDto);
+                                MessageBox.Show("부서 이름을 수정하셨습니다.");
+
+                                Name = "";
+                                Reason = "";
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("부서 수정을 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                                if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                                {
+                                    SharedPreference.Instance.DBM.SqlConn.Close();
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show("부서 수정을 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                            {
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
+                        }
+                    }
+                    else if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "직급관리")
+                    {
+                        var index = SharedPreference.Instance.RankList.IndexOf(SelectedRank);
+                        var beforeName = SelectedRank.RANK_NAME;
+                        RankDTO rankDto = new RankDTO
+                        {
+                            RANK_CODE = SelectedRank.RANK_CODE,
+                            RANK_NAME = Name
+                        };
+
+                        // 부서 테이블 수정
+                        try
+                        {
+                            RankList.Remove(SelectedRank);
+                            SharedPreference.Instance.RankList.Remove(SelectedRank);
+                            RankList.Insert(index, new RankModel(rankDto));
+                            SharedPreference.Instance.RankList.Insert(index, new RankModel(rankDto));
+                            new RankQuery().Update(rankDto);
+                            
+                            // 수정 내역 저장
+                            try
+                            {
+                                AllLogDTO logDto = new AllLogDTO
+                                {
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_WHAT = "직급 이름",
+                                    ALLLOG_LOG = beforeName + " -> " + Name,
+                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                                };
+
+                                new AllLogQuery().Insert(logDto);
+                                MessageBox.Show("직급 이름을 수정하셨습니다.");
+
+                                Name = "";
+                                Reason = "";
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("직급 수정을 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                                if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                                {
+                                    SharedPreference.Instance.DBM.SqlConn.Close();
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show("직급 수정을 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                            {
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+
+        /// <summary>
+        /// 삭제 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> DeleteCommand
         {
             get
@@ -265,18 +468,46 @@ namespace BaobabHRM
                 {
                     if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "부서관리")
                     {
+                        var beforeName = SelectedDept.DEPT_NAME;
                         DeptDTO dto = new DeptDTO
                         {
                             DEPT_CODE = SelectedDept.DEPT_CODE,
                             DEPT_NAME = SelectedDept.DEPT_NAME
                         };
 
+                        // 부서 삭제
                         try
                         {
                             SharedPreference.Instance.DeptList.Remove(SelectedDept);
                             DeptList.Remove(SelectedDept);
                             new DeptQuery().Delete(dto);
-                            MessageBox.Show("부서를 삭제하셨습니다.");
+                            
+                            // 삭제 내역 저장
+                            try
+                            {
+                                AllLogDTO logDto = new AllLogDTO
+                                {
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_WHAT = "부서",
+                                    ALLLOG_LOG = beforeName + "삭제",
+                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                                };
+
+                                new AllLogQuery().Insert(logDto);
+                                MessageBox.Show("부서를 삭제하셨습니다.");
+
+                                Name = "";
+                                Reason = "";
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("부서 삭제를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                                if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                                {
+                                    SharedPreference.Instance.DBM.SqlConn.Close();
+                                }
+                            }
                         }
                         catch (Exception e)
                         {
@@ -289,6 +520,7 @@ namespace BaobabHRM
                     }
                     else if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "직급관리")
                     {
+                        var beforeName = SelectedRank.RANK_NAME;
                         RankDTO dto = new RankDTO
                         {
                             RANK_CODE = SelectedRank.RANK_CODE,
@@ -300,7 +532,33 @@ namespace BaobabHRM
                             SharedPreference.Instance.RankList.Remove(SelectedRank);
                             RankList.Remove(SelectedRank);
                             new RankQuery().Delete(dto);
-                            MessageBox.Show("직급을 삭제하셨습니다.");
+
+                            // 삭제 내역 저장
+                            try
+                            {
+                                AllLogDTO logDto = new AllLogDTO
+                                {
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_WHAT = "직급",
+                                    ALLLOG_LOG = beforeName + "삭제",
+                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                                };
+
+                                new AllLogQuery().Insert(logDto);
+                                MessageBox.Show("직급을 삭제하셨습니다.");
+
+                                Name = "";
+                                Reason = "";
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("직급 삭제를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                                if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                                {
+                                    SharedPreference.Instance.DBM.SqlConn.Close();
+                                }
+                            }
                         }
                         catch (Exception e)
                         {

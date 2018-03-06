@@ -20,18 +20,18 @@ namespace BaobabHRM
             {
                 return new DelegateCommand(delegate ()
                 {
-                    if (SharedPreference.Instance.SelectedDept != null)
-                    {
-                        SharedPreference.Instance.SelectedDept = null;
-                    }
-                    if (SharedPreference.Instance.SelectedStaff != null)
-                    {
-                        SharedPreference.Instance.SelectedStaff = null;
-                    }
-                    if (SharedPreference.Instance.SelectedRank != null)
-                    {
-                        SharedPreference.Instance.SelectedRank = null;
-                    }
+                    //if (SharedPreference.Instance.SelectedDept != null)
+                    //{
+                    //    SharedPreference.Instance.SelectedDept = null;
+                    //}
+                    //if (SharedPreference.Instance.SelectedStaff != null)
+                    //{
+                    //    SharedPreference.Instance.SelectedStaff = null;
+                    //}
+                    //if (SharedPreference.Instance.SelectedRank != null)
+                    //{
+                    //    SharedPreference.Instance.SelectedRank = null;
+                    //}
                 });
             }
         }

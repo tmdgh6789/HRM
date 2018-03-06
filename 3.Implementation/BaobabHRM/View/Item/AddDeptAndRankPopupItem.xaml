@@ -39,7 +39,7 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Height="30" Width="100" Content="취소" Command="{Binding Path=CancelCommand}" CommandParameter="{Binding ElementName=uc}" Margin="35, 0, 15, 0"/>
-            <Button Height="30" Width="100" Content="확인" Command="{Binding Path=OkCommand}" CommandParameter="{Binding ElementName=uc}" Margin="15, 0, 30, 0"/>
+            <Button Height="30" Width="100" Content="확인" Command="{Binding Path=AddCommand}" CommandParameter="{Binding ElementName=uc}" Margin="15, 0, 30, 0"/>
         </StackPanel>
     </Grid>
 </UserControl>

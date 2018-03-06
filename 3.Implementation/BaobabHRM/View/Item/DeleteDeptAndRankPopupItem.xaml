@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              Background="White"
              Name="uc"
-             d:DesignHeight="220" d:DesignWidth="300">
+             d:DesignHeight="270" d:DesignWidth="300">
     
     <UserControl.DataContext>
         <local:DeptAndRankPopupItemViewModel/>
@@ -24,10 +24,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="150"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Row="0">
+        <ListView Grid.Row="0" HorizontalAlignment="Stretch">
             <ListView.Style>
                 <Style TargetType="{x:Type ListView}">
                     <Style.Triggers>
@@ -87,7 +88,7 @@
                     </GridViewColumn>
 
                     <!--이름-->
-                    <GridViewColumn Header="이름" Width="200">
+                    <GridViewColumn Header="이름" Width="180">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -123,11 +124,17 @@
             </ListView.View>
         </ListView>
 
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="1" Content="사유" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="2" Padding="5" Text="{Binding Path=Reason}" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        </Grid>
 
-
-
-
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Button Height="30" Width="100" Content="취소" Command="{Binding Path=CancelCommand}" CommandParameter="{Binding ElementName=uc}" Margin="35, 0, 15, 0"/>
             <Button Height="30" Width="100" Content="삭제" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding ElementName=uc}" Margin="15, 0, 30, 0"/>
         </StackPanel>

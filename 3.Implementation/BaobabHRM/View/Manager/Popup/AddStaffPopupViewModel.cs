@@ -171,8 +171,6 @@ namespace BaobabHRM
             {
                 return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
-                    SharedPreference.Instance.ViewName = "";
-                    SharedPreference.Instance.IsManagement = false;
                     Window.GetWindow(uc).DialogResult = false;
                 });
             }
@@ -199,12 +197,36 @@ namespace BaobabHRM
                     try
                     {
                         SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
-                        
+
                         new StaffQuery().Insert(dto);
-                        MessageBox.Show("사원을 추가하셨습니다.");
-                        StaffName = "";
-                        StaffAddress = "";
-                        StaffTel = "";
+
+                        // 수정 내역 저장
+                        try
+                        {
+                            AllLogDTO logDto = new AllLogDTO
+                            {
+                                ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                ALLLOG_WHAT = "사원",
+                                ALLLOG_LOG = StaffName + " 사원 추가",
+                                ALLLOG_REASON = "사원 입사",
+                                ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                            };
+
+                            new AllLogQuery().Insert(logDto);
+
+                            MessageBox.Show("사원을 추가하셨습니다.");
+                            StaffName = "";
+                            StaffAddress = "";
+                            StaffTel = "";
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show("사원 추가를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                            {
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
+                        }
                     }
                     catch (Exception e)
                     {
@@ -214,6 +236,8 @@ namespace BaobabHRM
                             SharedPreference.Instance.DBM.SqlConn.Close();
                         }
                     }
+
+                    Window.GetWindow(uc).DialogResult = true;
                 });
             }
         }

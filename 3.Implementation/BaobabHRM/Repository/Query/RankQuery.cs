@@ -28,6 +28,15 @@ namespace BaobabHRM
             SharedPreference.Instance.DBM.SqlConn.Close();
         }
 
+        public void Update(RankDTO dto)
+        {
+            SharedPreference.Instance.DBM.SqlConn.Open();
+            string query = $"UPDATE tbl_rank SET name = '{dto.RANK_NAME}' WHERE code = '{dto.RANK_CODE}';";
+            SharedPreference.Instance.DBM.SqlComm.CommandText = query;
+            SharedPreference.Instance.DBM.SqlComm.ExecuteNonQuery();
+            SharedPreference.Instance.DBM.SqlConn.Close();
+        }
+
         public void Delete(RankDTO dto)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();
