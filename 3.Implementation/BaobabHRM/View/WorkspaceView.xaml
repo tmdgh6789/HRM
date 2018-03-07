@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:webEye="clr-namespace:WebEye.Controls.Wpf.StreamPlayerControl;assembly=WebEye.Controls.Wpf.StreamPlayerControl"
              xmlns:local="clr-namespace:BaobabHRM"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
@@ -119,7 +120,10 @@
             <Button Grid.Column="2" Content="조회"/>
             <Button Grid.Column="3" Content="출근"/>
             <Button Grid.Column="4" Content="퇴근"/>
-            <Button Grid.Column="5" Content="관리자 로그인" Command="{Binding Path=LoginCommand}"/>
+            <StackPanel Grid.Column="5">
+                <Button Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="관리자 로그인" Command="{Binding Path=LoginCommand}"/>
+                <webEye:StreamPlayerControl x:Name="streamPlayerControl" Height="245" Width="320" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </StackPanel>
         </Grid>
 
         <!-- 중간 그리드 -->

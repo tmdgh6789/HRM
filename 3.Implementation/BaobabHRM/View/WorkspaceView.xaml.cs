@@ -23,6 +23,13 @@ namespace BaobabHRM
         public WorkspaceView()
         {
             InitializeComponent();
+            Loaded += LoadedRoutedEventHandler;
+        }
+
+        public void LoadedRoutedEventHandler(Object sender, RoutedEventArgs e)
+        {
+            Loaded -= LoadedRoutedEventHandler;
+            streamPlayerControl.StartPlay(new Uri("rtmp://61.72.187.6/oflaDemo/testStream"));
         }
     }
 }

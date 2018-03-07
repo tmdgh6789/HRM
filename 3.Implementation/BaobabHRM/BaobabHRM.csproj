@@ -67,6 +67,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WebEye.Controls.Wpf.StreamPlayerControl, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebEye.Controls.Wpf.StreamPlayerControl.1.0.5\lib\net40\WebEye.Controls.Wpf.StreamPlayerControl.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -88,11 +91,13 @@
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Repository\DBManager.cs" />
     <Compile Include="Repository\DTO\AllLogDTO.cs" />
+    <Compile Include="Repository\DTO\AttendanceDTO.cs" />
     <Compile Include="Repository\DTO\DeptDTO.cs" />
     <Compile Include="Repository\DTO\RankDTO.cs" />
     <Compile Include="Repository\DTO\StaffDTO.cs" />
     <Compile Include="Repository\DTO\UserDTO.cs" />
     <Compile Include="Repository\Query\AllLogQuery.cs" />
+    <Compile Include="Repository\Query\AttendanceQuery.cs" />
     <Compile Include="Repository\Query\RankQuery.cs" />
     <Compile Include="Repository\Query\StaffQuery.cs" />
     <Compile Include="Repository\Query\DeptQuery.cs" />

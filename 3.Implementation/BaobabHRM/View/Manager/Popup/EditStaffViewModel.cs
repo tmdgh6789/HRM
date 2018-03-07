@@ -495,38 +495,38 @@ namespace BaobabHRM
 
                     if (StaffState == "재직") afterDto.STAFF_RETIREMENT_DAY = null;
 
-                    string what = $"사번 : {SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER}, ";
+                    string what = $"사번: {SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER}, ";
                     string log = "";
 
                     if (beforeDto.STAFF_DEPT != afterDto.STAFF_DEPT)
                     {
                         what += "부서 ";
-                        log += $"부서 : {beforeDto.STAFF_DEPT} -> {afterDto.STAFF_DEPT} ";
+                        log += $"부서: {beforeDto.STAFF_DEPT} -> {afterDto.STAFF_DEPT} ";
                     }
                     if (beforeDto.STAFF_RANK != afterDto.STAFF_RANK)
                     {
                         what += "직급 ";
-                        log += $"직급 : {beforeDto.STAFF_RANK} -> {afterDto.STAFF_RANK} ";
+                        log += $"직급: {beforeDto.STAFF_RANK} -> {afterDto.STAFF_RANK} ";
                     }
                     if (beforeDto.STAFF_NAME != afterDto.STAFF_NAME)
                     {
                         what += "이름 ";
-                        log += $"이름 : {beforeDto.STAFF_NAME} -> {afterDto.STAFF_NAME} ";
+                        log += $"이름: {beforeDto.STAFF_NAME} -> {afterDto.STAFF_NAME} ";
                     }
                     if (beforeDto.STAFF_ADDRESS != afterDto.STAFF_ADDRESS)
                     {
                         what += "주소 ";
-                        log += $"주소 : {beforeDto.STAFF_ADDRESS} -> {afterDto.STAFF_ADDRESS} ";
+                        log += $"주소: {beforeDto.STAFF_ADDRESS} -> {afterDto.STAFF_ADDRESS} ";
                     }
                     if (beforeDto.STAFF_TEL != afterDto.STAFF_TEL)
                     {
                         what += "연락처 ";
-                        log += $"연락처 : {beforeDto.STAFF_TEL} -> {afterDto.STAFF_TEL} ";
+                        log += $"연락처: {beforeDto.STAFF_TEL} -> {afterDto.STAFF_TEL} ";
                     }
                     if (beforeDto.STAFF_JOIN_DAY != afterDto.STAFF_JOIN_DAY)
                     {
                         what += "입사날짜 ";
-                        log += $"입사날짜 : {beforeDto.STAFF_JOIN_DAY} -> {afterDto.STAFF_JOIN_DAY} ";
+                        log += $"입사날짜: {beforeDto.STAFF_JOIN_DAY} -> {afterDto.STAFF_JOIN_DAY} ";
                     }
                     if (beforeDto.STAFF_RETIREMENT_DAY != afterDto.STAFF_RETIREMENT_DAY)
                     {
@@ -536,7 +536,7 @@ namespace BaobabHRM
                     if (beforeDto.STAFF_STATE != afterDto.STAFF_STATE)
                     {
                         what += "상태 ";
-                        log += $"상태 : {beforeDto.STAFF_STATE} -> {afterDto.STAFF_STATE} ";
+                        log += $"상태: {beforeDto.STAFF_STATE} -> {afterDto.STAFF_STATE} ";
                     }
 
                     try

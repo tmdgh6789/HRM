@@ -43,6 +43,23 @@ namespace BaobabHRM
         }
         #endregion
 
+        /// <summary>
+        /// 출근 커맨드
+        /// </summary>
+        public DelegateCommand AttendanceCommand
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    
+                });
+            }
+        }
+
+        /// <summary>
+        /// 관리자 로그인 커맨드
+        /// </summary>
         public DelegateCommand LoginCommand
         {
             get
