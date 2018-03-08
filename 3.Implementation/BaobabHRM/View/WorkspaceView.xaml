@@ -118,7 +118,7 @@
             </Grid>
 
             <Button Grid.Column="2" Content="조회"/>
-            <Button Grid.Column="3" Content="출근"/>
+            <Button Grid.Column="3" Content="출근" Command="{Binding Path=AttendanceCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
             <Button Grid.Column="4" Content="퇴근"/>
             <StackPanel Grid.Column="5">
                 <Button Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="관리자 로그인" Command="{Binding Path=LoginCommand}"/>

@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="BaobabHRM.CapturePopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BaobabHRM"
+             mc:Ignorable="d" 
+             Name="uc"
+             Background="White"
+             d:DesignHeight="450" d:DesignWidth="500">
+
+    <UserControl.DataContext>
+        <local:CapturePopupViewModel/>
+    </UserControl.DataContext>
+
+    <StackPanel>
+        <TextBlock Text="정상적으로 출근처리 되었습니다." HorizontalAlignment="Center" Margin="0, 10"/>
+        <TextBlock Text="즐거운 하루 되세요!" HorizontalAlignment="Center"/>
+        <Image Source="{Binding Path=Image}" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="300" Width="400"/>
+        <Button Content="확인" Height="30" Margin="0, 10, 0, 0" Command="{Binding Path=OkCommand}" CommandParameter="{Binding ElementName=uc}"/>
+    </StackPanel>
+</UserControl>

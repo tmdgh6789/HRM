@@ -15,7 +15,16 @@ namespace BaobabHRM
 
         public void Init()
         {
-            // Sql 연결정보(서버:127.0.0.1, 포트:1433, 아이디:sa, 비밀번호 : password, db : member)
+            if (!System.IO.Directory.Exists(Defines.LOCALREPOSITORY_PATH))
+            {
+                System.IO.Directory.CreateDirectory(Defines.LOCALREPOSITORY_PATH);
+            }
+            if (!System.IO.Directory.Exists(Defines.CAPTURE_PATH))
+            {
+                System.IO.Directory.CreateDirectory(Defines.CAPTURE_PATH);
+            }
+
+            // Sql 연결정보
             string connectionString = $"server = {Defines.SERVER_IP}, {Defines.SERVER_PORT}; uid = {Defines.SERVER_ID}; pwd = {Defines.SERVER_PW}; database = {Defines.DATABASE_NAME};";
             // Sql 새연결정보 생성
             SqlConn = new SqlConnection(connectionString);

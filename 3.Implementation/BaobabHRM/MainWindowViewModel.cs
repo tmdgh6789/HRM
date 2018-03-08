@@ -133,10 +133,10 @@ namespace BaobabHRM
             {
                 return new DelegateCommand(delegate ()
                {
-                   var view = new LoginPopup();
-                   if (WindowHelper.CreatePopup(view, "관리자 로그인", true) == true)
+                   var popup = new LoginPopup();
+                   if (WindowHelper.CreatePopup(popup, "관리자 로그인", true) == true)
                    {
-                       var vm = view.DataContext as LoginPopupViewModel;
+                       var vm = popup.DataContext as LoginPopupViewModel;
                    }
                });
             }

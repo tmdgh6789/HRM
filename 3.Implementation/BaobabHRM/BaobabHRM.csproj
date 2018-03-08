@@ -82,9 +82,15 @@
     <Compile Include="Common\Control\PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Control\ucTimePicker.xaml.cs">
+      <DependentUpon>ucTimePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Converter\BitmapToBitmapImageConverter.cs" />
     <Compile Include="Core\Defines.cs" />
     <Compile Include="Core\SharedPreference.cs" />
     <Compile Include="Helper\WindowHelper.cs" />
+    <Compile Include="Model\AllLogModel.cs" />
+    <Compile Include="Model\AttendanceModel.cs" />
     <Compile Include="Model\DeptModel.cs" />
     <Compile Include="Model\RankModel.cs" />
     <Compile Include="Model\StaffModel.cs" />
@@ -139,6 +145,10 @@
       <DependentUpon>DeptManagementPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Manager\Popup\DeptManagementPopupViewModel.cs" />
+    <Compile Include="View\Popup\CapturePopup.xaml.cs">
+      <DependentUpon>CapturePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popup\CapturePopupViewModel.cs" />
     <Compile Include="View\Popup\LoginPopup.xaml.cs">
       <DependentUpon>LoginPopup.xaml</DependentUpon>
     </Compile>
@@ -147,11 +157,19 @@
       <DependentUpon>ManagementPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Manager\Popup\ManagementPopupViewModel.cs" />
+    <Compile Include="View\Popup\OutTimeCheckPopup.xaml.cs">
+      <DependentUpon>OutTimeCheckPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popup\OutTimeCheckPopupViewModel.cs" />
     <Compile Include="View\WorkspaceView.xaml.cs">
       <DependentUpon>WorkspaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WorkspaceViewModel.cs" />
     <Page Include="Common\Control\PopupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Control\ucTimePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -207,11 +225,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Popup\CapturePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Popup\LoginPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Manager\Popup\ManagementPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Popup\OutTimeCheckPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,6 +289,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\img_change.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\down_arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\up_arrow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
