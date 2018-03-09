@@ -39,6 +39,16 @@ namespace BaobabHRM
             return sd;
         }
 
+        public SqlDataReader SelectIdnumberLike(string date)
+        {
+            SharedPreference.Instance.DBM.SqlConn.Open();
+            string query = $"SELECT * FROM tbl_staff WHERE idnumber LIKE '{date}%';";
+            SharedPreference.Instance.DBM.SqlComm.CommandText = query;
+            SqlDataReader sd;
+            sd = SharedPreference.Instance.DBM.SqlComm.ExecuteReader();
+            return sd;
+        }
+
         public void Insert(StaffDTO dto)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();

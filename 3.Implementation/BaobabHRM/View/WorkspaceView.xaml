@@ -13,6 +13,12 @@
     <UserControl.DataContext>
         <local:WorkspaceViewModel/>
     </UserControl.DataContext>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <prism:InvokeCommandAction Command="{Binding Path=LoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -119,9 +125,18 @@
 
             <Button Grid.Column="2" Content="조회"/>
             <Button Grid.Column="3" Content="출근" Command="{Binding Path=AttendanceCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
-            <Button Grid.Column="4" Content="퇴근"/>
+            <Button Grid.Column="4" Content="퇴근" Command="{Binding Path=LeaveWorkCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
             <StackPanel Grid.Column="5">
-                <Button Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="관리자 로그인" Command="{Binding Path=LoginCommand}"/>
+                <Grid Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="관리자 로그인" Command="{Binding Path=LoginCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
+                    <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="관리자 로그아웃" Command="{Binding Path=LogoutCommand}"/>
+                    <Button Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="캠 다시 실행" Command="{Binding Path=StreamPlayerReload}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
+                </Grid>
                 <webEye:StreamPlayerControl x:Name="streamPlayerControl" Height="245" Width="320" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </StackPanel>
         </Grid>
@@ -150,14 +165,55 @@
 
         <!-- 하단 그리드 -->
         <Grid Grid.Row="2">
-            <DataGrid>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="날짜"/>
-                    <DataGridTemplateColumn Header="출근시간"/>
-                    <DataGridTemplateColumn Header="퇴근시간"/>
-                    <DataGridTemplateColumn Header="구분"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <ListView Grid.Row="2" ItemsSource="{Binding Path=TodayAttendanceList, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Height" Value="60"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="날짜" Width="380">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=ATTENDANCE_BUSINESS_DAY}" HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="이름(사번)" Width="380">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=ATTENDANCE_NameAndIdnumber}" HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="출근시간" Width="380">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=ATTENDANCE_IN_TIME}" HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="퇴근시간" Width="380">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=ATTENDANCE_OUT_TIME}" HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="구분" Width="350" DisplayMemberBinding="{Binding Path=STAFF_NAME}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=ATTENDANCE_ETC}" HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
     </Grid>
 

@@ -182,42 +182,71 @@ namespace BaobabHRM
             {
                 return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
-                    StaffDTO dto = new StaffDTO
-                    {
-                        STAFF_IDNUMBER = SelectedDept.DEPT_CODE.ToString() + "_" + SelectedRank.RANK_CODE.ToString() + DateTime.Now.ToString("yyMMdd"),
-                        STAFF_DEPT = SelectedDept.DEPT_CODE,
-                        STAFF_RANK = SelectedRank.RANK_CODE,
-                        STAFF_NAME = StaffName,
-                        STAFF_ADDRESS = StaffAddress,
-                        STAFF_TEL = StaffTel,
-                        STAFF_JOIN_DAY = StaffJoinDayStr,
-                        STAFF_STATE = "재직"
-                    };
-
                     try
                     {
-                        SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
+                        // 사번 생성
+                        var date = DateTime.Now.ToString("yyyyMM");
+                        var sqlData = new StaffQuery().SelectIdnumberLike(date);
+                        var lastIdnumber = "";
+                        if (sqlData.HasRows)
+                        {
+                            while (sqlData.Read())
+                            {
+                                lastIdnumber = sqlData["idnumber"].ToString();
+                            }
+                        }
+                        else
+                        {
+                            lastIdnumber = date + "01";
+                        }
+                        sqlData.Close();
+                        SharedPreference.Instance.DBM.SqlConn.Close();
 
-                        new StaffQuery().Insert(dto);
+                        StaffDTO dto = new StaffDTO
+                        {
+                            STAFF_IDNUMBER = (Int32.Parse(lastIdnumber) + 1).ToString(),
+                            STAFF_DEPT = SelectedDept.DEPT_CODE,
+                            STAFF_RANK = SelectedRank.RANK_CODE,
+                            STAFF_NAME = StaffName,
+                            STAFF_ADDRESS = StaffAddress,
+                            STAFF_TEL = StaffTel,
+                            STAFF_JOIN_DAY = StaffJoinDayStr,
+                            STAFF_STATE = "재직"
+                        };
 
-                        // 수정 내역 저장
                         try
                         {
-                            AllLogDTO logDto = new AllLogDTO
+                            SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
+
+                            new StaffQuery().Insert(dto);
+
+                            // 수정 내역 저장
+                            try
                             {
-                                ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
-                                ALLLOG_WHAT = "사원",
-                                ALLLOG_LOG = StaffName + " 사원 추가",
-                                ALLLOG_REASON = "사원 입사",
-                                ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
-                            };
+                                AllLogDTO logDto = new AllLogDTO
+                                {
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
+                                    ALLLOG_WHAT = "사원",
+                                    ALLLOG_LOG = StaffName + " 사원 추가",
+                                    ALLLOG_REASON = "사원 입사",
+                                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                                };
 
-                            new AllLogQuery().Insert(logDto);
+                                new AllLogQuery().Insert(logDto);
 
-                            MessageBox.Show("사원을 추가하셨습니다.");
-                            StaffName = "";
-                            StaffAddress = "";
-                            StaffTel = "";
+                                MessageBox.Show("사원을 추가하셨습니다.");
+                                StaffName = "";
+                                StaffAddress = "";
+                                StaffTel = "";
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("사원 추가를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                                if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                                {
+                                    SharedPreference.Instance.DBM.SqlConn.Close();
+                                }
+                            }
                         }
                         catch (Exception e)
                         {
@@ -227,17 +256,13 @@ namespace BaobabHRM
                                 SharedPreference.Instance.DBM.SqlConn.Close();
                             }
                         }
+
+                        Window.GetWindow(uc).DialogResult = true;
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("사원 추가를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
-                        if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
-                        {
-                            SharedPreference.Instance.DBM.SqlConn.Close();
-                        }
+                        MessageBox.Show("사번 조회를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
                     }
-
-                    Window.GetWindow(uc).DialogResult = true;
                 });
             }
         }

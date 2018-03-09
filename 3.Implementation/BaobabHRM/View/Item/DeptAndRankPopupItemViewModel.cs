@@ -248,7 +248,7 @@ namespace BaobabHRM
                             {
                                 AllLogDTO logDto = new AllLogDTO
                                 {
-                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                     ALLLOG_WHAT = "부서",
                                     ALLLOG_LOG = Name + " 부서 생성",
                                     ALLLOG_REASON = Reason,
@@ -298,7 +298,7 @@ namespace BaobabHRM
                             {
                                 AllLogDTO logDto = new AllLogDTO
                                 {
-                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                     ALLLOG_WHAT = "직급",
                                     ALLLOG_LOG = Name + " 직급 생성",
                                     ALLLOG_REASON = Reason,
@@ -366,7 +366,7 @@ namespace BaobabHRM
                             {
                                 AllLogDTO logDto = new AllLogDTO
                                 {
-                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                     ALLLOG_WHAT = "부서 이름",
                                     ALLLOG_LOG = beforeName + " -> " + Name,
                                     ALLLOG_REASON = Reason,
@@ -421,7 +421,7 @@ namespace BaobabHRM
                             {
                                 AllLogDTO logDto = new AllLogDTO
                                 {
-                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                     ALLLOG_WHAT = "직급 이름",
                                     ALLLOG_LOG = beforeName + " -> " + Name,
                                     ALLLOG_REASON = Reason,
@@ -487,7 +487,7 @@ namespace BaobabHRM
                             {
                                 AllLogDTO logDto = new AllLogDTO
                                 {
-                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                     ALLLOG_WHAT = "부서",
                                     ALLLOG_LOG = beforeName + "삭제",
                                     ALLLOG_REASON = Reason,
@@ -538,7 +538,7 @@ namespace BaobabHRM
                             {
                                 AllLogDTO logDto = new AllLogDTO
                                 {
-                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                     ALLLOG_WHAT = "직급",
                                     ALLLOG_LOG = beforeName + "삭제",
                                     ALLLOG_REASON = Reason,

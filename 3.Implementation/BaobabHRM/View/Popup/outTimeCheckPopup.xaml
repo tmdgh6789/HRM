@@ -44,7 +44,7 @@
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate>
-                                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ATTENDANCE_BUSINESS_DAY}"/>
+                                                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=ATTENDANCE_BUSINESS_DAY}"/>
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>
@@ -65,7 +65,86 @@
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate>
-                                                        <local:ucTimePicker Width="65" HorizontalAlignment="Center" AllTime="{Binding Path=ATTENDANCE_OUT_TIMEstr}"/>
+                                                        <Grid HorizontalAlignment="Center">
+                                                            <Border BorderBrush="Black" BorderThickness=".25" />
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock x:Name="AddHoursTextBox"
+                                                                           MinWidth="30"
+                                                                           MinHeight="30"
+                                                                           FontSize="20"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"
+                                                                           Text="{Binding Path=DisplayTimeHours,
+                                                                                          Mode=OneWay}"
+                                                                           TextAlignment="Center" />
+                                                                <StackPanel HorizontalAlignment="Center"
+                                                                            VerticalAlignment="Center"
+                                                                            Orientation="Vertical">
+                                                                    <Button x:Name="HourUpButton"
+                                                                            Padding="0"
+                                                                            Width="15"
+                                                                            Height="15"
+                                                                            BorderBrush="Black"
+                                                                            BorderThickness="0.25"
+                                                                            Background="Transparent"
+                                                                            Command="{Binding Path=ClickHourUpCommand}">
+                                                                        <Image Width="10" Height="10" Source="./BaobabHRM/Resources/up_arrow.png"/>
+                                                                    </Button>
+
+                                                                    <Button x:Name="HourDownButton"
+                                                                            Padding="0"
+                                                                            Width="15"
+                                                                            Height="15"
+                                                                            BorderBrush="Black"
+                                                                            BorderThickness="0.25"
+                                                                            Background="Transparent"
+                                                                            Command="{Binding Path=ClickHourDownCommand}">
+                                                                        <Image Width="10" Height="10" Source="./BaobabHRM/Resources/down_arrow.png"/>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                                <TextBlock Margin="3,0,0,0"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"
+                                                                           Text=":"
+                                                                           TextAlignment="Center" />
+                                                                <TextBlock x:Name="AddMinutesTextBox"
+                                                                           MinWidth="30"
+                                                                           MinHeight="30"
+                                                                           FontSize="20"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"
+                                                                           Text="{Binding Path=DisplayTimeMinutes,
+                                                                                          Mode=OneWay}"
+                                                                           TextAlignment="Center" />
+
+
+                                                                <StackPanel HorizontalAlignment="Center"
+                                                                            VerticalAlignment="Center"
+                                                                            Orientation="Vertical">
+                                                                    <Button x:Name="MinutesUpButton"
+                                                                            Padding="0"
+                                                                            Width="15"
+                                                                            Height="15"
+                                                                            BorderBrush="Black"
+                                                                            BorderThickness="0.25"
+                                                                            Background="Transparent"
+                                                                            Command="{Binding Path=ClickMinutesUpCommand}">
+                                                                        <Image Width="10" Height="10" Source="./BaobabHRM/Resources/up_arrow.png"/>
+                                                                    </Button>
+
+                                                                    <Button x:Name="MinutesDownButton"
+                                                                            Padding="0"
+                                                                            Width="15"
+                                                                            Height="15"
+                                                                            BorderBrush="Black"
+                                                                            BorderThickness="0.25"
+                                                                            Background="Transparent"
+                                                                            Command="{Binding Path=ClickMinutesDownCommand}">
+                                                                        <Image Width="10" Height="10" Source="./BaobabHRM/Resources/down_arrow.png"/>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Grid>
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>

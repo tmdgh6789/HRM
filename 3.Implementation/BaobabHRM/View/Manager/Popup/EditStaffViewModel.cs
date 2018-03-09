@@ -550,7 +550,7 @@ namespace BaobabHRM
                         {
                             AllLogDTO logDto = new AllLogDTO
                             {
-                                ALLLOG_ADMIN = SharedPreference.Instance.LoginUser.USER_ID,
+                                ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                 ALLLOG_WHAT = what,
                                 ALLLOG_LOG = log,
                                 ALLLOG_REASON = Reason,

@@ -47,9 +47,9 @@ namespace BaobabHRM
         public DBManager DBM { get; set; }
 
         /// <summary>
-        /// 로그인 유저
+        /// 로그인 관리자
         /// </summary>
-        public UserModel LoginUser { get; set; }
+        public AdminModel LoginAdmin { get; set; }
 
         /// <summary>
         /// 전역 워크스페이스 뷰 모델
@@ -255,24 +255,33 @@ namespace BaobabHRM
         /// </summary>
         public bool Login(string id, string pwd)
         {
-            //var results = new UserQuery().SELECT(id, pwd);
-            //if (results.Count > 0)
-            //{
-                UserDTO dto = new UserDTO
+            var sqlData = new AdminQuery().SelectWithId(id, pwd);
+            if (sqlData.HasRows)
+            {
+                sqlData.Read();
+                AdminDTO dto = new AdminDTO
                 {
-                    USER_ID = id,
-                    USER_PW = pwd
+                    ADMIN_ID = sqlData["id"].ToString(),
+                    ADMIN_PASSWORD = sqlData["password"].ToString(),
+                    ADMIN_NAME = sqlData["name"].ToString(),
+                    ADMIN_RANK = sqlData["rank"].ToString(),
+                    ADMIN_GRADE = sqlData["grade"].ToString()
                 };
-                SharedPreference.Instance.LoginUser = new UserModel(dto);
+                SharedPreference.Instance.LoginAdmin = new AdminModel(dto);
                 SharedPreference.Instance.IsLoginCompleted = true;
                 SharedPreference.Instance.IsManagement = true;
+                sqlData.Close();
+                SharedPreference.Instance.DBM.SqlConn.Close();
                 return true;
-            //}
-            //else
-            //{
-            //    SharedPreference.Instance.IsLoginCompleted = false;
-            //    return false;
-            //}
+            }
+            else
+            {
+                SharedPreference.Instance.IsLoginCompleted = false;
+                sqlData.Close();
+                SharedPreference.Instance.DBM.SqlConn.Close();
+                return false;
+            }
+
         } // end method
 
         /// <summary>
@@ -281,6 +290,7 @@ namespace BaobabHRM
         public void Logout()
         {
             SharedPreference.Instance.IsLoginCompleted = false;
+            SharedPreference.Instance.LoginAdmin = null;
         } // end method
 
         #endregion

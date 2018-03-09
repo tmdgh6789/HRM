@@ -1,9 +1,11 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BaobabHRM
 {
@@ -40,7 +42,20 @@ namespace BaobabHRM
                 RaisePropertyChanged("ATTENDANCE_BUSINESS_DAY");
             }
         }
-
+        
+        public string ATTENDANCE_NAME
+        {
+            get
+            {
+                return Dto.ATTENDANCE_NAME;
+            }
+            set
+            {
+                Dto.ATTENDANCE_NAME = value;
+                RaisePropertyChanged("ATTENDANCE_NAME");
+            }
+        }
+        
         public string ATTENDANCE_IDNUMBER
         {
             get
@@ -80,21 +95,6 @@ namespace BaobabHRM
             }
         }
 
-        private string m_ATTENDANCE_OUT_TIMEstr;
-        public string ATTENDANCE_OUT_TIMEstr
-        {
-            get
-            {
-                return m_ATTENDANCE_OUT_TIMEstr;
-            }
-            set
-            {
-                m_ATTENDANCE_OUT_TIMEstr = value;
-                RaisePropertyChanged("ATTENDANCE_OUT_TIMEstr");
-            }
-        }
-
-
         public string ATTENDANCE_OVERTIME
         {
             get
@@ -133,5 +133,145 @@ namespace BaobabHRM
                 RaisePropertyChanged("ATTENDANCE_ETC");
             }
         }
+
+
+        private string m_ATTENDANCE_NameAndIdnumber;
+        public string ATTENDANCE_NameAndIdnumber
+        {
+            get
+            {
+                return Dto.ATTENDANCE_NAME + "(" + Dto.ATTENDANCE_IDNUMBER + ")";
+            }
+            set
+            {
+                m_ATTENDANCE_NameAndIdnumber = value;
+                RaisePropertyChanged("ATTENDANCE_NameAndIdnumber");
+            }
+        }
+
+        #region timepicker
+
+        #region property
+
+        private string m_SelectedTime = DateTime.Now.ToString("HH:mm:ss");
+        public string SelectedTime
+        {
+            get
+            {
+                return m_SelectedTime;
+            }
+            set
+            {
+                m_SelectedTime = value;
+                RaisePropertyChanged("SelectedTime");
+            }
+        }
+
+        
+        public string DisplayTimeHours
+        {
+            get
+            {
+                var hours = m_CurrentTime.Hour;
+                return hours > 24 ? (hours - 24).ToString("00") : hours.ToString("00");
+            }
+            set
+            {
+                var hour = 0;
+                Int32.TryParse(value, out hour);
+                CurrentTime = CurrentTime.AddHours(hour);
+                RaisePropertyChanged("DisplayTimeHours");
+                RaisePropertyChanged("DisplayTimeMinutes");
+            }
+        }
+        
+        public string DisplayTimeMinutes
+        {
+            get
+            {
+                return m_CurrentTime.Minute.ToString("00"); ;
+            }
+            set
+            {
+                var minutes = 0;
+                Int32.TryParse(value, out minutes);
+                CurrentTime = CurrentTime.AddMinutes(minutes);
+                RaisePropertyChanged("DisplayTimeHours");
+                RaisePropertyChanged("DisplayTimeMinutes");
+            }
+        }
+
+        private DateTime m_CurrentTime = DateTime.Now;
+        public DateTime CurrentTime
+        {
+            get
+            {
+                return m_CurrentTime;
+            }
+            set
+            {
+                m_CurrentTime = value;
+                SelectedTime = value.ToString("HH:mm:ss");
+                RaisePropertyChanged("CurrentTime");
+                RaisePropertyChanged("DisplayTimeHours");
+                RaisePropertyChanged("DisplayTimeMinutes");
+            }
+        }
+
+        #endregion
+
+        #region command
+
+        public DelegateCommand ClickHourUpCommand
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    CurrentTime = CurrentTime.AddHours(1);
+                    SelectedTime = CurrentTime.ToString("HH:mm:ss");
+                });
+            }
+        }
+
+        public DelegateCommand ClickHourDownCommand
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    CurrentTime = CurrentTime.AddHours(-1);
+                    SelectedTime = CurrentTime.ToString("HH:mm:ss");
+                });
+            }
+        }
+
+        public DelegateCommand ClickMinutesUpCommand
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    CurrentTime = CurrentTime.AddMinutes(1);
+                    SelectedTime = CurrentTime.ToString("HH:mm:ss");
+                });
+            }
+        }
+
+        public DelegateCommand ClickMinutesDownCommand
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    CurrentTime = CurrentTime.AddMinutes(-1);
+                    SelectedTime = CurrentTime.ToString("HH:mm:ss");
+                });
+            }
+        }
+
+        #endregion
+
+        #endregion
     }
 }

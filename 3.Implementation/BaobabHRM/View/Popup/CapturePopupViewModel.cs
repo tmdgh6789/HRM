@@ -14,6 +14,19 @@ namespace BaobabHRM
 {
     public class CapturePopupViewModel : BindableBase
     {
+        private string m_Message;
+        public string Message
+        {
+            get
+            {
+                return m_Message;
+            }
+            set
+            {
+                m_Message = value;
+                RaisePropertyChanged("Message");
+            }
+        }
 
         private BitmapImage m_Image;
         public BitmapImage Image
@@ -28,7 +41,7 @@ namespace BaobabHRM
                 RaisePropertyChanged("Image");
             }
         }
-        
+
         public DelegateCommand<UserControl> OkCommand
         {
             get

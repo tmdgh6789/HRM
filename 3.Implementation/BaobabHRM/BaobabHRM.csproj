@@ -82,9 +82,6 @@
     <Compile Include="Common\Control\PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\Control\ucTimePicker.xaml.cs">
-      <DependentUpon>ucTimePicker.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Common\Converter\BitmapToBitmapImageConverter.cs" />
     <Compile Include="Core\Defines.cs" />
     <Compile Include="Core\SharedPreference.cs" />
@@ -94,14 +91,15 @@
     <Compile Include="Model\DeptModel.cs" />
     <Compile Include="Model\RankModel.cs" />
     <Compile Include="Model\StaffModel.cs" />
-    <Compile Include="Model\UserModel.cs" />
+    <Compile Include="Model\AdminModel.cs" />
     <Compile Include="Repository\DBManager.cs" />
     <Compile Include="Repository\DTO\AllLogDTO.cs" />
     <Compile Include="Repository\DTO\AttendanceDTO.cs" />
     <Compile Include="Repository\DTO\DeptDTO.cs" />
     <Compile Include="Repository\DTO\RankDTO.cs" />
     <Compile Include="Repository\DTO\StaffDTO.cs" />
-    <Compile Include="Repository\DTO\UserDTO.cs" />
+    <Compile Include="Repository\DTO\AdminDTO.cs" />
+    <Compile Include="Repository\Query\AdminQuery.cs" />
     <Compile Include="Repository\Query\AllLogQuery.cs" />
     <Compile Include="Repository\Query\AttendanceQuery.cs" />
     <Compile Include="Repository\Query\RankQuery.cs" />
@@ -166,10 +164,6 @@
     </Compile>
     <Compile Include="View\WorkspaceViewModel.cs" />
     <Page Include="Common\Control\PopupWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Common\Control\ucTimePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

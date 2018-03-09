@@ -14,8 +14,7 @@
     </UserControl.DataContext>
 
     <StackPanel>
-        <TextBlock Text="정상적으로 출근처리 되었습니다." HorizontalAlignment="Center" Margin="0, 10"/>
-        <TextBlock Text="즐거운 하루 되세요!" HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding Path=Message}" HorizontalAlignment="Center" Margin="0, 10"/>
         <Image Source="{Binding Path=Image}" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="300" Width="400"/>
         <Button Content="확인" Height="30" Margin="0, 10, 0, 0" Command="{Binding Path=OkCommand}" CommandParameter="{Binding ElementName=uc}"/>
     </StackPanel>

@@ -33,7 +33,6 @@ namespace BaobabHRM
                 RaisePropertyChanged("AttendanceList");
             }
         }
-
         #endregion
 
         #region method
@@ -48,7 +47,7 @@ namespace BaobabHRM
                 {
                     ATTENDANCE_BUSINESS_DAY = today.ToString("yyyy-MM-dd"),
                     ATTENDANCE_IDNUMBER = SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER,
-                    ATTENDANCE_IN_TIME = DateTime.Now.ToString("hh:mm:ss")
+                    ATTENDANCE_IN_TIME = DateTime.Now.ToString("HH:mm:ss")
                 };
 
                 SqlDataReader sqlData = new AttendanceQuery().SelectWithIdnumberAndBusinessDay(dto.ATTENDANCE_IDNUMBER, today.ToString("yyyy-MM-dd"), yesterday.ToString("yyyy-MM-dd"));
@@ -56,8 +55,9 @@ namespace BaobabHRM
                 {
                     AttendanceDTO newDto = new AttendanceDTO
                     {
-                        ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
                         ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
+                        ATTENDANCE_NAME = sqlData["name"].ToString(),
+                        ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
                         ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString()
                     };
                     AttendanceList.Add(new AttendanceModel(newDto));
@@ -86,8 +86,7 @@ namespace BaobabHRM
                 });
             }
         }
-
-
+        
         public DelegateCommand<UserControl> OkCommand
         {
             get
@@ -96,7 +95,10 @@ namespace BaobabHRM
                 {
                     try
                     {
-                        new AttendanceQuery().UpdateOutTime(AttendanceList);
+                        foreach (var model in AttendanceList)
+                        {
+                            new AttendanceQuery().UpdateOutTime(model.Dto, model.SelectedTime);
+                        }
 
                         MessageBox.Show("처리되었습니다.");
                         Window.GetWindow(uc).DialogResult = true;
