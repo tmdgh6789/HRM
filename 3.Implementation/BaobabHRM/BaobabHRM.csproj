@@ -95,12 +95,14 @@
     <Compile Include="Repository\DBManager.cs" />
     <Compile Include="Repository\DTO\AllLogDTO.cs" />
     <Compile Include="Repository\DTO\AttendanceDTO.cs" />
+    <Compile Include="Repository\DTO\AttendanceLogDTO.cs" />
     <Compile Include="Repository\DTO\DeptDTO.cs" />
     <Compile Include="Repository\DTO\RankDTO.cs" />
     <Compile Include="Repository\DTO\StaffDTO.cs" />
     <Compile Include="Repository\DTO\AdminDTO.cs" />
     <Compile Include="Repository\Query\AdminQuery.cs" />
     <Compile Include="Repository\Query\AllLogQuery.cs" />
+    <Compile Include="Repository\Query\AttendanceLogQuery.cs" />
     <Compile Include="Repository\Query\AttendanceQuery.cs" />
     <Compile Include="Repository\Query\RankQuery.cs" />
     <Compile Include="Repository\Query\StaffQuery.cs" />
@@ -123,6 +125,10 @@
       <DependentUpon>AddStaffPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Manager\Popup\AddStaffPopupViewModel.cs" />
+    <Compile Include="View\Manager\Popup\EditAttendancePopup.xaml.cs">
+      <DependentUpon>EditAttendancePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Manager\Popup\EditAttendanceViewModel.cs" />
     <Compile Include="View\Manager\Popup\EditStaffPopup.xaml.cs">
       <DependentUpon>EditStaffPopup.xaml</DependentUpon>
     </Compile>
@@ -143,6 +149,10 @@
       <DependentUpon>DeptManagementPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Manager\Popup\DeptManagementPopupViewModel.cs" />
+    <Compile Include="View\Manager\AttendanceManagementView.xaml.cs">
+      <DependentUpon>AttendanceManagementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Manager\AttendanceManagementViewModel.cs" />
     <Compile Include="View\Popup\CapturePopup.xaml.cs">
       <DependentUpon>CapturePopup.xaml</DependentUpon>
     </Compile>
@@ -151,10 +161,10 @@
       <DependentUpon>LoginPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Popup\LoginPopupViewModel.cs" />
-    <Compile Include="View\Manager\Popup\ManagementPopup.xaml.cs">
+    <Compile Include="View\Popup\ManagementPopup.xaml.cs">
       <DependentUpon>ManagementPopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Manager\Popup\ManagementPopupViewModel.cs" />
+    <Compile Include="View\Popup\ManagementPopupViewModel.cs" />
     <Compile Include="View\Popup\OutTimeCheckPopup.xaml.cs">
       <DependentUpon>OutTimeCheckPopup.xaml</DependentUpon>
     </Compile>
@@ -199,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Manager\Popup\EditAttendancePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Manager\Popup\EditStaffPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -219,6 +233,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Manager\AttendanceManagementView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Popup\CapturePopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -227,7 +245,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Manager\Popup\ManagementPopup.xaml">
+    <Page Include="View\Popup\ManagementPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

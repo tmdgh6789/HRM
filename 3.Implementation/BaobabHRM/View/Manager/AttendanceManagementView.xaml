@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="BaobabHRM.WorkspaceView"
+﻿<UserControl x:Class="BaobabHRM.AttendanceManagementView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,7 +11,7 @@
              d:DesignHeight="1080" d:DesignWidth="1920">
     
     <UserControl.DataContext>
-        <local:WorkspaceViewModel/>
+        <local:AttendanceManagementViewModel/>
     </UserControl.DataContext>
 
     <i:Interaction.Triggers>
@@ -23,7 +23,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <!-- 상단 그리드 -->
@@ -119,21 +119,9 @@
             </Grid>
 
             <Button Grid.Column="2" Content="선택 초기화" Command="{Binding Path=SelectedClearCommand}"/>
-            <Button Grid.Column="3" Content="출근" Command="{Binding Path=AttendanceCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
-            <Button Grid.Column="4" Content="퇴근" Command="{Binding Path=LeaveWorkCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
-            <StackPanel Grid.Column="5">
-                <Grid Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="관리자 로그인" Command="{Binding Path=LoginCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
-                    <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="관리자 로그아웃" Command="{Binding Path=LogoutCommand}"/>
-                    <Button Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="캠 다시 실행" Command="{Binding Path=StreamPlayerReload}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
-                </Grid>
-                <webEye:StreamPlayerControl x:Name="streamPlayerControl" Height="245" Width="320" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            </StackPanel>
+            <Button Grid.Column="3" Content="검색" Command="{Binding Path=SerchCommand}"/>
+            <Button Grid.Column="4" Content="취소" Command="{Binding Path=CancelCommand}"/>
+            <Button Grid.Column="5" Content="수정" Command="{Binding Path=EditPopupCommand}"/>
         </Grid>
 
         <!-- 중간 그리드 -->
@@ -152,15 +140,11 @@
             <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" SelectedDate="{Binding Path=StartDate}"/>
             <Label Grid.Column="2" Content=" ~ " HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <DatePicker Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" SelectedDate="{Binding Path=EndDate}"/>
-            <Button Grid.Column="4" Content="검색" Command="{Binding Path=SerchCommand}"/>
-            <Button Grid.Column="5" Content="야근신청"/>
-            <Button Grid.Column="6" Content="휴가신청"/>
-            <Button Grid.Column="7" Content="출력"/>
         </Grid>
 
         <!-- 하단 그리드 -->
         <Grid Grid.Row="2">
-            <ListView Grid.Row="2" ItemsSource="{Binding Path=TodayAttendanceList, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False">
+            <ListView Grid.Row="2" ItemsSource="{Binding Path=AttendanceList}" SelectedItem="{Binding Source={x:Static local:SharedPreference.Instance}, Path=SelectedAttendance, UpdateSourceTrigger=PropertyChanged}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="Height" Value="60"/>

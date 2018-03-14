@@ -245,6 +245,23 @@ namespace BaobabHRM
             }
         }
 
+        /// <summary>
+        /// 선택한 출결
+        /// </summary>
+        private AttendanceModel m_SelectedAttendance;
+        public AttendanceModel SelectedAttendance
+        {
+            get
+            {
+                return m_SelectedAttendance;
+            }
+            set
+            {
+                m_SelectedAttendance = value;
+                RaisePropertyChanged("SelectedAttendance");
+            }
+        }
+
 
         #endregion
 

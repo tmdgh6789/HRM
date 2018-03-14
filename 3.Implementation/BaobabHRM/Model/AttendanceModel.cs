@@ -108,16 +108,16 @@ namespace BaobabHRM
             }
         }
 
-        public string ATTENDANCE_OFF
+        public string ATTENDANCE_OFF_DAY
         {
             get
             {
-                return Dto.ATTENDANCE_OFF;
+                return Dto.ATTENDANCE_OFF_DAY;
             }
             set
             {
-                Dto.ATTENDANCE_OFF = value;
-                RaisePropertyChanged("ATTENDANCE_OFF");
+                Dto.ATTENDANCE_OFF_DAY = value;
+                RaisePropertyChanged("ATTENDANCE_OFF_DAY");
             }
         }
         

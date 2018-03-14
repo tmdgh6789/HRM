@@ -14,7 +14,7 @@ namespace BaobabHRM
         public string ATTENDANCE_IN_TIME { get; set; }
         public string ATTENDANCE_OUT_TIME { get; set; }
         public string ATTENDANCE_OVERTIME { get; set; }
-        public string ATTENDANCE_OFF { get; set; }
+        public string ATTENDANCE_OFF_DAY { get; set; }
         public string ATTENDANCE_ETC { get; set; }
     }
 }

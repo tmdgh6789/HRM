@@ -16,6 +16,10 @@
         <DataTemplate x:Key="StaffViewTemplateKey">
             <local:StaffManagementView/>
         </DataTemplate>
+
+        <DataTemplate x:Key="AttendanceViewTemplateKey">
+            <local:AttendanceManagementView/>
+        </DataTemplate>
         <!--<DataTemplate x:Key="LoginViewTemplateKey">
             <local:LoginView/>
         </DataTemplate>-->
@@ -36,7 +40,7 @@
                             <Setter Property="ContentTemplate" Value="{StaticResource StaffViewTemplateKey}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Attendance">
-                            <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                            <Setter Property="ContentTemplate" Value="{StaticResource AttendanceViewTemplateKey}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Statistics">
                             <Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>

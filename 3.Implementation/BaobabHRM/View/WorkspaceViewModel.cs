@@ -41,16 +41,50 @@ namespace BaobabHRM
             }
         }
 
+        /// <summary>
+        /// 검색 시작 날짜
+        /// </summary>
+        private DateTime m_StartDate = DateTime.Now.AddDays(-14);
+        public DateTime StartDate
+        {
+            get
+            {
+                return m_StartDate;
+            }
+            set
+            {
+                m_StartDate = value;
+                RaisePropertyChanged("StartDate");
+            }
+        }
+
+        /// <summary>
+        /// 검색 끝 날짜
+        /// </summary>
+        private DateTime m_EndDate = DateTime.Now;
+        public DateTime EndDate
+        {
+            get
+            {
+                return m_EndDate;
+            }
+            set
+            {
+                m_EndDate = value;
+                RaisePropertyChanged("EndDate");
+            }
+        }
+
         #endregion
 
         #region method
 
         private void LoadTodayAttendance()
         {
+            TodayAttendanceList.Clear();
             try
             {
-                var today = DateTime.Now.ToString("yyyy-MM-dd");
-                var sqlData = new AttendanceQuery().SelectWithToday(today);
+                var sqlData = new AttendanceQuery().SelectWithToday();
                 while (sqlData.Read())
                 {
                     AttendanceDTO dto = new AttendanceDTO
@@ -61,31 +95,50 @@ namespace BaobabHRM
                         ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
                         ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
                         ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
-                        ATTENDANCE_OFF = sqlData["off"].ToString(),
+                        ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
                         ATTENDANCE_ETC = sqlData["etc"].ToString()
                     };
                     TodayAttendanceList.Add(new AttendanceModel(dto));
                 }
                 sqlData.Close();
                 SharedPreference.Instance.DBM.SqlConn.Close();
+                
+                var sqlData2 = new AttendanceQuery().SelectTwoWeeksAgo();
+                while (sqlData2.Read())
+                {
+                    AttendanceDTO dto = new AttendanceDTO
+                    {
+                        ATTENDANCE_BUSINESS_DAY = sqlData2["businessday"].ToString(),
+                        ATTENDANCE_NAME = sqlData2["name"].ToString(),
+                        ATTENDANCE_IDNUMBER = sqlData2["idnumber"].ToString(),
+                        ATTENDANCE_IN_TIME = sqlData2["in_time"].ToString(),
+                        ATTENDANCE_OUT_TIME = sqlData2["out_time"].ToString(),
+                        ATTENDANCE_OVERTIME = sqlData2["overtime"].ToString(),
+                        ATTENDANCE_OFF_DAY = sqlData2["off_day"].ToString(),
+                        ATTENDANCE_ETC = sqlData2["etc"].ToString()
+                    };
+                    TodayAttendanceList.Add(new AttendanceModel(dto));
+                }
+                sqlData2.Close();
+                SharedPreference.Instance.DBM.SqlConn.Close();
             }
             catch (Exception e)
             {
+                SharedPreference.Instance.DBM.SqlConn.Close();
+
                 MessageBox.Show("오늘 출결 상황을 읽어오지 못했습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
             }
         }
 
         public void InsertAttendance(SqlDataReader sqlData, AttendanceDTO dto, StreamPlayerControl streamPlayerControl)
         {
-            sqlData.Close();
-            SharedPreference.Instance.DBM.SqlConn.Close();
-
             var today = DateTime.Now;
             
             SqlDataReader sqlData2 = new AttendanceQuery().SelectWithIdnumberAndToday(dto.ATTENDANCE_IDNUMBER, today.ToString("yyyy-MM-dd"));
             // 오늘 이미 출근 기록이 있을 경우
             if (sqlData2.HasRows)
             {
+                SharedPreference.Instance.DBM.SqlConn.Close();
                 MessageBox.Show("오늘은 이미 출근 처리가 되어있습니다.");
             }
             else
@@ -94,7 +147,8 @@ namespace BaobabHRM
                 {
                     if (streamPlayerControl.IsPlaying)
                     {
-                        var image = new BitmapToBitmapImageConverter().Convert(streamPlayerControl.GetCurrentFrame(), null, null, null);
+                        var picture = streamPlayerControl.GetCurrentFrame();
+                        var image = new BitmapToBitmapImageConverter().Convert(picture, null, null, null);
                         var popup = new CapturePopup();
                         (popup.DataContext as CapturePopupViewModel).Message = "정상적으로 출근처리 되었습니다.\n즐거운 하루 되세요!";
                         (popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
@@ -113,7 +167,7 @@ namespace BaobabHRM
                                 {
                                     Directory.CreateDirectory(Defines.STAFF_PATH);
                                 }
-                                streamPlayerControl.GetCurrentFrame().Save(Defines.STAFF_PATH + today.ToString("yyyyMMdd") + "_Attendance_" + dto.ATTENDANCE_IDNUMBER + ".bmp");
+                                picture.Save(Defines.STAFF_PATH + today.ToString("yyyyMMdd") + "_Attendance_" + dto.ATTENDANCE_IDNUMBER + ".bmp");
                             }
                             catch (Exception e)
                             {
@@ -135,8 +189,6 @@ namespace BaobabHRM
                     MessageBox.Show("출근 실패하셨습니다. 관리자에게 문의하세요.\n에러내용 : " + e.Message);
                 }
             }
-            sqlData.Close();
-            SharedPreference.Instance.DBM.SqlConn.Close();
         }
 
         #endregion
@@ -156,7 +208,22 @@ namespace BaobabHRM
                 });
             }
         }
-        
+
+
+        public DelegateCommand SelectedClearCommand
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    SharedPreference.Instance.SelectedDept = null;
+                    SharedPreference.Instance.SelectedStaff = null;
+                    SharedPreference.Instance.SelectedRank = null;
+                });
+            }
+        }
+
+
         /// <summary>
         /// 출근 커맨드
         /// </summary>
@@ -184,6 +251,8 @@ namespace BaobabHRM
                             // 최근 2주 중 퇴근한 기록이 하나라도 없는 경우
                             if (sqlData.HasRows)
                             {
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
                                 var popup = new OutTimeCheckPopup();
                                 if (WindowHelper.CreatePopup(popup, "퇴근시간 입력", true) == true)
                                 {
@@ -192,6 +261,9 @@ namespace BaobabHRM
                             }
                             else
                             {
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+
                                 InsertAttendance(sqlData ,dto, streamPlayerControl);
                             }
                         }
@@ -202,6 +274,8 @@ namespace BaobabHRM
                     }
                     catch (Exception e)
                     {
+                        SharedPreference.Instance.DBM.SqlConn.Close();
+
                         MessageBox.Show("출근 실패하셨습니다. 관리자에게 문의하세요.\n에러내용 : " + e.Message);
                     }
                 });
@@ -239,7 +313,8 @@ namespace BaobabHRM
                                     {
                                         if (streamPlayerControl.IsPlaying)
                                         {
-                                            var image = new BitmapToBitmapImageConverter().Convert(streamPlayerControl.GetCurrentFrame(), null, null, null);
+                                            var picture = streamPlayerControl.GetCurrentFrame();
+                                            var image = new BitmapToBitmapImageConverter().Convert(picture, null, null, null);
                                             var popup = new CapturePopup();
                                             (popup.DataContext as CapturePopupViewModel).Message = "정상적으로 퇴근처리 되었습니다.\n오늘 하루도 수고하셨습니다!";
                                             (popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
@@ -264,7 +339,7 @@ namespace BaobabHRM
                                                     Directory.CreateDirectory(Defines.STAFF_PATH);
                                                 }
                                                 
-                                                streamPlayerControl.GetCurrentFrame().Save(Defines.STAFF_PATH + today.ToString("yyyyMMdd") + "_LeaveWork_" + dto.ATTENDANCE_IDNUMBER + ".bmp");
+                                                picture.Save(Defines.STAFF_PATH + today.ToString("yyyyMMdd") + "_LeaveWork_" + dto.ATTENDANCE_IDNUMBER + ".bmp");
                                             }
                                         }
                                         else
@@ -294,6 +369,8 @@ namespace BaobabHRM
                     }
                     catch (Exception e)
                     {
+                        SharedPreference.Instance.DBM.SqlConn.Close();
+
                         MessageBox.Show("퇴근 처리를 실패했습니다. 관리자에게 문의하세요.\n에러내용 : " + e.Message);
                     }
                 });
@@ -309,29 +386,30 @@ namespace BaobabHRM
             {
                 return new DelegateCommand<StreamPlayerControl>(delegate (StreamPlayerControl streamPlayerControl)
                 {
-                    if (streamPlayerControl.IsPlaying)
-                    {
-                        var image = new BitmapToBitmapImageConverter().Convert(streamPlayerControl.GetCurrentFrame(), null, null, null);
-                        var popup = new CapturePopup();
-                        (popup.DataContext as CapturePopupViewModel).Message = "관리자 로그인을 시도하셨습니다.";
-                        (popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
-                        if (WindowHelper.CreatePopup(popup, "관리자 로그인", true) == true)
-                        {
-                            try
-                            {
+                    //if (streamPlayerControl.IsPlaying)
+                    //{
+                    //    var picture = streamPlayerControl.GetCurrentFrame();
+                    //    var image = new BitmapToBitmapImageConverter().Convert(picture, null, null, null);
+                    //    var popup = new CapturePopup();
+                    //    (popup.DataContext as CapturePopupViewModel).Message = "관리자 로그인을 시도하셨습니다.";
+                    //    (popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
+                        //if (WindowHelper.CreatePopup(popup, "관리자 로그인", true) == true)
+                        //{
+                        //    try
+                        //    {
                                 Defines.ADMIN_PATH = Defines.CAPTURE_PATH + @"\Admin\" + DateTime.Now.ToString("yyyyMMdd");
                                 if (!Directory.Exists(Defines.ADMIN_PATH))
                                 {
                                     Directory.CreateDirectory(Defines.ADMIN_PATH);
                                 }
-                                streamPlayerControl.GetCurrentFrame().Save(Defines.ADMIN_PATH + @"\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bmp");
+                                //picture.Save(Defines.ADMIN_PATH + @"\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bmp");
 
                                 if (SharedPreference.Instance.IsLoginCompleted == false)
                                 {
                                     var popup2 = new LoginPopup();
                                     if (WindowHelper.CreatePopup(popup2, "관리자 로그인", true) == true)
                                     {
-                                        var vm = popup.DataContext as LoginPopupViewModel;
+                                        //var vm = popup.DataContext as LoginPopupViewModel;
 
                                     }
                                 }
@@ -343,17 +421,17 @@ namespace BaobabHRM
                                         var vm = popup3.DataContext as ManagementPopupViewModel;
                                     }
                                 }
-                            }
-                            catch (Exception e)
-                                {
-                                    MessageBox.Show("캠이 정상 작동중이지 않습니다. 관리자에게 문의하세요.");
-                                }
-                            }
-                    }
-                    else
-                    {
-                        MessageBox.Show("캠이 정상 작동중이지 않습니다. 관리자에게 문의하세요.");
-                    }
+                            //}
+                            //catch (Exception e)
+                            //    {
+                            //        MessageBox.Show("캠이 정상 작동중이지 않습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            //    }
+                            //}
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("캠이 정상 작동중이지 않습니다. 관리자에게 문의하세요.");
+                    //}
                 });
             }
         }
@@ -374,7 +452,114 @@ namespace BaobabHRM
                 });
             }
         }
-        
+
+        /// <summary>
+        /// 검색 커맨드
+        /// </summary>
+        public DelegateCommand SerchCommand
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    if (SharedPreference.Instance.SelectedDept != null)
+                    {
+                        if (SharedPreference.Instance.SelectedStaff == null)
+                        {
+                            TodayAttendanceList.Clear();
+                            var sqlData = new AttendanceQuery().SelectWithDeptAndDay(SharedPreference.Instance.SelectedDept.DEPT_CODE, StartDate, EndDate);
+                            if (sqlData.HasRows)
+                            {
+                                while (sqlData.Read())
+                                {
+                                    AttendanceDTO dto = new AttendanceDTO
+                                    {
+                                        ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
+                                        ATTENDANCE_NAME = sqlData["name"].ToString(),
+                                        ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
+                                        ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
+                                        ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
+                                        ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
+                                        ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
+                                        ATTENDANCE_ETC = sqlData["etc"].ToString()
+                                    };
+                                    TodayAttendanceList.Add(new AttendanceModel(dto));
+                                }
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
+                            else
+                            {
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
+                        }
+                        else if (SharedPreference.Instance.SelectedStaff != null)
+                        {
+                            TodayAttendanceList.Clear();
+                            var sqlData = new AttendanceQuery().SelectWithIdnumberAndDay(SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER, StartDate, EndDate);
+                            if (sqlData.HasRows)
+                            {
+                                while (sqlData.Read())
+                                {
+                                    AttendanceDTO dto = new AttendanceDTO
+                                    {
+                                        ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
+                                        ATTENDANCE_NAME = sqlData["name"].ToString(),
+                                        ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
+                                        ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
+                                        ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
+                                        ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
+                                        ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
+                                        ATTENDANCE_ETC = sqlData["etc"].ToString()
+                                    };
+                                    TodayAttendanceList.Add(new AttendanceModel(dto));
+                                }
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
+                            else
+                            {
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        TodayAttendanceList.Clear();
+                        StartDate = DateTime.Now;
+                        var sqlData = new AttendanceQuery().SelectWithAllStaffAndDay(StartDate, EndDate);
+                        if (sqlData.HasRows)
+                        {
+                            while (sqlData.Read())
+                            {
+                                AttendanceDTO dto = new AttendanceDTO
+                                {
+                                    ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
+                                    ATTENDANCE_NAME = sqlData["name"].ToString(),
+                                    ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
+                                    ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
+                                    ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
+                                    ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
+                                    ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
+                                    ATTENDANCE_ETC = sqlData["etc"].ToString()
+                                };
+                                TodayAttendanceList.Add(new AttendanceModel(dto));
+                            }
+                            sqlData.Close();
+                            SharedPreference.Instance.DBM.SqlConn.Close();
+                        }
+                        else
+                        {
+                            sqlData.Close();
+                            SharedPreference.Instance.DBM.SqlConn.Close();
+                        }
+                    }
+                });
+            }
+        }
+
         /// <summary>
         /// 부서 선택할 때
         /// </summary>
@@ -411,43 +596,7 @@ namespace BaobabHRM
                 });
             }
         }
-
-
-        public DelegateCommand SelectionStaffChanged
-        {
-            get
-            {
-                return new DelegateCommand(delegate ()
-                {
-                    var list = SharedPreference.Instance.StaffList.Where(p => p.STAFF_IDNUMBER == SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER);
-                    SharedPreference.Instance.StaffViewStaffList = new ObservableCollection<StaffModel>(list);
-                    //SharedPreference.Instance.StaffList.Clear();
-                    //if (SharedPreference.Instance.SelectedDept != null)
-                    //{
-                    //    var sqlData = new StaffQuery().SelectWithIdnumber(SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER);
-                    //    while (sqlData.Read())
-                    //    {
-                    //        var dto = new StaffDTO()
-                    //        {
-                    //            STAFF_IDNUMBER = sqlData["idnumber"].ToString(),
-                    //            STAFF_DEPT = sqlData["dept"].ToString(),
-                    //            STAFF_RANK = sqlData["rank"].ToString(),
-                    //            STAFF_NAME = sqlData["name"].ToString(),
-                    //            STAFF_ADDRESS = sqlData["address"].ToString(),
-                    //            STAFF_TEL = sqlData["tel"].ToString(),
-                    //            STAFF_JOIN_DAY = sqlData["join_day"].ToString(),
-                    //            STAFF_RETIREMENT_DAY = sqlData["retirement_day"].ToString(),
-                    //            STAFF_STATE = sqlData["state"].ToString()
-                    //        };
-                    //        SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
-                    //    }
-                    //    sqlData.Close();
-                    //    SharedPreference.Instance.DBM.SqlConn.Close();
-                    //}
-                });
-            }
-        }
-
+        
         public DelegateCommand<StreamPlayerControl> StreamPlayerReload
         {
             get

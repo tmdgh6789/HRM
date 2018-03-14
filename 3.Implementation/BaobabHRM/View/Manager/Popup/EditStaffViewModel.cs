@@ -498,45 +498,91 @@ namespace BaobabHRM
                     string what = $"사번: {SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER}, ";
                     string log = "";
 
-                    if (beforeDto.STAFF_DEPT != afterDto.STAFF_DEPT)
+                    if (IsCheckedDept)
                     {
+                        if (SelectedDept == null)
+                        {
+                            MessageBox.Show("부서를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
                         what += "부서 ";
                         log += $"부서: {beforeDto.STAFF_DEPT} -> {afterDto.STAFF_DEPT} ";
                     }
-                    if (beforeDto.STAFF_RANK != afterDto.STAFF_RANK)
+                    if (IsCheckedRank)
                     {
+                        if (SelectedRank == null)
+                        {
+                            MessageBox.Show("직급을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
                         what += "직급 ";
                         log += $"직급: {beforeDto.STAFF_RANK} -> {afterDto.STAFF_RANK} ";
                     }
-                    if (beforeDto.STAFF_NAME != afterDto.STAFF_NAME)
+                    if (IsCheckedName)
                     {
+                        if (StaffName == null || StaffName.Length == 0)
+                        {
+                            MessageBox.Show("이름을 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
                         what += "이름 ";
                         log += $"이름: {beforeDto.STAFF_NAME} -> {afterDto.STAFF_NAME} ";
                     }
-                    if (beforeDto.STAFF_ADDRESS != afterDto.STAFF_ADDRESS)
+                    if (IsCheckedAddress)
                     {
+                        if (StaffAddress == null || StaffAddress.Length == 0)
+                        {
+                            MessageBox.Show("주소를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
                         what += "주소 ";
                         log += $"주소: {beforeDto.STAFF_ADDRESS} -> {afterDto.STAFF_ADDRESS} ";
                     }
-                    if (beforeDto.STAFF_TEL != afterDto.STAFF_TEL)
+                    if (IsCheckedTel)
                     {
+                        if (StaffTel == null || StaffTel.Length == 0)
+                        {
+                            MessageBox.Show("연락처를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
                         what += "연락처 ";
                         log += $"연락처: {beforeDto.STAFF_TEL} -> {afterDto.STAFF_TEL} ";
                     }
-                    if (beforeDto.STAFF_JOIN_DAY != afterDto.STAFF_JOIN_DAY)
+                    if (IsCheckedJoinDay)
                     {
+                        if (StaffJoinDayStr == null || StaffJoinDayStr.Length == 0)
+                        {
+                            MessageBox.Show("입사날짜를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
                         what += "입사날짜 ";
                         log += $"입사날짜: {beforeDto.STAFF_JOIN_DAY} -> {afterDto.STAFF_JOIN_DAY} ";
                     }
-                    if (beforeDto.STAFF_RETIREMENT_DAY != afterDto.STAFF_RETIREMENT_DAY)
+                    if (IsCheckedRetirementDay)
                     {
+                        if (StaffRetirementDay == null)
+                        {
+                            MessageBox.Show("퇴사날짜를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
                         what += "퇴사날짜 ";
                         log += $"퇴사날짜: {beforeDto.STAFF_RETIREMENT_DAY} -> {afterDto.STAFF_RETIREMENT_DAY} ";
                     }
-                    if (beforeDto.STAFF_STATE != afterDto.STAFF_STATE)
+                    if (IsCheckedState)
                     {
+                        if (StaffState == null || StaffState.Length == 0)
+                        {
+                            MessageBox.Show("상태를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
                         what += "상태 ";
                         log += $"상태: {beforeDto.STAFF_STATE} -> {afterDto.STAFF_STATE} ";
+                    }
+
+                    if (Reason == null || Reason.Length == 0)
+                    {
+                        MessageBox.Show("사유를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
                     }
 
                     try

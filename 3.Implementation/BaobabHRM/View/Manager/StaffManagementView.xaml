@@ -109,22 +109,17 @@
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding }"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </ListView>
             </Grid>
 
-            <Button Grid.Column="2" Content="조회"/>
-            <Button Grid.Column="3" Content="전체보기"/>
+            <Button Grid.Column="2" Content="선택 초기화" Command="{Binding Path=SelectedClearCommand}"/>
+            <Button Grid.Column="3" Content="검색" Command="{Binding Path=SerchCommand}"/>
             <Button Grid.Column="4" Content="추가" Command="{Binding Path=AddStaffCommand}"/>
             <Button Grid.Column="5" Content="수정" Command="{Binding Path=EditStaffCommand}"/>
             <Button Grid.Column="6" Content="뒤로가기" Command="{Binding Path=BackCommand}"/>
         </Grid>
 
-        <ListView Grid.Row="2" ItemsSource="{Binding Source={x:Static local:SharedPreference.Instance}, Path=StaffViewStaffList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedStaff}">
+        <ListView Grid.Row="2" ItemsSource="{Binding Path=StaffList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedStaff}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Height" Value="60"/>

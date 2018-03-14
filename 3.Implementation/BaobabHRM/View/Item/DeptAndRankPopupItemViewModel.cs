@@ -229,6 +229,18 @@ namespace BaobabHRM
             {
                 return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
+                    if (Code == null || Code.Length == 0)
+                    {
+                        MessageBox.Show("코드를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    if (Name == null || Name.Length == 0)
+                    {
+                        MessageBox.Show("이름을 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
                     if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "부서관리")
                     {
                         DeptDTO dto = new DeptDTO
@@ -342,7 +354,36 @@ namespace BaobabHRM
             {
                 return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
-                    if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "부서관리")
+                    if (Title == "DEPT")
+                    {
+                        if (Code == null || Code.Length == 0)
+                        {
+                            MessageBox.Show("수정할 부서 코드를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                    }
+                    else if (Title == "RANK")
+                    {
+                        if (Code == null || Code.Length == 0)
+                        {
+                            MessageBox.Show("수정할 직급 코드를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                    }
+
+                    if (Name == null || Name.Length == 0)
+                    {
+                        MessageBox.Show("수정할 이름을 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    if (Reason == null || Reason.Length == 0)
+                    {
+                        MessageBox.Show("사유를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    if (Title == "DEPT")
                     {
                         var index = SharedPreference.Instance.DeptList.IndexOf(SelectedDept);
                         var beforeName = SelectedDept.DEPT_NAME;
@@ -397,7 +438,7 @@ namespace BaobabHRM
                             }
                         }
                     }
-                    else if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "직급관리")
+                    else if (Title == "RANK")
                     {
                         var index = SharedPreference.Instance.RankList.IndexOf(SelectedRank);
                         var beforeName = SelectedRank.RANK_NAME;
@@ -466,7 +507,30 @@ namespace BaobabHRM
             {
                 return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
-                    if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "부서관리")
+                    if (Title == "DEPT")
+                    {
+                        if (SelectedDept == null)
+                        {
+                            MessageBox.Show("삭제할 부서를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                    }
+                    else if (Title == "RANK")
+                    {
+                        if (SelectedRank == null)
+                        {
+                            MessageBox.Show("삭제할 직급을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                    }
+
+                    if (Reason == null || Reason.Length == 0)
+                    {
+                        MessageBox.Show("사유를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    if (Title == "DEPT")
                     {
                         var beforeName = SelectedDept.DEPT_NAME;
                         DeptDTO dto = new DeptDTO
@@ -518,7 +582,7 @@ namespace BaobabHRM
                             }
                         }
                     }
-                    else if ((Window.GetWindow(uc).FindName("TITLE") as TextBlock).Text == "직급관리")
+                    else if (Title == "RANK")
                     {
                         var beforeName = SelectedRank.RANK_NAME;
                         RankDTO dto = new RankDTO
