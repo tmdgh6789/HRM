@@ -12,7 +12,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.DataContext>
-        <local:EditAttendanceViewModel/>
+        <local:EditAttendancePopupViewModel/>
     </UserControl.DataContext>
 
     <i:Interaction.Triggers>

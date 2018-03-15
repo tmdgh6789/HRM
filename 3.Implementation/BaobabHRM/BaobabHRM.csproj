@@ -107,6 +107,16 @@
     <Compile Include="Repository\Query\RankQuery.cs" />
     <Compile Include="Repository\Query\StaffQuery.cs" />
     <Compile Include="Repository\Query\DeptQuery.cs" />
+    <Compile Include="View\Item\AddAdminPopupItem.xaml.cs">
+      <DependentUpon>AddAdminPopupItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Item\AdminPopupViewModel.cs" />
+    <Compile Include="View\Item\DeleteAdminPopupItem.xaml.cs">
+      <DependentUpon>DeleteAdminPopupItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Item\EditAdminPopupItem.xaml.cs">
+      <DependentUpon>EditAdminPopupItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Item\EditDeptAndRankPopupItem.xaml.cs">
       <DependentUpon>EditDeptAndRankPopupItem.xaml</DependentUpon>
     </Compile>
@@ -117,6 +127,15 @@
     <Compile Include="View\Item\DeleteDeptAndRankPopupItem.xaml.cs">
       <DependentUpon>DeleteDeptAndRankPopupItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Item\UserMainItemView.xaml.cs">
+      <DependentUpon>UserMainItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Item\UserOffItemView.xaml.cs">
+      <DependentUpon>UserOffItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Item\UserOverItemView.xaml.cs">
+      <DependentUpon>UserOverItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Manager\ManagementView.xaml.cs">
       <DependentUpon>ManagementView.xaml</DependentUpon>
     </Compile>
@@ -125,14 +144,21 @@
       <DependentUpon>AddStaffPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Manager\Popup\AddStaffPopupViewModel.cs" />
+    <Compile Include="View\Manager\Popup\AdminManagementPopup.xaml.cs">
+      <DependentUpon>AdminManagementPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Manager\Popup\AdminManagementPopupViewModel.cs" />
     <Compile Include="View\Manager\Popup\EditAttendancePopup.xaml.cs">
       <DependentUpon>EditAttendancePopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Manager\Popup\EditAttendanceViewModel.cs" />
+    <Compile Include="View\Manager\Popup\EditAttendancePopupViewModel.cs" />
     <Compile Include="View\Manager\Popup\EditStaffPopup.xaml.cs">
       <DependentUpon>EditStaffPopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Manager\Popup\EditStaffViewModel.cs" />
+    <Compile Include="View\Manager\Popup\EditStaffPopupViewModel.cs" />
+    <Compile Include="View\Popup\InquiryPopup.xaml.cs">
+      <DependentUpon>InquiryPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Manager\Popup\RankManagementPopup.xaml.cs">
       <DependentUpon>RankManagementPopup.xaml</DependentUpon>
     </Compile>
@@ -157,6 +183,7 @@
       <DependentUpon>CapturePopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Popup\CapturePopupViewModel.cs" />
+    <Compile Include="View\Popup\InquiryPopupViewModel.cs" />
     <Compile Include="View\Popup\LoginPopup.xaml.cs">
       <DependentUpon>LoginPopup.xaml</DependentUpon>
     </Compile>
@@ -169,6 +196,10 @@
       <DependentUpon>OutTimeCheckPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Popup\OutTimeCheckPopupViewModel.cs" />
+    <Compile Include="View\UserView.xaml.cs">
+      <DependentUpon>UserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserViewModel.cs" />
     <Compile Include="View\WorkspaceView.xaml.cs">
       <DependentUpon>WorkspaceView.xaml</DependentUpon>
     </Compile>
@@ -189,6 +220,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Item\AddAdminPopupItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Item\DeleteAdminPopupItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Item\EditAdminPopupItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Item\EditDeptAndRankPopupItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -201,6 +244,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Item\UserMainItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Item\UserOffItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Item\UserOverItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Manager\ManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -209,11 +264,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Manager\Popup\AdminManagementPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Manager\Popup\EditAttendancePopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Manager\Popup\EditStaffPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Popup\InquiryPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -250,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Popup\OutTimeCheckPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -311,6 +378,46 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\up_arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\attendance1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\attendance2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\inquiry1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\inquiry2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\leavework1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\leavework2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reload1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reload2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

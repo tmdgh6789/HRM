@@ -8,7 +8,7 @@
              xmlns:webEye="clr-namespace:WebEye.Controls.Wpf.StreamPlayerControl;assembly=WebEye.Controls.Wpf.StreamPlayerControl"
              xmlns:local="clr-namespace:BaobabHRM"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920">
+             d:DesignHeight="1024" d:DesignWidth="1280">
     
     <UserControl.DataContext>
         <local:WorkspaceViewModel/>
@@ -22,8 +22,8 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.5*"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <!-- 상단 그리드 -->
@@ -51,7 +51,7 @@
                     <ListView.View>
                         <GridView>
                             <!--부서이름-->
-                            <GridViewColumn Header="이름" Width="309">
+                            <GridViewColumn Header="부서 이름" Width="210">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <ContentControl Content="{Binding}">
@@ -94,7 +94,7 @@
                     <ListView.View>
                         <GridView>
                             <!--사원이름(사번)-->
-                            <GridViewColumn Header="이름(사번)" Width="309">
+                            <GridViewColumn Header="이름(사번)" Width="210">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <ContentControl Content="{Binding}">
@@ -132,7 +132,7 @@
                     <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="관리자 로그아웃" Command="{Binding Path=LogoutCommand}"/>
                     <Button Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="캠 다시 실행" Command="{Binding Path=StreamPlayerReload}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
                 </Grid>
-                <webEye:StreamPlayerControl x:Name="streamPlayerControl" Height="245" Width="320" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <webEye:StreamPlayerControl x:Name="streamPlayerControl" Height="190" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </StackPanel>
         </Grid>
 
@@ -171,35 +171,35 @@
                 </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="날짜" Width="380">
+                        <GridViewColumn Header="날짜" Width="250">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Path=ATTENDANCE_BUSINESS_DAY}" HorizontalAlignment="Center"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="이름(사번)" Width="380">
+                        <GridViewColumn Header="이름(사번)" Width="250">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Path=ATTENDANCE_NameAndIdnumber}" HorizontalAlignment="Center"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="출근시간" Width="380">
+                        <GridViewColumn Header="출근시간" Width="250">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Path=ATTENDANCE_IN_TIME}" HorizontalAlignment="Center"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="퇴근시간" Width="380">
+                        <GridViewColumn Header="퇴근시간" Width="250">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Path=ATTENDANCE_OUT_TIME}" HorizontalAlignment="Center"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="구분" Width="350" DisplayMemberBinding="{Binding Path=STAFF_NAME}">
+                        <GridViewColumn Header="구분" Width="250" DisplayMemberBinding="{Binding Path=STAFF_NAME}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Path=ATTENDANCE_ETC}" HorizontalAlignment="Center"/>

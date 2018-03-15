@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -309,6 +310,47 @@ namespace BaobabHRM
             SharedPreference.Instance.IsLoginCompleted = false;
             SharedPreference.Instance.LoginAdmin = null;
         } // end method
+
+        #endregion
+
+        #region command
+
+        /// <summary>
+        /// 부서 선택할 때
+        /// </summary>
+        public DelegateCommand SelectionDeptChanged
+        {
+            get
+            {
+                return new DelegateCommand(delegate ()
+                {
+                    SharedPreference.Instance.StaffList.Clear();
+
+                    if (SharedPreference.Instance.SelectedDept != null)
+                    {
+                        var sqlData = new StaffQuery().SelectWithDept(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                        while (sqlData.Read())
+                        {
+                            var dto = new StaffDTO()
+                            {
+                                STAFF_IDNUMBER = sqlData["idnumber"].ToString(),
+                                STAFF_DEPT = sqlData["dept"].ToString(),
+                                STAFF_RANK = sqlData["rank"].ToString(),
+                                STAFF_NAME = sqlData["name"].ToString(),
+                                STAFF_ADDRESS = sqlData["address"].ToString(),
+                                STAFF_TEL = sqlData["tel"].ToString(),
+                                STAFF_JOIN_DAY = sqlData["join_day"].ToString(),
+                                STAFF_RETIREMENT_DAY = sqlData["retirement_day"].ToString(),
+                                STAFF_STATE = sqlData["state"].ToString()
+                            };
+                            SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
+                        }
+                        sqlData.Close();
+                        SharedPreference.Instance.DBM.SqlConn.Close();
+                    }
+                });
+            }
+        }
 
         #endregion
     }

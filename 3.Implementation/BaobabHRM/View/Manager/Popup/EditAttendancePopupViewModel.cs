@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace BaobabHRM
 {
-    public class EditAttendanceViewModel : BindableBase
+    public class EditAttendancePopupViewModel : BindableBase
     {
         #region property
 
@@ -409,25 +409,14 @@ namespace BaobabHRM
             {
                 return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
-                    AttendanceDTO beforeDto = new AttendanceDTO
+                    AttendanceDTO beforeDto = SharedPreference.Instance.SelectedAttendance.Dto;
+                    AttendanceDTO afterDto = new AttendanceDTO
                     {
                         ATTENDANCE_BUSINESS_DAY = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_BUSINESS_DAY,
                         ATTENDANCE_NAME = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_NAME,
                         ATTENDANCE_IDNUMBER = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_IDNUMBER,
                         ATTENDANCE_IN_TIME = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_IN_TIME,
                         ATTENDANCE_OUT_TIME = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_OUT_TIME,
-                        ATTENDANCE_OVERTIME = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_OVERTIME,
-                        ATTENDANCE_OFF_DAY = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_OFF_DAY,
-                        ATTENDANCE_ETC = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_ETC
-                    };
-
-                    AttendanceDTO afterDto = new AttendanceDTO
-                    {
-                        ATTENDANCE_BUSINESS_DAY = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_BUSINESS_DAY,
-                        ATTENDANCE_NAME = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_NAME,
-                        ATTENDANCE_IDNUMBER = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_IDNUMBER,
-                        ATTENDANCE_IN_TIME = AttendanceTime,
-                        ATTENDANCE_OUT_TIME = LeaveWorkTime,
                         ATTENDANCE_OVERTIME = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_OVERTIME,
                         ATTENDANCE_OFF_DAY = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_OFF_DAY,
                         ATTENDANCE_ETC = SharedPreference.Instance.SelectedAttendance.ATTENDANCE_ETC
@@ -445,6 +434,9 @@ namespace BaobabHRM
                             MessageBox.Show("출근시간을 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.ATTENDANCE_IN_TIME = AttendanceTime;
+
                         what += "출근시간 ";
                         log += $"출근시간: {beforeDto.ATTENDANCE_IN_TIME} -> {afterDto.ATTENDANCE_IN_TIME} ";
                     }
@@ -455,6 +447,9 @@ namespace BaobabHRM
                             MessageBox.Show("퇴근시간을 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.ATTENDANCE_OUT_TIME = LeaveWorkTime;
+
                         what += "퇴근시간 ";
                         log += $"퇴근시간: {beforeDto.ATTENDANCE_OUT_TIME} -> {afterDto.ATTENDANCE_OUT_TIME} ";
                     }
@@ -462,6 +457,12 @@ namespace BaobabHRM
                     if (Reason == null || Reason.Length == 0)
                     {
                         MessageBox.Show("사유를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    if (!IsAttendanceTime && !IsLeaveWorkTime)
+                    {
+                        MessageBox.Show("변경 내역이 없습니다.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
 
@@ -486,6 +487,8 @@ namespace BaobabHRM
                             new AttendanceLogQuery().Insert(logDto);
 
                             MessageBox.Show("사원 정보를 수정하셨습니다.");
+                            IsAttendanceTime = false;
+                            IsLeaveWorkTime = false;
                             Reason = "";
                         }
                         catch (Exception e)

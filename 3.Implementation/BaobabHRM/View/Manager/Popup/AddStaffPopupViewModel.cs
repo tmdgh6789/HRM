@@ -185,7 +185,7 @@ namespace BaobabHRM
                     try
                     {
                         // 사번 생성
-                        var date = DateTime.Now.ToString("yyyyMM");
+                        var date = DateTime.Now.ToString("yyMM");
                         var sqlData = new StaffQuery().SelectIdnumberLike(date);
                         var lastIdnumber = "";
                         if (sqlData.HasRows)

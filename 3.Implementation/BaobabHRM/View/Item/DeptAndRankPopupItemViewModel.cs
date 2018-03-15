@@ -207,6 +207,9 @@ namespace BaobabHRM
             }
         }
 
+        /// <summary>
+        /// 취소 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> CancelCommand
         {
             get
@@ -263,7 +266,7 @@ namespace BaobabHRM
                                     ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                     ALLLOG_WHAT = "부서",
                                     ALLLOG_LOG = Name + " 부서 생성",
-                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_REASON = "부서 신설",
                                     ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
                                 };
 
@@ -313,7 +316,7 @@ namespace BaobabHRM
                                     ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
                                     ALLLOG_WHAT = "직급",
                                     ALLLOG_LOG = Name + " 직급 생성",
-                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_REASON = "직급 신설",
                                     ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
                                 };
 

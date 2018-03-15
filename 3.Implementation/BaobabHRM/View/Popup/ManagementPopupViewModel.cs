@@ -13,7 +13,9 @@ namespace BaobabHRM
     public class ManagementPopupViewModel : BindableBase
     {
 
-
+        /// <summary>
+        /// loaded command
+        /// </summary>
         public DelegateCommand LoadedCommand
         {
             get
@@ -36,7 +38,9 @@ namespace BaobabHRM
             }
         }
 
-
+        /// <summary>
+        /// 부서 관리 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> DeptManagementCommand
         {
             get
@@ -45,7 +49,7 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Dept";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = false;
+                    Window.GetWindow(uc).DialogResult = true;
 
                     var popup = new DeptManagementPopup();
                     if (WindowHelper.CreatePopup(popup, "부서관리", true) == true)
@@ -56,6 +60,9 @@ namespace BaobabHRM
             }
         }
 
+        /// <summary>
+        /// 직급 관리 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> RankManagementCommand
         {
             get
@@ -64,7 +71,7 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Rank";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = false;
+                    Window.GetWindow(uc).DialogResult = true;
 
                     var popup = new RankManagementPopup();
                     if (WindowHelper.CreatePopup(popup, "직급관리", true) == true)
@@ -75,6 +82,9 @@ namespace BaobabHRM
             }
         }
 
+        /// <summary>
+        /// 사원 관리 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> StaffManagementCommand
         {
             get
@@ -83,11 +93,14 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Staff";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = false;
+                    Window.GetWindow(uc).DialogResult = true;
                 });
             }
         }
 
+        /// <summary>
+        /// 출결 관리 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> AttendanceManagementCommand
         {
             get
@@ -96,11 +109,14 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Attendance";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = false;
+                    Window.GetWindow(uc).DialogResult = true;
                 });
             }
         }
 
+        /// <summary>
+        /// 통계 관리 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> StatisticsCommand
         {
             get
@@ -109,11 +125,14 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Statistics";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = false;
+                    Window.GetWindow(uc).DialogResult = true;
                 });
             }
         }
 
+        /// <summary>
+        /// 기타 관리 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> EtcManagementCommand
         {
             get
@@ -122,11 +141,36 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Etc";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = false;
+                    Window.GetWindow(uc).DialogResult = true;
+                });
+            }
+        }
+
+        /// <summary>
+        /// 관리자 관리 커맨드
+        /// </summary>
+        public DelegateCommand<UserControl> AdminManagementCommand
+        {
+            get
+            {
+                return new DelegateCommand<UserControl>(delegate (UserControl uc)
+                {
+                    SharedPreference.Instance.ViewName = "Admin";
+                    SharedPreference.Instance.IsManagement = true;
+                    Window.GetWindow(uc).DialogResult = true;
+
+                    var popup = new AdminManagementPopup();
+                    if (WindowHelper.CreatePopup(popup, "관리자 관리", true) == true)
+                    {
+                        var vm = popup.DataContext as AdminManagementPopupViewModel;
+                    }
                 });
             }
         }
         
+        /// <summary>
+        /// 뒤로가기 커맨드
+        /// </summary>
         public DelegateCommand<UserControl> BackCommand
         {
             get

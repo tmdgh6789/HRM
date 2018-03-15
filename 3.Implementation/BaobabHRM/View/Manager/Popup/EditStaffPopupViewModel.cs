@@ -11,7 +11,7 @@ using System.Windows.Controls;
 
 namespace BaobabHRM
 {
-    public class EditStaffViewModel : BindableBase
+    public class EditStaffPopupViewModel : BindableBase
     {
         #region property
         
@@ -467,30 +467,15 @@ namespace BaobabHRM
                 {
                     var index = SharedPreference.Instance.StaffList.IndexOf(SharedPreference.Instance.SelectedStaff);
 
-                    StaffDTO beforeDto = new StaffDTO
+                    StaffDTO beforeDto = SharedPreference.Instance.SelectedStaff.Dto;
+                    StaffDTO afterDto = new StaffDTO
                     {
-                        STAFF_IDNUMBER = SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER,
-                        STAFF_DEPT = SharedPreference.Instance.SelectedStaff.STAFF_DEPT,
-                        STAFF_RANK = SharedPreference.Instance.SelectedStaff.STAFF_RANK,
                         STAFF_NAME = SharedPreference.Instance.SelectedStaff.STAFF_NAME,
                         STAFF_ADDRESS = SharedPreference.Instance.SelectedStaff.STAFF_ADDRESS,
                         STAFF_TEL = SharedPreference.Instance.SelectedStaff.STAFF_TEL,
                         STAFF_JOIN_DAY = SharedPreference.Instance.SelectedStaff.STAFF_JOIN_DAY,
                         STAFF_RETIREMENT_DAY = SharedPreference.Instance.SelectedStaff.STAFF_RETIREMENT_DAY,
                         STAFF_STATE = SharedPreference.Instance.SelectedStaff.STAFF_STATE,
-                    };
-
-                    StaffDTO afterDto = new StaffDTO
-                    {
-                        STAFF_IDNUMBER = SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER,
-                        STAFF_DEPT = SelectedDept.DEPT_CODE,
-                        STAFF_RANK = SelectedRank.RANK_CODE,
-                        STAFF_NAME = StaffName,
-                        STAFF_ADDRESS = StaffAddress,
-                        STAFF_TEL = StaffTel,
-                        STAFF_JOIN_DAY = StaffJoinDay.ToString("yyyy-MM-dd"),
-                        STAFF_RETIREMENT_DAY = StaffRetirementDay.ToString("yyyy-MM-dd"),
-                        STAFF_STATE = StaffState,
                     };
 
                     if (StaffState == "재직") afterDto.STAFF_RETIREMENT_DAY = null;
@@ -505,6 +490,9 @@ namespace BaobabHRM
                             MessageBox.Show("부서를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.STAFF_DEPT = SelectedDept.DEPT_CODE;
+
                         what += "부서 ";
                         log += $"부서: {beforeDto.STAFF_DEPT} -> {afterDto.STAFF_DEPT} ";
                     }
@@ -515,6 +503,9 @@ namespace BaobabHRM
                             MessageBox.Show("직급을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.STAFF_RANK = SelectedRank.RANK_CODE;
+
                         what += "직급 ";
                         log += $"직급: {beforeDto.STAFF_RANK} -> {afterDto.STAFF_RANK} ";
                     }
@@ -525,6 +516,9 @@ namespace BaobabHRM
                             MessageBox.Show("이름을 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.STAFF_NAME = StaffName;
+
                         what += "이름 ";
                         log += $"이름: {beforeDto.STAFF_NAME} -> {afterDto.STAFF_NAME} ";
                     }
@@ -535,6 +529,9 @@ namespace BaobabHRM
                             MessageBox.Show("주소를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.STAFF_ADDRESS = StaffAddress;
+
                         what += "주소 ";
                         log += $"주소: {beforeDto.STAFF_ADDRESS} -> {afterDto.STAFF_ADDRESS} ";
                     }
@@ -545,6 +542,9 @@ namespace BaobabHRM
                             MessageBox.Show("연락처를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.STAFF_TEL = StaffTel;
+
                         what += "연락처 ";
                         log += $"연락처: {beforeDto.STAFF_TEL} -> {afterDto.STAFF_TEL} ";
                     }
@@ -555,6 +555,9 @@ namespace BaobabHRM
                             MessageBox.Show("입사날짜를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.STAFF_JOIN_DAY = StaffJoinDay.ToString("yyyy-MM-dd");
+
                         what += "입사날짜 ";
                         log += $"입사날짜: {beforeDto.STAFF_JOIN_DAY} -> {afterDto.STAFF_JOIN_DAY} ";
                     }
@@ -565,6 +568,9 @@ namespace BaobabHRM
                             MessageBox.Show("퇴사날짜를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.STAFF_RETIREMENT_DAY = StaffRetirementDay.ToString("yyyy-MM-dd");
+
                         what += "퇴사날짜 ";
                         log += $"퇴사날짜: {beforeDto.STAFF_RETIREMENT_DAY} -> {afterDto.STAFF_RETIREMENT_DAY} ";
                     }
@@ -575,6 +581,9 @@ namespace BaobabHRM
                             MessageBox.Show("상태를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
+                        afterDto.STAFF_STATE = StaffState;
+
                         what += "상태 ";
                         log += $"상태: {beforeDto.STAFF_STATE} -> {afterDto.STAFF_STATE} ";
                     }
@@ -582,6 +591,12 @@ namespace BaobabHRM
                     if (Reason == null || Reason.Length == 0)
                     {
                         MessageBox.Show("사유를 입력해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    if (!IsCheckedDept && !IsCheckedRank && !IsCheckedName && !IsCheckedAddress && !IsCheckedTel && !IsCheckedJoinDay && !IsCheckedRetirementDay && !IsCheckedState)
+                    {
+                        MessageBox.Show("변경 내역이 없습니다.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
 
@@ -606,6 +621,15 @@ namespace BaobabHRM
                             new AllLogQuery().Insert(logDto);
 
                             MessageBox.Show("사원 정보를 수정하셨습니다.");
+
+                            IsCheckedDept = false;
+                            IsCheckedRank = false;
+                            IsCheckedName = false;
+                            IsCheckedAddress = false;
+                            IsCheckedTel = false;
+                            IsCheckedJoinDay = false;
+                            IsCheckedRetirementDay = false;
+                            IsCheckedState = false;
                             StaffName = "";
                             StaffAddress = "";
                             StaffTel = "";

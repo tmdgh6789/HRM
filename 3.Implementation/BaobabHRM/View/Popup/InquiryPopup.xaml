@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="BaobabHRM.InquiryPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BaobabHRM"
+             mc:Ignorable="d" 
+             Background="White">
+    
+    <UserControl.DataContext>
+        <local:InquiryPopupViewModel/>
+    </UserControl.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 중간 그리드 -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="날짜" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" SelectedDate="{Binding Path=StartDate}"/>
+            <Label Grid.Column="2" Content=" ~ " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <DatePicker Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" SelectedDate="{Binding Path=EndDate}"/>
+            <Button Grid.Column="4" Content="검색" Command="{Binding Path=SerchCommand}"/>
+        </Grid>
+
+
+        <ListView Grid.Row="1" Height="500" VerticalAlignment="Stretch" ItemsSource="{Binding Path=TodayAttendanceList, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Height" Value="60"/>
+                    <Setter Property="BorderBrush" Value="LightGray"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="날짜" Width="250">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=ATTENDANCE_BUSINESS_DAY}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="이름(사번)" Width="250">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=ATTENDANCE_NameAndIdnumber}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="출근시간" Width="250">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=ATTENDANCE_IN_TIME}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="퇴근시간" Width="250">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=ATTENDANCE_OUT_TIME}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="구분" Width="250" DisplayMemberBinding="{Binding Path=STAFF_NAME}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=ATTENDANCE_ETC}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

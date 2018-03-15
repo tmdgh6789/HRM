@@ -29,7 +29,19 @@ namespace BaobabHRM
             }
         }
 
-        
+        public int ADMIN_NUM
+        {
+            get
+            {
+                return Dto.ADMIN_NUM;
+            }
+            set
+            {
+                Dto.ADMIN_NUM = value;
+                RaisePropertyChanged("ADMIN_NUM");
+            }
+        }
+
         public string ADMIN_ID
         {
             get
@@ -53,6 +65,19 @@ namespace BaobabHRM
             {
                 Dto.ADMIN_PASSWORD = value;
                 RaisePropertyChanged("ADMIN_PASSWORD");
+            }
+        }
+        
+        public string ADMIN_IDNUMBER
+        {
+            get
+            {
+                return Dto.ADMIN_IDNUMBER;
+            }
+            set
+            {
+                Dto.ADMIN_IDNUMBER = value;
+                RaisePropertyChanged("ADMIN_IDNUMBER");
             }
         }
 
@@ -92,6 +117,19 @@ namespace BaobabHRM
             {
                 Dto.ADMIN_GRADE = value;
                 RaisePropertyChanged("ADMIN_GRADE");
+            }
+        }
+        
+        public string ADMIN_AUTH
+        {
+            get
+            {
+                return Dto.ADMIN_AUTH;
+            }
+            set
+            {
+                Dto.ADMIN_AUTH = value;
+                RaisePropertyChanged("ADMIN_AUTH");
             }
         }
     }

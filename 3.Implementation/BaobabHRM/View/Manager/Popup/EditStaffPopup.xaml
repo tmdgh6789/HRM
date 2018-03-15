@@ -12,7 +12,7 @@
              d:DesignHeight="550" d:DesignWidth="300">
     
     <UserControl.DataContext>
-        <local:EditStaffViewModel/>
+        <local:EditStaffPopupViewModel/>
     </UserControl.DataContext>
 
     <i:Interaction.Triggers>

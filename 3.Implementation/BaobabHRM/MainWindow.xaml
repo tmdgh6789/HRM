@@ -8,13 +8,17 @@
         xmlns:local="clr-namespace:BaobabHRM"
         WindowState="Maximized"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920">
+        Title="Baobab Solution" Height="1024" Width="1280">
     
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
 
     <Window.Resources>
+        <DataTemplate x:Key="UserViewTemplateKey">
+            <local:UserView/>
+        </DataTemplate>
+        
         <DataTemplate x:Key="WorkspaceViewTemplateKey">
             <local:WorkspaceView/>
         </DataTemplate>
@@ -36,8 +40,11 @@
                 <Style TargetType="{x:Type ContentControl}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsManagement}" Value="False">
-                            <Setter Property="ContentTemplate" Value="{StaticResource WorkspaceViewTemplateKey}"/>
+                            <Setter Property="ContentTemplate" Value="{StaticResource UserViewTemplateKey}"/>
                         </DataTrigger>
+                        <!--<DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsManagement}" Value="False">
+                            <Setter Property="ContentTemplate" Value="{StaticResource WorkspaceViewTemplateKey}"/>
+                        </DataTrigger>-->
                         <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsManagement}" Value="True">
                             <Setter Property="ContentTemplate" Value="{StaticResource ManagementViewTemplateKey}"/>
                         </DataTrigger>

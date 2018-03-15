@@ -60,7 +60,7 @@ namespace BaobabHRM
                     }
                
                     SharedPreference.Instance.Login(id, password);
-                    Window.GetWindow(uc).DialogResult = true;
+                    //Window.GetWindow(uc).DialogResult = true;
                     
                     var popup = new ManagementPopup();
                     if (WindowHelper.CreatePopup(popup, "관리자", true) == true)
