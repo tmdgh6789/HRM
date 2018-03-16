@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="BaobabHRM.LatePopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BaobabHRM"
+             mc:Ignorable="d" 
+             Name="uc"
+             Background="White"
+             d:DesignHeight="720" d:DesignWidth="720">
+
+    <UserControl.DataContext>
+        <local:OkPopupViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Height="720" Width="720">
+        <Grid.Background>
+            <ImageBrush ImageSource="/BaobabHRM;component/Resources/late.png" Stretch="UniformToFill"/>
+        </Grid.Background>
+        <Button Height="55" Width="330" Margin="0, 0, 0, 55" Command="{Binding Path=OkCommand}" CommandParameter="{Binding ElementName=uc}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="Transparent">
+            <Image Source="/BaobabHRM;component/Resources/ok.png"/>
+        </Button>
+    </Grid>
+</UserControl>

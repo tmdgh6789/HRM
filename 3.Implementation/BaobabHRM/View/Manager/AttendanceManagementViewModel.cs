@@ -292,6 +292,8 @@ namespace BaobabHRM
                             };
                             SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
                         }
+                        var list = SharedPreference.Instance.StaffList.OrderBy(p => p.STAFF_IDNUMBER);
+                        SharedPreference.Instance.StaffList = new ObservableCollection<StaffModel>(list);
                         sqlData.Close();
                         SharedPreference.Instance.DBM.SqlConn.Close();
                     }

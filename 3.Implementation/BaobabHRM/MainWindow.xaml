@@ -6,8 +6,11 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:prism="http://prismlibrary.com/"
         xmlns:local="clr-namespace:BaobabHRM"
-        WindowState="Maximized"
+        WindowState="Normal"
         mc:Ignorable="d"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None"
         Title="Baobab Solution" Height="1024" Width="1280">
     
     <Window.DataContext>
@@ -26,6 +29,10 @@
         <DataTemplate x:Key="ManagementViewTemplateKey">
             <local:ManagementView/>
         </DataTemplate>
+        
+        <DataTemplate x:Key="ManagementPopupTemplateKey">
+            <local:ManagementPopup/>
+        </DataTemplate>
     </Window.Resources>
 
     <i:Interaction.Triggers>
@@ -35,23 +42,45 @@
     </i:Interaction.Triggers>
 
     <Grid>
-        <ContentControl>
-            <ContentControl.Style>
-                <Style TargetType="{x:Type ContentControl}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsManagement}" Value="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Background="#404040" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <TextBlock x:Name="TITLE" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="20" Height="20" Content="_" Foreground="White" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,5,0" Click="Button_Click1">
+                </Button>
+                <Button Width="20" Height="20" Content="ㅁ" Foreground="White" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,5,0" Click="Button_Click2">
+                </Button>
+                <Button Width="20" Height="20" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,5,0" Click="Button_Click3">
+                    <Image Source="/BaobabHRM;component/Resources/img_close_white.png"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="BODY" Grid.Row="1">
+            <ContentControl>
+                <ContentControl.Style>
+                    <Style TargetType="{x:Type ContentControl}">
+                        <Setter Property="ContentTemplate" Value="{StaticResource UserViewTemplateKey}"/>
+                        <Style.Triggers>
+                            <!--<DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="False">
                             <Setter Property="ContentTemplate" Value="{StaticResource UserViewTemplateKey}"/>
                         </DataTrigger>
-                        <!--<DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsManagement}" Value="False">
+                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsManagement}" Value="False">
                             <Setter Property="ContentTemplate" Value="{StaticResource WorkspaceViewTemplateKey}"/>
-                        </DataTrigger>-->
-                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsManagement}" Value="True">
-                            <Setter Property="ContentTemplate" Value="{StaticResource ManagementViewTemplateKey}"/>
                         </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ContentControl.Style>
-        </ContentControl>
+                        <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="True">
+                            <Setter Property="ContentTemplate" Value="{StaticResource ManagementViewTemplateKey}"/>
+                        </DataTrigger>-->
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </Grid>
+
     </Grid>
 
 </Window>

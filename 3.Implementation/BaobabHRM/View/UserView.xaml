@@ -5,17 +5,52 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BaobabHRM"
              mc:Ignorable="d" 
-             Background="White"
+             Background="Transparent"
              d:DesignHeight="1024" d:DesignWidth="1280">
     
     <UserControl.DataContext>
         <local:UserViewModel/>
     </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="LoginPopupTemplateKey">
+            <local:LoginPopup/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ManagementPopupTemplateKey">
+            <local:ManagementPopup/>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="StatisticsViewTemplateKey">
+            <local:StatisticsManagementView/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StaffViewTemplateKey">
+            <local:StaffManagementView/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AttendanceViewTemplateKey">
+            <local:AttendanceManagementView/>
+        </DataTemplate>
+        <!--<DataTemplate x:Key="LoginViewTemplateKey">
+            <local:LoginView/>
+        </DataTemplate>-->
+    </UserControl.Resources>
     
-    <Grid>
-        <TabControl>
+    <Grid Background="Transparent">
+        <TabControl Background="Transparent">
             <TabItem Header="출근 퇴근">
-                <local:UserMainItemView/>
+                <TabItem.Style>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="IsSelected" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="True">
+                                <Setter Property="IsSelected" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabItem.Style>
+                <local:UserMainItemView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </TabItem>
             <TabItem Header="야근 신청">
                 <local:UserOverItemView/>
@@ -23,8 +58,51 @@
             <TabItem Header="휴가 신청">
                 <local:UserOffItemView/>
             </TabItem>
-            <TabItem Header="로그인">
-                <local:LoginPopup HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TabItem Header="관리자 메뉴">
+                <TabItem.Style>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="IsSelected" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="True">
+                                <Setter Property="IsSelected" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabItem.Style>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                    <ContentControl>
+                        <ContentControl.Style>
+                            <Style TargetType="{x:Type ContentControl}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="False">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource LoginPopupTemplateKey}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="True">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource ManagementPopupTemplateKey}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Dept">
+                                        <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Rank">
+                                        <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Staff">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource StaffViewTemplateKey}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Attendance">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource AttendanceViewTemplateKey}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Statistics">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Etc">
+                                        <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

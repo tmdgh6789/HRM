@@ -58,10 +58,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Height="50" Width="100" Content="관리자 관리" Command="{Binding Path=AdminManagementCommand}" CommandParameter="{Binding ElementName=uc}"/>
-            <Button Grid.Column="1" Height="50" Width="100" Content="뒤로가기" Command="{Binding Path=BackCommand}" CommandParameter="{Binding ElementName=uc}"/>
+            <Button Grid.Column="1" Height="50" Width="100" Content="로그아웃" Command="{Binding Path=LogoutCommand}" CommandParameter="{Binding ElementName=uc}"/>
         </Grid>
 
-        <Button Grid.Row="3" Grid.ColumnSpan="2" Height="50" Width="100" Content="뒤로가기" Command="{Binding Path=BackCommand}" CommandParameter="{Binding ElementName=uc}">
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Height="50" Width="100" Content="로그아웃" Command="{Binding Path=LogoutCommand}" CommandParameter="{Binding ElementName=uc}">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Visibility" Value="Visible"/>

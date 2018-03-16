@@ -26,6 +26,8 @@ namespace BaobabHRM
                     foreach (var dto in SharedPreference.Instance.DeptList)
                     {
                         m_DeptName.Add(dto);
+                        var list = m_DeptName.OrderBy(p => p.DEPT_CODE);
+                        m_DeptName = new ObservableCollection<DeptModel>(list);
                     }
                 }
                 return m_DeptName;
@@ -63,6 +65,9 @@ namespace BaobabHRM
                     foreach (var dto in SharedPreference.Instance.RankList)
                     {
                         m_RankName.Add(dto);
+
+                        var list = m_RankName.OrderBy(p => p.RANK_CODE);
+                        m_RankName = new ObservableCollection<RankModel>(list);
                     }
                 }
                 return m_RankName;
@@ -185,7 +190,7 @@ namespace BaobabHRM
                     try
                     {
                         // 사번 생성
-                        var date = DateTime.Now.ToString("yyMM");
+                        var date = StaffJoinDay.ToString("yyMM");
                         var sqlData = new StaffQuery().SelectIdnumberLike(date);
                         var lastIdnumber = "";
                         if (sqlData.HasRows)
@@ -197,7 +202,7 @@ namespace BaobabHRM
                         }
                         else
                         {
-                            lastIdnumber = date + "01";
+                            lastIdnumber = date + "00";
                         }
                         sqlData.Close();
                         SharedPreference.Instance.DBM.SqlConn.Close();
@@ -217,6 +222,8 @@ namespace BaobabHRM
                         try
                         {
                             SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
+                            var list = SharedPreference.Instance.StaffList.OrderBy(p => p.STAFF_IDNUMBER);
+                            SharedPreference.Instance.StaffList = new ObservableCollection<StaffModel>(list);
 
                             new StaffQuery().Insert(dto);
 

@@ -139,6 +139,8 @@ namespace BaobabHRM
                     {
                         m_DeptList.Add(dto);
                     }
+                    var list = m_DeptList.OrderBy(p => p.DEPT_CODE);
+                    m_DeptList = new ObservableCollection<DeptModel>(list);
                 }
                 return m_DeptList;
             }
@@ -189,6 +191,8 @@ namespace BaobabHRM
                     {
                         m_RankList.Add(dto);
                     }
+                    var list = m_RankList.OrderBy(p => p.RANK_CODE);
+                    m_RankList = new ObservableCollection<RankModel>(list);
                 }
                 return m_RankList;
             }
@@ -470,6 +474,9 @@ namespace BaobabHRM
                     StaffDTO beforeDto = SharedPreference.Instance.SelectedStaff.Dto;
                     StaffDTO afterDto = new StaffDTO
                     {
+                        STAFF_IDNUMBER = SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER,
+                        STAFF_DEPT = SharedPreference.Instance.SelectedStaff.STAFF_DEPT,
+                        STAFF_RANK = SharedPreference.Instance.SelectedStaff.STAFF_RANK,
                         STAFF_NAME = SharedPreference.Instance.SelectedStaff.STAFF_NAME,
                         STAFF_ADDRESS = SharedPreference.Instance.SelectedStaff.STAFF_ADDRESS,
                         STAFF_TEL = SharedPreference.Instance.SelectedStaff.STAFF_TEL,

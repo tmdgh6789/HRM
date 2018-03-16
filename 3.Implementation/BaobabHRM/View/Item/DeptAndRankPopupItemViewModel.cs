@@ -173,6 +173,8 @@ namespace BaobabHRM
                 DeptList.Add(model);
                 Title = "DEPT";
             }
+            var list = DeptList.OrderBy(p => p.DEPT_CODE);
+            DeptList = new ObservableCollection<DeptModel>(list);
         }
 
         private void LoadRank()
@@ -183,6 +185,8 @@ namespace BaobabHRM
                 RankList.Add(model);
                 Title = "RANK";
             }
+            var list = RankList.OrderBy(p => p.RANK_CODE);
+            RankList = new ObservableCollection<RankModel>(list);
         }
 
         #endregion
@@ -255,7 +259,11 @@ namespace BaobabHRM
                         try
                         {
                             SharedPreference.Instance.DeptList.Add(new DeptModel(dto));
+                            var list = SharedPreference.Instance.DeptList.OrderBy(p => p.DEPT_CODE);
+                            SharedPreference.Instance.DeptList = new ObservableCollection<DeptModel>(list);
                             DeptList.Add(new DeptModel(dto));
+                            var list2 = DeptList.OrderBy(p => p.DEPT_CODE);
+                            DeptList = new ObservableCollection<DeptModel>(list2);
                             new DeptQuery().Insert(dto);
 
                             // 수정 내역 저장
@@ -305,7 +313,11 @@ namespace BaobabHRM
                         try
                         {
                             SharedPreference.Instance.RankList.Add(new RankModel(dto));
+                            var list = SharedPreference.Instance.RankList.OrderBy(p => p.RANK_CODE);
+                            SharedPreference.Instance.RankList = new ObservableCollection<RankModel>(list);
                             RankList.Add(new RankModel(dto));
+                            var list2 = RankList.OrderBy(p => p.RANK_CODE);
+                            RankList = new ObservableCollection<RankModel>(list2);
                             new RankQuery().Insert(dto);
 
                             // 수정 내역 저장
@@ -359,7 +371,7 @@ namespace BaobabHRM
                 {
                     if (Title == "DEPT")
                     {
-                        if (Code == null || Code.Length == 0)
+                        if (SelectedDept == null)
                         {
                             MessageBox.Show("수정할 부서 코드를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
@@ -367,7 +379,7 @@ namespace BaobabHRM
                     }
                     else if (Title == "RANK")
                     {
-                        if (Code == null || Code.Length == 0)
+                        if (SelectedRank == null)
                         {
                             MessageBox.Show("수정할 직급 코드를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;

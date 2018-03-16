@@ -37,9 +37,11 @@
             <PasswordBox Grid.Row="1" Grid.Column="2" Padding="5" Name="PB" Height="30" Width="150" HorizontalAlignment="Left"/>
         </Grid>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Height="30" Width="100" Content="취소" Command="{Binding Path=CancelCommand}" CommandParameter="{Binding ElementName=uc}" Margin="35, 0, 15, 0"/>
-            <Button Height="30" Width="100" Content="확인" Command="{Binding Path=OkCommand}" CommandParameter="{Binding ElementName=uc}" Margin="15, 0, 30, 0"/>
-        </StackPanel>
+        <!--<StackPanel Grid.Row="1" Orientation="Horizontal">-->
+            <!--<Button Height="30" Width="100" Content="취소" Command="{Binding Path=CancelCommand}" CommandParameter="{Binding ElementName=uc}" Margin="35, 0, 15, 0"/>-->
+        <Button Grid.Row="1" Height="30" Width="150" Command="{Binding Path=OkCommand}" CommandParameter="{Binding ElementName=uc}" Background="Transparent" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="/BaobabHRM;component/Resources/ok.png"/>
+        </Button>
+        <!--</StackPanel>-->
     </Grid>
 </UserControl>

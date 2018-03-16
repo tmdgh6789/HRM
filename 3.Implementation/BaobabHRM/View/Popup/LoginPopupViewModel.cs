@@ -60,14 +60,10 @@ namespace BaobabHRM
                     }
                
                     SharedPreference.Instance.Login(id, password);
-                    //Window.GetWindow(uc).DialogResult = true;
-                    
-                    var popup = new ManagementPopup();
-                    if (WindowHelper.CreatePopup(popup, "관리자", true) == true)
+                    if (Window.GetWindow(uc) != null)
                     {
-                        var vm = uc.DataContext as ManagementPopupViewModel;
+                        Window.GetWindow(uc).DialogResult = true;
                     }
-               
                 });
             }
         }
@@ -78,7 +74,10 @@ namespace BaobabHRM
             {
                 return new DelegateCommand<UserControl>(delegate (UserControl uc)
                {
-                   Window.GetWindow(uc).DialogResult = false;
+                   if (Window.GetWindow(uc) != null)
+                   {
+                       Window.GetWindow(uc).DialogResult = false;
+                   }
                });
             }
         }

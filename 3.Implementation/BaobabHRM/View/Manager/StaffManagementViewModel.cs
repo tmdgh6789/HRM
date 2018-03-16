@@ -118,6 +118,9 @@ namespace BaobabHRM
                                     };
                                     StaffList.Add(new StaffModel(dto));
                                 }
+
+                                var list = StaffList.OrderBy(p => p.STAFF_RANK).ThenBy(p => p.STAFF_IDNUMBER);
+                                StaffList = new ObservableCollection<StaffModel>(list);
                                 sqlData.Close();
                                 SharedPreference.Instance.DBM.SqlConn.Close();
                             }
@@ -181,6 +184,9 @@ namespace BaobabHRM
                                 };
                                 StaffList.Add(new StaffModel(dto));
                             }
+                            var list = StaffList.OrderBy(p => p.STAFF_DEPT).ThenBy(p => p.STAFF_RANK).ThenBy(p => p.STAFF_IDNUMBER);
+                            StaffList = new ObservableCollection<StaffModel>(list);
+                            
                             sqlData.Close();
                             SharedPreference.Instance.DBM.SqlConn.Close();
                         }

@@ -49,7 +49,10 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Dept";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = true;
+                    //if (Window.GetWindow(uc) != null)
+                    //{
+                    //    Window.GetWindow(uc).DialogResult = true;
+                    //}
 
                     var popup = new DeptManagementPopup();
                     if (WindowHelper.CreatePopup(popup, "부서관리", true) == true)
@@ -71,7 +74,10 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Rank";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = true;
+                    //if (Window.GetWindow(uc) != null)
+                    //{
+                    //    Window.GetWindow(uc).DialogResult = true;
+                    //}
 
                     var popup = new RankManagementPopup();
                     if (WindowHelper.CreatePopup(popup, "직급관리", true) == true)
@@ -93,7 +99,10 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Staff";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = true;
+                    //if (Window.GetWindow(uc) != null)
+                    //{
+                    //    Window.GetWindow(uc).DialogResult = true;
+                    //}
                 });
             }
         }
@@ -109,7 +118,10 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Attendance";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = true;
+                    //if (Window.GetWindow(uc) != null)
+                    //{
+                    //    Window.GetWindow(uc).DialogResult = true;
+                    //}
                 });
             }
         }
@@ -125,7 +137,10 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Statistics";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = true;
+                    //if (Window.GetWindow(uc) != null)
+                    //{
+                    //    Window.GetWindow(uc).DialogResult = true;
+                    //}
                 });
             }
         }
@@ -141,7 +156,10 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Etc";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = true;
+                    //if (Window.GetWindow(uc) != null)
+                    //{
+                    //    Window.GetWindow(uc).DialogResult = true;
+                    //}
                 });
             }
         }
@@ -157,7 +175,10 @@ namespace BaobabHRM
                 {
                     SharedPreference.Instance.ViewName = "Admin";
                     SharedPreference.Instance.IsManagement = true;
-                    Window.GetWindow(uc).DialogResult = true;
+                    //if (Window.GetWindow(uc) != null)
+                    //{
+                    //    Window.GetWindow(uc).DialogResult = true;
+                    //}
 
                     var popup = new AdminManagementPopup();
                     if (WindowHelper.CreatePopup(popup, "관리자 관리", true) == true)
@@ -178,10 +199,30 @@ namespace BaobabHRM
                 return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
                     SharedPreference.Instance.IsManagement = false;
-                    Window.GetWindow(uc).DialogResult = false;
+                    if (Window.GetWindow(uc) != null)
+                    {
+                        Window.GetWindow(uc).DialogResult = false;
+                    }
                 });
             }
         }
 
+        /// <summary>
+        /// 관리자 로그아웃 커맨드
+        /// </summary>
+        public DelegateCommand<UserControl> LogoutCommand
+        {
+            get
+            {
+                return new DelegateCommand<UserControl>(delegate (UserControl uc)
+                {
+                    if (MessageBox.Show("로그아웃 하시겠습니까?", "로그아웃", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        SharedPreference.Instance.IsManagement = false;
+                        SharedPreference.Instance.Logout();
+                    }
+                });
+            }
+        }
     }
 }

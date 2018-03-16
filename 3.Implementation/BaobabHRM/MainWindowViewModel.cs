@@ -2,6 +2,8 @@
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +63,8 @@ namespace BaobabHRM
             sqlData.Close();
             SharedPreference.Instance.DBM.SqlConn.Close();
 
+            var list = SharedPreference.Instance.DeptList.OrderBy(p => p.DEPT_CODE);
+            SharedPreference.Instance.DeptList = new ObservableCollection<DeptModel>(list);
         }
 
         private void LoadRank()
@@ -77,6 +81,9 @@ namespace BaobabHRM
                 };
                 SharedPreference.Instance.RankList.Add(new RankModel(dto));
             }
+            var list = SharedPreference.Instance.RankList.OrderBy(p => p.RANK_CODE);
+            SharedPreference.Instance.RankList = new ObservableCollection<RankModel>(list);
+
             sqlData.Close();
             SharedPreference.Instance.DBM.SqlConn.Close();
 
@@ -88,7 +95,15 @@ namespace BaobabHRM
 
             if (SharedPreference.Instance.SelectedDept != null)
             {
-                var sqlData = new StaffQuery().SelectWithDept(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                SqlDataReader sqlData = null;
+                if (!SharedPreference.Instance.IsManagement)
+                {
+                    sqlData = new StaffQuery().SelectWithDeptUser(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                }
+                else
+                {
+                    sqlData = new StaffQuery().SelectWithDept(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                }
                 while (sqlData.Read())
                 {
                     var dto = new StaffDTO()
@@ -105,6 +120,8 @@ namespace BaobabHRM
                     };
                     SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
                 }
+                var list = SharedPreference.Instance.StaffList.OrderBy(p => p.STAFF_IDNUMBER);
+                SharedPreference.Instance.StaffList = new ObservableCollection<StaffModel>(list);
                 sqlData.Close();
                 SharedPreference.Instance.DBM.SqlConn.Close();
             }

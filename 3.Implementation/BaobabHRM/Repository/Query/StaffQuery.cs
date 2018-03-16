@@ -29,6 +29,16 @@ namespace BaobabHRM
             return sd;
         }
 
+        public SqlDataReader SelectWithDeptUser(string dept)
+        {
+            SharedPreference.Instance.DBM.SqlConn.Open();
+            string query = $"SELECT * FROM tbl_staff WHERE dept = '{dept}' AND retirement_day IS NULL OR retirement_day = '';";
+            SharedPreference.Instance.DBM.SqlComm.CommandText = query;
+            SqlDataReader sd;
+            sd = SharedPreference.Instance.DBM.SqlComm.ExecuteReader();
+            return sd;
+        }
+
         public SqlDataReader SelectWithIdnumber(string idnumber)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();

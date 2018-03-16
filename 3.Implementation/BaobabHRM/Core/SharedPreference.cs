@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -328,7 +329,15 @@ namespace BaobabHRM
 
                     if (SharedPreference.Instance.SelectedDept != null)
                     {
-                        var sqlData = new StaffQuery().SelectWithDept(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                        SqlDataReader sqlData = null;
+                        if (!SharedPreference.Instance.IsManagement)
+                        {
+                            sqlData = new StaffQuery().SelectWithDeptUser(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                        }
+                        else
+                        {
+                            sqlData = new StaffQuery().SelectWithDept(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                        }
                         while (sqlData.Read())
                         {
                             var dto = new StaffDTO()
@@ -345,6 +354,9 @@ namespace BaobabHRM
                             };
                             SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
                         }
+                        var list = SharedPreference.Instance.StaffList.OrderBy(p => p.STAFF_RANK).ThenBy(p => p.STAFF_IDNUMBER);
+                        SharedPreference.Instance.StaffList = new ObservableCollection<StaffModel>(list);
+
                         sqlData.Close();
                         SharedPreference.Instance.DBM.SqlConn.Close();
                     }

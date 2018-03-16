@@ -150,8 +150,8 @@ namespace BaobabHRM
                         var picture = streamPlayerControl.GetCurrentFrame();
                         var image = new BitmapToBitmapImageConverter().Convert(picture, null, null, null);
                         var popup = new CapturePopup();
-                        (popup.DataContext as CapturePopupViewModel).Message = "정상적으로 출근처리 되었습니다.\n즐거운 하루 되세요!";
-                        (popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
+                        //(popup.DataContext as CapturePopupViewModel).Message = "정상적으로 출근처리 되었습니다.\n즐거운 하루 되세요!";
+                        //(popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
                         if (WindowHelper.CreatePopup(popup, "출근", true) == true)
                         {
                             try
@@ -336,8 +336,8 @@ namespace BaobabHRM
                                             var picture = streamPlayerControl.GetCurrentFrame();
                                             var image = new BitmapToBitmapImageConverter().Convert(picture, null, null, null);
                                             var popup = new CapturePopup();
-                                            (popup.DataContext as CapturePopupViewModel).Message = "정상적으로 퇴근처리 되었습니다.\n오늘 하루도 수고하셨습니다!";
-                                            (popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
+                                            //(popup.DataContext as CapturePopupViewModel).Message = "정상적으로 퇴근처리 되었습니다.\n오늘 하루도 수고하셨습니다!";
+                                            //(popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
                                             if (WindowHelper.CreatePopup(popup, "퇴근", true) == true)
                                             {
                                                 sqlData.Close();
@@ -432,8 +432,8 @@ namespace BaobabHRM
                         var picture = streamPlayerControl.GetCurrentFrame();
                         var image = new BitmapToBitmapImageConverter().Convert(picture, null, null, null);
                         var popup = new CapturePopup();
-                        (popup.DataContext as CapturePopupViewModel).Message = "관리자 로그인을 시도하셨습니다.";
-                        (popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
+                        //(popup.DataContext as CapturePopupViewModel).Message = "관리자 로그인을 시도하셨습니다.";
+                        //(popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
                         if (WindowHelper.CreatePopup(popup, "관리자 로그인", true) == true)
                         {
                             try
@@ -631,6 +631,8 @@ namespace BaobabHRM
                             };
                             SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
                         }
+                        var list = SharedPreference.Instance.StaffList.OrderBy(p => p.STAFF_IDNUMBER);
+                        SharedPreference.Instance.StaffList = new ObservableCollection<StaffModel>(list);
                         sqlData.Close();
                         SharedPreference.Instance.DBM.SqlConn.Close();
                     }
