@@ -42,6 +42,27 @@ namespace BaobabHRM
             }
         }
 
+        /// <summary>
+        /// 2주 보다 전 근태 리스트
+        /// </summary>
+        private ObservableCollection<AttendanceModel> m_TwoWeeksBeforeList;
+        public ObservableCollection<AttendanceModel> TwoWeeksBeforeList
+        {
+            get
+            {
+                if (m_TwoWeeksBeforeList == null)
+                {
+                    m_TwoWeeksBeforeList = new ObservableCollection<AttendanceModel>();
+                }
+                return m_TwoWeeksBeforeList;
+            }
+            set
+            {
+                m_TwoWeeksBeforeList = value;
+                RaisePropertyChanged("TwoWeeksBeforeList");
+            }
+        }
+
         private string m_Today;
         public string Today
         {
@@ -88,6 +109,20 @@ namespace BaobabHRM
             }
         }
 
+        private int m_SelectedIndex;
+        public int SelectedIndex
+        {
+            get
+            {
+                return m_SelectedIndex;
+            }
+            set
+            {
+                m_SelectedIndex = value;
+                RaisePropertyChanged("SelectedIndex");
+            }
+        }
+
         #endregion
 
         #region method
@@ -103,7 +138,45 @@ namespace BaobabHRM
             Timer.Start();
         }
 
-        public void InsertAttendance(SqlDataReader sqlData, AttendanceDTO dto)
+        private void LoadStaff()
+        {
+            SharedPreference.Instance.StaffList.Clear();
+
+            if (SharedPreference.Instance.SelectedDept != null)
+            {
+                SqlDataReader sqlData = null;
+                if (!SharedPreference.Instance.IsManagement)
+                {
+                    sqlData = new StaffQuery().SelectWithDeptUser(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                }
+                else
+                {
+                    sqlData = new StaffQuery().SelectWithDept(SharedPreference.Instance.SelectedDept.DEPT_CODE);
+                }
+                while (sqlData.Read())
+                {
+                    var dto = new StaffDTO()
+                    {
+                        STAFF_IDNUMBER = sqlData["idnumber"].ToString(),
+                        STAFF_DEPT = sqlData["dept"].ToString(),
+                        STAFF_RANK = sqlData["rank"].ToString(),
+                        STAFF_NAME = sqlData["name"].ToString(),
+                        STAFF_ADDRESS = sqlData["address"].ToString(),
+                        STAFF_TEL = sqlData["tel"].ToString(),
+                        STAFF_JOIN_DAY = sqlData["join_day"].ToString(),
+                        STAFF_RETIREMENT_DAY = sqlData["retirement_day"].ToString(),
+                        STAFF_STATE = sqlData["state"].ToString()
+                    };
+                    SharedPreference.Instance.StaffList.Add(new StaffModel(dto));
+                }
+                var list = SharedPreference.Instance.StaffList.OrderBy(p => p.STAFF_IDNUMBER);
+                SharedPreference.Instance.StaffList = new ObservableCollection<StaffModel>(list);
+                sqlData.Close();
+                SharedPreference.Instance.DBM.SqlConn.Close();
+            }
+        }
+
+        public void InsertAttendance(AttendanceDTO dto)
         {
             var today = DateTime.Now;
 
@@ -124,17 +197,25 @@ namespace BaobabHRM
                         Directory.CreateDirectory(Defines.STAFF_PATH);
                     }
 
-                    CaptureScreen(Defines.STAFF_PATH + today.ToString("yyyyMMdd") + "_Attendance_" + dto.ATTENDANCE_IDNUMBER + ".png");
+                    CaptureScreen(Defines.STAFF_PATH + today.ToString("yyyyMMddHHmmss") + "_Attendance_" + dto.ATTENDANCE_IDNUMBER + ".png");
 
                     var popup = new object();
-                    popup = new LatePopup();
+                    var time = new TimeSpan(8, 30, 00);
 
-                    if (DateTime.Now.Hour > 8 && DateTime.Now.Minute > 30 && DateTime.Now.Second > 0)
+                    if (DateTime.Now.DayOfWeek.ToString() == "Monday")
+                    {
+                        time = new TimeSpan(8, 00, 00);
+                    }
+
+                    sqlData2.Close();
+                    SharedPreference.Instance.DBM.SqlConn.Close();
+
+                    if (DateTime.Now.TimeOfDay > time)
                     {
                         popup = new LatePopup();
-                        if (WindowHelper.CreatePopup(popup as LatePopup, "출근", true) == true)
+                        if (WindowHelper.CreatePopup(popup as LatePopup, "지각", true) == true)
                         {
-                            Attendance(sqlData2, dto);
+                            Attendance(dto);
                         }
                     }
                     else
@@ -142,7 +223,7 @@ namespace BaobabHRM
                         popup = new AttendancePopup();
                         if (WindowHelper.CreatePopup(popup as AttendancePopup, "출근", true) == true)
                         {
-                            Attendance(sqlData2, dto);
+                            Attendance(dto);
                         }
                     }
                     //(popup.DataContext as CapturePopupViewModel).Message = "정상적으로 출근처리 되었습니다.\n즐거운 하루 되세요!";
@@ -158,12 +239,10 @@ namespace BaobabHRM
             }
         }
 
-        public void Attendance(SqlDataReader sqlData2, AttendanceDTO dto)
+        public void Attendance(AttendanceDTO dto)
         {
             try
             {
-                sqlData2.Close();
-                SharedPreference.Instance.DBM.SqlConn.Close();
                 new AttendanceQuery().Insert(dto);
 
                 try
@@ -180,6 +259,8 @@ namespace BaobabHRM
                     };
 
                     new AttendanceLogQuery().Insert(logDto);
+                    SharedPreference.Instance.SelectedDept = null;
+                    SharedPreference.Instance.SelectedStaff = null;
                 }
                 catch (Exception e)
                 {
@@ -189,8 +270,6 @@ namespace BaobabHRM
             }
             catch (Exception e)
             {
-                sqlData2.Close();
-                SharedPreference.Instance.DBM.SqlConn.Close();
                 MessageBox.Show("출근 실패하셨습니다. 관리자에게 문의하세요.\n에러내용 : " + e.Message);
             }
         }
@@ -201,8 +280,6 @@ namespace BaobabHRM
             int width = (int)SystemParameters.PrimaryScreenWidth;
             int height = (int)SystemParameters.PrimaryScreenHeight;
 
-
-
             // 화면 크기만큼의 Bitmap 생성
             using (Bitmap bmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
             {
@@ -210,7 +287,7 @@ namespace BaobabHRM
                 using (Graphics gr = Graphics.FromImage(bmp))
                 {
                     // 화면을 그대로 카피해서 Bitmap 메모리에 저장
-                    gr.CopyFromScreen(440, 176, 400, 300, new System.Drawing.Size(400, 300));
+                    gr.CopyFromScreen(0, 0, 0, 0, bmp.Size);
                 }
                 
                 // Bitmap 데이타를 파일로 저장
@@ -234,6 +311,7 @@ namespace BaobabHRM
                 return new DelegateCommand(delegate ()
                 {
                     StartClock();
+                    LoadStaff();
                 });
             }
         }
@@ -289,44 +367,110 @@ namespace BaobabHRM
         /// <summary>
         /// 출근 커맨드
         /// </summary>
-        public DelegateCommand<UserControl> AttendanceCommand
+        public DelegateCommand AttendanceCommand
         {
             get
             {
-                return new DelegateCommand<UserControl>(delegate (UserControl uc)
+                return new DelegateCommand(delegate ()
                 {
                     try
                     {
                         if (SharedPreference.Instance.SelectedStaff != null)
                         {
+                            // 2주 보다 전에 퇴근 기록이 없는 경우 퇴근 시간 입력 (17:30)
+                            SqlDataReader sqlData = new AttendanceQuery().SelectTwoWeeksBefore();
+                            if (sqlData.HasRows)
+                            {
+                                var message = "";
+                                while (sqlData.Read())
+                                {
+                                    try
+                                    {
+                                        AttendanceDTO dto = new AttendanceDTO()
+                                        {
+                                            ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
+                                            ATTENDANCE_NAME = sqlData["name"].ToString(),
+                                            ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
+                                            ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
+                                            ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
+                                            ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
+                                            ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
+                                            ATTENDANCE_ETC = sqlData["etc"].ToString()
+                                        };
+
+                                        TwoWeeksBeforeList.Add(new AttendanceModel(dto));
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show("2주 보다 전 데이터를 읽어오는데 실패했습니다. 관리자에게 문의하세요.\n에러내용 : " + e.Message);
+                                    }
+                                }
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+
+                                foreach (var model in TwoWeeksBeforeList)
+                                {
+                                    new AttendanceQuery().UpdateOutTime(model.Dto, "17:30:00");
+                                    message += model.Dto.ATTENDANCE_BUSINESS_DAY + "\n";
+
+                                    try
+                                    {
+                                        AttendanceLogDTO logDto = new AttendanceLogDTO()
+                                        {
+                                            ATTENDANCE_LOG_ADMIN = "퇴근",
+                                            ATTENDANCE_LOG_IDNUMBER = SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER,
+                                            ATTENDANCE_LOG_BUSINESSDAY = model.Dto.ATTENDANCE_BUSINESS_DAY,
+                                            ATTENDANCE_LOG_WHAT = "2주 전 퇴근",
+                                            ATTENDANCE_LOG_LOG = "퇴근 시간: 17:30:00",
+                                            ATTENDANCE_LOG_REASON = "2주 동안 퇴근 시간 입력 기록 없음",
+                                            ATTENDANCE_LOG_UPDATE_DATE = DateTime.Now.ToString("yyyy-MM-dd")
+                                        };
+
+                                        new AttendanceLogQuery().Insert(logDto);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show("기록을 남기는데 실패하셨습니다. 관리자에게 문의하세요.\n에러내용 : " + e.Message);
+                                    }
+                                }
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                                MessageBox.Show(message + "위의 날짜의 퇴근 기록이 없어 17:30:00으로 입력되었습니다.");
+                            }
+                            else
+                            {
+                                sqlData.Close();
+                                SharedPreference.Instance.DBM.SqlConn.Close();
+                            }
+
+
                             var today = DateTime.Now;
                             var yesterday = today.AddDays(-14);
-                            AttendanceDTO dto = new AttendanceDTO()
+                            AttendanceDTO dto2 = new AttendanceDTO()
                             {
                                 ATTENDANCE_BUSINESS_DAY = today.ToString("yyyy-MM-dd"),
                                 ATTENDANCE_NAME = SharedPreference.Instance.SelectedStaff.STAFF_NAME,
                                 ATTENDANCE_IDNUMBER = SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER,
                                 ATTENDANCE_IN_TIME = DateTime.Now.ToString("HH:mm:ss")
                             };
-
-                            SqlDataReader sqlData = new AttendanceQuery().SelectWithIdnumberAndBusinessDay(dto.ATTENDANCE_IDNUMBER, today.ToString("yyyy-MM-dd"), yesterday.ToString("yyyy-MM-dd"));
+                            SqlDataReader sqlData2 = new AttendanceQuery().SelectWithIdnumberAndBusinessDay(dto2.ATTENDANCE_IDNUMBER, today.ToString("yyyy-MM-dd"), yesterday.ToString("yyyy-MM-dd"));
                             // 최근 2주 중 퇴근한 기록이 하나라도 없는 경우
-                            if (sqlData.HasRows)
+                            if (sqlData2.HasRows)
                             {
-                                sqlData.Close();
+                                sqlData2.Close();
                                 SharedPreference.Instance.DBM.SqlConn.Close();
                                 var popup = new OutTimeCheckPopup();
                                 if (WindowHelper.CreatePopup(popup, "퇴근시간 입력", true) == true)
                                 {
-                                    InsertAttendance(sqlData, dto);
+                                    InsertAttendance(dto2);
                                 }
                             }
                             else
                             {
-                                sqlData.Close();
+                                sqlData2.Close();
                                 SharedPreference.Instance.DBM.SqlConn.Close();
 
-                                InsertAttendance(sqlData, dto);
+                                InsertAttendance(dto2);
                             }
                         }
                         else
@@ -347,11 +491,11 @@ namespace BaobabHRM
         /// <summary>
         /// 퇴근 커맨드
         /// </summary>
-        public DelegateCommand<StreamPlayerControl> LeaveWorkCommand
+        public DelegateCommand LeaveWorkCommand
         {
             get
             {
-                return new DelegateCommand<StreamPlayerControl>(delegate (StreamPlayerControl streamPlayerControl)
+                return new DelegateCommand(delegate ()
                 {
                     try
                     {
@@ -382,7 +526,7 @@ namespace BaobabHRM
                                             Directory.CreateDirectory(Defines.STAFF_PATH);
                                         }
 
-                                        CaptureScreen(Defines.STAFF_PATH + today.ToString("yyyyMMdd") + "_LeaveWork_" + dto.ATTENDANCE_IDNUMBER + ".bmp");
+                                        CaptureScreen(Defines.STAFF_PATH + today.ToString("yyyyMMddHHmmss") + "_LeaveWork_" + dto.ATTENDANCE_IDNUMBER + ".bmp");
                                         var popup = new LeaveworkPopup();
                                         //(popup.DataContext as CapturePopupViewModel).Message = "정상적으로 퇴근처리 되었습니다.\n오늘 하루도 수고하셨습니다!";
                                         //(popup.DataContext as CapturePopupViewModel).Image = image as BitmapImage;
@@ -407,6 +551,8 @@ namespace BaobabHRM
                                                 };
 
                                                 new AttendanceLogQuery().Insert(logDto);
+                                                SharedPreference.Instance.SelectedDept = null;
+                                                SharedPreference.Instance.SelectedStaff = null;
                                             }
                                             catch (Exception e)
                                             {
@@ -426,6 +572,10 @@ namespace BaobabHRM
                                     SharedPreference.Instance.DBM.SqlConn.Close();
                                     MessageBox.Show("이미 퇴근 처리가 되어있습니다.");
                                 }
+                            }
+                            else
+                            {
+                                MessageBox.Show("오늘 출근 내역이 없습니다.");
                             }
                             sqlData.Close();
                             SharedPreference.Instance.DBM.SqlConn.Close();
@@ -448,14 +598,16 @@ namespace BaobabHRM
         /// <summary>
         /// 조회 커맨드
         /// </summary>
-        public DelegateCommand InquiryCommand
+        public DelegateCommand<string> InquiryCommand
         {
             get
             {
-                return new DelegateCommand(delegate ()
+                return new DelegateCommand<string>(delegate (string condition)
                 {
+
                     var popup = new InquiryPopup();
-                    if (WindowHelper.CreatePopup(popup, "출근", true) == true)
+                    (popup.DataContext as InquiryPopupViewModel).Conditions = condition;
+                    if (WindowHelper.CreatePopup(popup, "전체 조회", true) == true)
                     {
 
                     }

@@ -48,20 +48,20 @@
                         <TextBlock MinWidth="20" MinHeight="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=ADisplayTimeHours, Mode=OneWay}" TextAlignment="Center" />
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
                             <Button Padding="0" Width="10" Height="10" BorderBrush="Black" BorderThickness="0.25" Background="Transparent" Command="{Binding Path=ClickAHourUpCommand}">
-                                <Image Width="10" Height="10" Source="./BaobabHRM/Resources/up_arrow.png"/>
+                                <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/up_arrow.png"/>
                             </Button>
                             <Button Padding="0" Width="10" Height="10" BorderBrush="Black" BorderThickness="0.25" Background="Transparent" Command="{Binding Path=ClickAHourDownCommand}">
-                                <Image Width="10" Height="10" Source="./BaobabHRM/Resources/down_arrow.png"/>
+                                <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/down_arrow.png"/>
                             </Button>
                         </StackPanel>
                         <TextBlock Margin="3,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text=":" TextAlignment="Center" />
                         <TextBlock MinWidth="20" MinHeight="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=ADisplayTimeMinutes, Mode=OneWay}" TextAlignment="Center" />
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
                             <Button Padding="0" Width="10" Height="10" BorderBrush="Black" BorderThickness="0.25" Background="Transparent" Command="{Binding Path=ClickAMinutesUpCommand}">
-                                <Image Width="10" Height="10" Source="./BaobabHRM/Resources/up_arrow.png"/>
+                                <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/up_arrow.png"/>
                             </Button>
                             <Button Padding="0" Width="10" Height="10" BorderBrush="Black" BorderThickness="0.25" Background="Transparent" Command="{Binding Path=ClickAMinutesDownCommand}">
-                                <Image Width="10" Height="10" Source="./BaobabHRM/Resources/down_arrow.png"/>
+                                <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/down_arrow.png"/>
                             </Button>
                         </StackPanel>
                     </StackPanel>
@@ -75,20 +75,20 @@
                         <TextBlock MinWidth="20" MinHeight="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=LDisplayTimeHours, Mode=OneWay}" TextAlignment="Center" />
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
                             <Button Padding="0" Width="10" Height="10" BorderBrush="Black" BorderThickness="0.25" Background="Transparent" Command="{Binding Path=ClickLHourUpCommand}">
-                                <Image Width="10" Height="10" Source="./BaobabHRM/Resources/up_arrow.png"/>
+                                <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/up_arrow.png"/>
                             </Button>
                             <Button Padding="0" Width="10" Height="10" BorderBrush="Black" BorderThickness="0.25" Background="Transparent" Command="{Binding Path=ClickLHourDownCommand}">
-                                <Image Width="10" Height="10" Source="./BaobabHRM/Resources/down_arrow.png"/>
+                                <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/down_arrow.png"/>
                             </Button>
                         </StackPanel>
                         <TextBlock Margin="3,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text=":" TextAlignment="Center" />
                         <TextBlock MinWidth="20" MinHeight="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=LDisplayTimeMinutes, Mode=OneWay}" TextAlignment="Center" />
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
                             <Button Padding="0" Width="10" Height="10" BorderBrush="Black" BorderThickness="0.25" Background="Transparent" Command="{Binding Path=ClickLMinutesUpCommand}">
-                                <Image Width="10" Height="10" Source="./BaobabHRM/Resources/up_arrow.png"/>
+                                <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/up_arrow.png"/>
                             </Button>
                             <Button Padding="0" Width="10" Height="10" BorderBrush="Black" BorderThickness="0.25" Background="Transparent" Command="{Binding Path=ClickLMinutesDownCommand}">
-                                <Image Width="10" Height="10" Source="./BaobabHRM/Resources/down_arrow.png"/>
+                                <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/down_arrow.png"/>
                             </Button>
                         </StackPanel>
                     </StackPanel>

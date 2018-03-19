@@ -38,7 +38,17 @@
     </UserControl.Resources>
     
     <Grid Background="Transparent">
-        <TabControl Background="Transparent">
+        <TabControl SelectedIndex="{Binding Path=SelectedIndex}">
+            <TabControl.Style>
+                <Style TargetType="{x:Type TabControl}">
+                    <Setter Property="Background" Value="White"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=SelectedIndex}" Value="0">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TabControl.Style>
             <TabItem Header="출근 퇴근">
                 <TabItem.Style>
                     <Style TargetType="{x:Type TabItem}">
@@ -53,15 +63,18 @@
                 <local:UserMainItemView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </TabItem>
             <TabItem Header="야근 신청">
-                <local:UserOverItemView/>
+                <local:UserOverItemView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </TabItem>
             <TabItem Header="휴가 신청">
-                <local:UserOffItemView/>
+                <local:UserOffItemView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </TabItem>
             <TabItem Header="관리자 메뉴">
                 <TabItem.Style>
                     <Style TargetType="{x:Type TabItem}">
                         <Setter Property="IsSelected" Value="False"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Background" Value="White"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="True">
                                 <Setter Property="IsSelected" Value="True"/>
@@ -69,35 +82,50 @@
                         </Style.Triggers>
                     </Style>
                 </TabItem.Style>
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                <Grid Background="White">
                     <ContentControl>
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="False">
                                         <Setter Property="ContentTemplate" Value="{StaticResource LoginPopupTemplateKey}"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="True">
                                         <Setter Property="ContentTemplate" Value="{StaticResource ManagementPopupTemplateKey}"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Dept">
-                                        <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Rank">
-                                        <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
-                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Dept"/>
+
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Rank"/>
+
                                     <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Staff">
                                         <Setter Property="ContentTemplate" Value="{StaticResource StaffViewTemplateKey}"/>
+                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        <Setter Property="VerticalAlignment" Value="Stretch"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Attendance">
                                         <Setter Property="ContentTemplate" Value="{StaticResource AttendanceViewTemplateKey}"/>
+                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        <Setter Property="VerticalAlignment" Value="Stretch"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Statistics">
                                         <Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>
+                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        <Setter Property="VerticalAlignment" Value="Stretch"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Etc">
                                         <!--<Setter Property="ContentTemplate" Value="{StaticResource StatisticsViewTemplateKey}"/>-->
+                                        <!--<Setter Property="HorizontalAlignment" Value="Stretch"/>-->
+                                        <!--<Setter Property="VerticalAlignment" Value="Stretch"/>-->
                                     </DataTrigger>
+                                    
+                                    <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=ViewName}" Value="Admin"/>
+
                                 </Style.Triggers>
                             </Style>
                         </ContentControl.Style>

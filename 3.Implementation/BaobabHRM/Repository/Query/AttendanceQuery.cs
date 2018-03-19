@@ -23,7 +23,7 @@ namespace BaobabHRM
         public SqlDataReader SelectWithIdnumberAndBusinessDay(string idnumber, string today, string twoWeeksAgo)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();
-            string query = $"SELECT * FROM tbl_attendance WHERE (idnumber = '{idnumber}' AND (CAST([businessday] AS DATETIME) > '{twoWeeksAgo}') AND (CAST([businessday] AS DATETIME) < '{today}')) AND (out_time IS NULL OR out_time = '');";
+            string query = $"SELECT * FROM tbl_attendance WHERE (idnumber = '{idnumber}' AND (CAST([businessday] AS DATETIME) >= '{twoWeeksAgo}') AND (CAST([businessday] AS DATETIME) < '{today}')) AND (out_time IS NULL OR out_time = '');";
             SharedPreference.Instance.DBM.SqlComm.CommandText = query;
             SqlDataReader sd;
             sd = SharedPreference.Instance.DBM.SqlComm.ExecuteReader();
@@ -50,6 +50,16 @@ namespace BaobabHRM
             return sd;
         }
 
+        public SqlDataReader SelectTwoWeeksBefore()
+        {
+            SharedPreference.Instance.DBM.SqlConn.Open();
+            string query = $"SELECT * FROM tbl_attendance WHERE CAST([businessday] AS DATETIME) < '{DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd")}' AND (out_time IS NULL OR out_time = '') ORDER BY num DESC;";
+            SharedPreference.Instance.DBM.SqlComm.CommandText = query;
+            SqlDataReader sd;
+            sd = SharedPreference.Instance.DBM.SqlComm.ExecuteReader();
+            return sd;
+        }
+
         public SqlDataReader SelectWithIdnumberAndToday(string idnumber, string today)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();
@@ -63,7 +73,7 @@ namespace BaobabHRM
         public SqlDataReader SelectWithDeptAndDay(string dept, DateTime startDate, DateTime endDate)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();
-            string query = $"SELECT DISTINCT A.num, A.businessday, A.name, A.idnumber, A.in_time, A.out_time, A.overtime, A.off_day, A.etc FROM tbl_attendance AS A INNER JOIN tbl_staff AS S ON S.dept = '{dept}' ORDER BY num DESC;";
+            string query = $"SELECT DISTINCT A.num, A.businessday, A.name, A.idnumber, A.in_time, A.out_time, A.overtime, A.off_day, A.etc FROM tbl_attendance AS A LEFT JOIN tbl_staff AS S ON A.idnumber = S.idnumber WHERE S.dept = '{dept}' AND (CAST([businessday] AS DATETIME) >= '{startDate.ToString("yyyy-MM-dd")}' AND CAST([businessday] AS DATETIME) <= '{endDate.ToString("yyyy-MM-dd")}') ORDER BY num DESC;";
             SharedPreference.Instance.DBM.SqlComm.CommandText = query;
             SqlDataReader sd;
             sd = SharedPreference.Instance.DBM.SqlComm.ExecuteReader();

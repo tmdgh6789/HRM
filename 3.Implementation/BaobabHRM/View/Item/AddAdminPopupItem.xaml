@@ -69,11 +69,11 @@
             <Label Grid.Row="5" Grid.Column="1" Content="직급" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox Grid.Row="5" Grid.Column="2" Padding="5" Text="{Binding Path=Rank}" Height="30" Width="150" HorizontalAlignment="Left" IsEnabled="False"/>
 
-            <Label Grid.Row="6" Grid.Column="1" Content="등급" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <ComboBox Grid.Row="6" Grid.Column="2" ItemsSource="{Binding Path=GradeList}" SelectedItem="{Binding Path=SelectedGrade}" Height="30" Width="150" HorizontalAlignment="Left"/>
+            <Label Grid.Row="6" Grid.Column="1" Content="권한" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="6" Grid.Column="2" ItemsSource="{Binding Path=AuthList}" SelectedItem="{Binding Path=SelectedAuth}" Height="30" Width="150" HorizontalAlignment="Left"/>
 
-            <Label Grid.Row="7" Grid.Column="1" Content="권한" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <ComboBox Grid.Row="7" Grid.Column="2" ItemsSource="{Binding Path=AuthList}" SelectedItem="{Binding Path=SelectedAuth}" Height="30" Width="150" HorizontalAlignment="Left"/>
+            <Label Grid.Row="7" Grid.Column="1" Content="등급" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="7" Grid.Column="2" ItemsSource="{Binding Path=GradeList}" SelectedItem="{Binding Path=SelectedGrade}" Height="30" Width="150" HorizontalAlignment="Left"/>
 
             <Label Grid.Row="8" Grid.Column="1" Content="사유" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox Grid.Row="8" Grid.Column="2" Padding="5" Text="{Binding Path=Reason}" Height="30" Width="150" HorizontalAlignment="Left"/>

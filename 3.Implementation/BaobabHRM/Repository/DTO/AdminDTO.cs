@@ -14,7 +14,7 @@ namespace BaobabHRM
         public string ADMIN_IDNUMBER { get; set; }
         public string ADMIN_NAME { get; set; }
         public string ADMIN_RANK { get; set; }
-        public string ADMIN_GRADE { get; set; }
         public string ADMIN_AUTH { get; set; }
+        public string ADMIN_GRADE { get; set; }
     }
 }

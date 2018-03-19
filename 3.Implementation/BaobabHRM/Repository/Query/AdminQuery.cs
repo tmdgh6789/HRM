@@ -42,7 +42,7 @@ namespace BaobabHRM
         public void Insert(AdminDTO dto)
         {
             SharedPreference.Instance.DBM.SqlConn.Open();
-            string query = $"INSERT INTO tbl_admin (id, password, idnumber, name, rank, grade, auth) VALUES ('{dto.ADMIN_ID}', '{dto.ADMIN_PASSWORD}', '{dto.ADMIN_IDNUMBER}', '{dto.ADMIN_NAME}', '{dto.ADMIN_RANK}', '{dto.ADMIN_GRADE}', '{dto.ADMIN_AUTH}');";
+            string query = $"INSERT INTO tbl_admin (id, password, idnumber, name, rank, auth, grade) VALUES ('{dto.ADMIN_ID}', '{dto.ADMIN_PASSWORD}', '{dto.ADMIN_IDNUMBER}', '{dto.ADMIN_NAME}', '{dto.ADMIN_RANK}', '{dto.ADMIN_AUTH}', '{dto.ADMIN_GRADE}');";
             SharedPreference.Instance.DBM.SqlComm.CommandText = query;
             SharedPreference.Instance.DBM.SqlComm.ExecuteNonQuery();
             SharedPreference.Instance.DBM.SqlConn.Close();

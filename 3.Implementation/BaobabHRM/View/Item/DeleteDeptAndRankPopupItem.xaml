@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              Background="White"
              Name="uc"
-             d:DesignHeight="270" d:DesignWidth="300">
+             d:DesignHeight="270" d:DesignWidth="290">
     
     <UserControl.DataContext>
         <local:DeptAndRankPopupItemViewModel/>
@@ -54,7 +54,7 @@
             <ListView.View>
                 <GridView>
                     <!--코드-->
-                    <GridViewColumn Header="코드" Width="90">
+                    <GridViewColumn Header="코드" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">

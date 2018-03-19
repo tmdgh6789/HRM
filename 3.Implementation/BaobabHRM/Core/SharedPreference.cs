@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace BaobabHRM
@@ -95,7 +96,6 @@ namespace BaobabHRM
                 RaisePropertyChanged("IsManagement");
             }
         }
-
 
         /// <summary>
         /// 관리 뷰 이름
@@ -280,10 +280,13 @@ namespace BaobabHRM
                 sqlData.Read();
                 AdminDTO dto = new AdminDTO
                 {
+                    ADMIN_NUM = Int32.Parse(sqlData["num"].ToString()),
                     ADMIN_ID = sqlData["id"].ToString(),
                     ADMIN_PASSWORD = sqlData["password"].ToString(),
+                    ADMIN_IDNUMBER = sqlData["idnumber"].ToString(),
                     ADMIN_NAME = sqlData["name"].ToString(),
                     ADMIN_RANK = sqlData["rank"].ToString(),
+                    ADMIN_AUTH = sqlData["auth"].ToString(),
                     ADMIN_GRADE = sqlData["grade"].ToString()
                 };
                 SharedPreference.Instance.LoginAdmin = new AdminModel(dto);
@@ -291,6 +294,25 @@ namespace BaobabHRM
                 SharedPreference.Instance.IsManagement = true;
                 sqlData.Close();
                 SharedPreference.Instance.DBM.SqlConn.Close();
+
+                try
+                {
+                    AllLogDTO logDto = new AllLogDTO
+                    {
+                        ALLLOG_ADMIN = id,
+                        ALLLOG_WHAT = "관리자 로그인",
+                        ALLLOG_LOG = "관리자 로그인",
+                        ALLLOG_REASON = "관리자 로그인",
+                        ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                    };
+                    new AllLogQuery().Insert(logDto);
+                }
+                catch (Exception e)
+                {
+                    SharedPreference.Instance.DBM.SqlConn.Close();
+                    MessageBox.Show("관리자 로그인 실패\n에러 내용 : " + e.Message);
+                }
+
                 return true;
             }
             else
@@ -308,8 +330,26 @@ namespace BaobabHRM
         /// </summary>
         public void Logout()
         {
-            SharedPreference.Instance.IsLoginCompleted = false;
-            SharedPreference.Instance.LoginAdmin = null;
+            try
+            {
+                AllLogDTO logDto = new AllLogDTO
+                {
+                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
+                    ALLLOG_WHAT = "관리자 로그아웃",
+                    ALLLOG_LOG = "관리자 로그아웃",
+                    ALLLOG_REASON = "관리자 로그아웃",
+                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                };
+                new AllLogQuery().Insert(logDto);
+
+                SharedPreference.Instance.IsLoginCompleted = false;
+                SharedPreference.Instance.LoginAdmin = null;
+            }
+            catch (Exception e)
+            {
+                SharedPreference.Instance.DBM.SqlConn.Close();
+                MessageBox.Show("관리자 로그아웃 실패\n에러 내용 : " + e.Message);
+            }
         } // end method
 
         #endregion

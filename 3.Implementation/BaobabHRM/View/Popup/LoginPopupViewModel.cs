@@ -51,18 +51,24 @@ namespace BaobabHRM
                     password = passwordBox.Password;
                     if (id == null || id.Length == 0)
                     {
+                        MessageBox.Show("아이디를 입력해주세요");
                         return;
                     }
                
                     if (password == null || password.Length == 0)
                     {
+                        MessageBox.Show("비밀번호를 입력해주세요");
                         return;
                     }
                
-                    SharedPreference.Instance.Login(id, password);
-                    if (Window.GetWindow(uc) != null)
+                    if (SharedPreference.Instance.Login(id, password))
                     {
-                        Window.GetWindow(uc).DialogResult = true;
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("아이디와 비밀번호를 확인해주세요.");
+                        return;
                     }
                 });
             }

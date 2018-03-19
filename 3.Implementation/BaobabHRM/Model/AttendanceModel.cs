@@ -153,7 +153,7 @@ namespace BaobabHRM
 
         #region property
 
-        private string m_SelectedTime = DateTime.Now.ToString("HH:mm:ss");
+        private string m_SelectedTime = DateTime.Now.ToString("HH:mm:00");
         public string SelectedTime
         {
             get
@@ -211,7 +211,7 @@ namespace BaobabHRM
             set
             {
                 m_CurrentTime = value;
-                SelectedTime = value.ToString("HH:mm:ss");
+                SelectedTime = value.ToString("HH:mm:00");
                 RaisePropertyChanged("CurrentTime");
                 RaisePropertyChanged("DisplayTimeHours");
                 RaisePropertyChanged("DisplayTimeMinutes");
@@ -229,7 +229,7 @@ namespace BaobabHRM
                 return new DelegateCommand(delegate ()
                 {
                     CurrentTime = CurrentTime.AddHours(1);
-                    SelectedTime = CurrentTime.ToString("HH:mm:ss");
+                    SelectedTime = CurrentTime.ToString("HH:mm:00");
                 });
             }
         }
@@ -241,7 +241,7 @@ namespace BaobabHRM
                 return new DelegateCommand(delegate ()
                 {
                     CurrentTime = CurrentTime.AddHours(-1);
-                    SelectedTime = CurrentTime.ToString("HH:mm:ss");
+                    SelectedTime = CurrentTime.ToString("HH:mm:00");
                 });
             }
         }
@@ -253,7 +253,7 @@ namespace BaobabHRM
                 return new DelegateCommand(delegate ()
                 {
                     CurrentTime = CurrentTime.AddMinutes(1);
-                    SelectedTime = CurrentTime.ToString("HH:mm:ss");
+                    SelectedTime = CurrentTime.ToString("HH:mm:00");
                 });
             }
         }
@@ -265,7 +265,7 @@ namespace BaobabHRM
                 return new DelegateCommand(delegate ()
                 {
                     CurrentTime = CurrentTime.AddMinutes(-1);
-                    SelectedTime = CurrentTime.ToString("HH:mm:ss");
+                    SelectedTime = CurrentTime.ToString("HH:mm:00");
                 });
             }
         }

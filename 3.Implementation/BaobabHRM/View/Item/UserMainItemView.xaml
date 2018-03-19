@@ -17,7 +17,7 @@
     
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/BaobabHRM;component/Resources/background2.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/BaobabHRM;component/Resources/background.png" Stretch="UniformToFill"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -139,7 +139,7 @@
                         </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding Source={x:Static local:SharedPreference.Instance}, Path=DeptList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Source={x:Static local:SharedPreference.Instance}, Path=SelectedDept}" SelectedIndex="0" Width="200" HorizontalAlignment="Center">
+                                <ComboBox ItemsSource="{Binding Source={x:Static local:SharedPreference.Instance}, Path=DeptList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Source={x:Static local:SharedPreference.Instance}, Path=SelectedDept}" Width="200" HorizontalAlignment="Center">
                                     <ComboBox.ItemTemplate>
                                         <ItemContainerTemplate>
                                             <TextBlock Text="{Binding Path=DEPT_NAME}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
@@ -158,49 +158,20 @@
             </DataGrid>
             
             <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
-                <Button Height="33" Width="100" Margin="3" Command="{Binding Path=AttendanceCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}" Padding="0" Background="Transparent">
-                    <Image Source="/BaobabHRM;component/Resources/attendance1.png"/>
-                    <!--<TextBlock Text="출근"/>-->
+                <Button Height="33" Width="100" Margin="3" Command="{Binding Path=AttendanceCommand}" Padding="0" Background="Transparent">
+                    <Image Source="/BaobabHRM;component/Resources/attendance.png"/>
                 </Button>
-                <Button Height="33" Width="100" Margin="3" Command="{Binding Path=LeaveWorkCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}" Padding="0" Background="Transparent">
-                    <Image Source="/BaobabHRM;component/Resources/leavework1.png"/>
-                    <!--<TextBlock Text="퇴근"/>-->
+                <Button Height="33" Width="100" Margin="3" Command="{Binding Path=LeaveWorkCommand}" Padding="0" Background="Transparent">
+                    <Image Source="/BaobabHRM;component/Resources/leavework.png"/>
                 </Button>
-                <Button Height="33" Width="100" Margin="3" Command="{Binding Path=InquiryCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}" Padding="0" Background="Transparent">
-                    <Image Source="/BaobabHRM;component/Resources/inquiry1.png"/>
-                    <!--<TextBlock Text="조회"/>-->
+                <Button Height="33" Width="100" Margin="3" Command="{Binding Path=InquiryCommand}" CommandParameter="All" Padding="0" Background="Transparent">
+                    <Image Source="/BaobabHRM;component/Resources/All_inquiry.png"/>
+                </Button>
+                <Button Height="33" Width="100" Margin="3" Command="{Binding Path=InquiryCommand}" CommandParameter="Selection" Padding="0" Background="Transparent">
+                    <Image Source="/BaobabHRM;component/Resources/Selection_inquiry.png"/>
                 </Button>
             </StackPanel>
 
         </Grid>
-        <!--<Grid Grid.Row="3">
-            <ContentControl>
-                <ContentControl.Style>
-                    <Style TargetType="{x:Type ContentControl}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="False">
-                                <Setter Property="ContentTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Button Grid.Row="3" Content="로그인" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.LoginCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Source={x:Static local:SharedPreference.Instance}, Path=IsLoginCompleted}" Value="True">
-                                <Setter Property="ContentTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Button Grid.Row="3" Content="로그아웃" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.LogoutCommand}" CommandParameter="{Binding ElementName=streamPlayerControl}"/>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ContentControl.Style>
-            </ContentControl>
-        </Grid>-->
-        
     </Grid>
 </UserControl>

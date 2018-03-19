@@ -15,7 +15,7 @@
 
     <Grid Height="720" Width="720">
         <Grid.Background>
-            <ImageBrush ImageSource="/BaobabHRM;component/Resources/late.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/BaobabHRM;component/Resources/late_popup.png" Stretch="UniformToFill"/>
         </Grid.Background>
         <Button Height="55" Width="330" Margin="0, 0, 0, 55" Command="{Binding Path=OkCommand}" CommandParameter="{Binding ElementName=uc}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="Transparent">
             <Image Source="/BaobabHRM;component/Resources/ok.png"/>

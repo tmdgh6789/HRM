@@ -88,7 +88,7 @@
                                                                             BorderThickness="0.25"
                                                                             Background="Transparent"
                                                                             Command="{Binding Path=ClickHourUpCommand}">
-                                                                        <Image Width="10" Height="10" Source="./BaobabHRM/Resources/up_arrow.png"/>
+                                                                        <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/up_arrow.png"/>
                                                                     </Button>
 
                                                                     <Button x:Name="HourDownButton"
@@ -99,7 +99,7 @@
                                                                             BorderThickness="0.25"
                                                                             Background="Transparent"
                                                                             Command="{Binding Path=ClickHourDownCommand}">
-                                                                        <Image Width="10" Height="10" Source="./BaobabHRM/Resources/down_arrow.png"/>
+                                                                        <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/down_arrow.png"/>
                                                                     </Button>
                                                                 </StackPanel>
                                                                 <TextBlock Margin="3,0,0,0"
@@ -129,7 +129,7 @@
                                                                             BorderThickness="0.25"
                                                                             Background="Transparent"
                                                                             Command="{Binding Path=ClickMinutesUpCommand}">
-                                                                        <Image Width="10" Height="10" Source="./BaobabHRM/Resources/up_arrow.png"/>
+                                                                        <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/up_arrow.png"/>
                                                                     </Button>
 
                                                                     <Button x:Name="MinutesDownButton"
@@ -140,7 +140,7 @@
                                                                             BorderThickness="0.25"
                                                                             Background="Transparent"
                                                                             Command="{Binding Path=ClickMinutesDownCommand}">
-                                                                        <Image Width="10" Height="10" Source="./BaobabHRM/Resources/down_arrow.png"/>
+                                                                        <Image Width="10" Height="10" Source="/BaobabHRM;component/Resources/down_arrow.png"/>
                                                                     </Button>
                                                                 </StackPanel>
                                                             </StackPanel>

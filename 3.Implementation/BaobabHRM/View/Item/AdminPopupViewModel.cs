@@ -258,62 +258,11 @@ namespace BaobabHRM
         }
 
         /// <summary>
-        /// 등급 리스트
-        /// 000 : 루트
-        /// 100 : 관리자, 부서, 직급, 사원, 출결, 기타, 통계
-        /// 200 : 부서, 직급, 사원, 출결, 기타, 통계
-        /// 300 : 직급, 사원, 출결, 기타, 통계
-        /// 400 : 사원, 출결, 기타, 통계
-        /// 500 : 출결, 기타, 통계
-        /// 600 : 기타, 통계
-        /// 700 : 통계
-        /// </summary>
-        private ObservableCollection<string> m_GradeList;
-        public ObservableCollection<string> GradeList
-        {
-            get
-            {
-                if (m_GradeList == null)
-                {
-                    m_GradeList = new ObservableCollection<string>();
-                    for (int i = 1; i < 8; i++)
-                    {
-                        m_GradeList.Add(i.ToString() + "00");
-                    }
-                }
-                return m_GradeList;
-            }
-            set
-            {
-                m_GradeList = value;
-                RaisePropertyChanged("GradeList");
-            }
-        }
-
-        /// <summary>
-        /// 선택된 등급
-        /// </summary>
-        private string m_SelectedGrade;
-        public string SelectedGrade
-        {
-            get
-            {
-                return m_SelectedGrade;
-            }
-            set
-            {
-                m_SelectedGrade = value;
-                RaisePropertyChanged("SelectedGrade");
-            }
-        }
-
-        /// <summary>
         /// 권한 리스트
         /// 00 : 루트
         /// 10 : CRUD
-        /// 20 : CRU
-        /// 30 : CR
-        /// 40 : R
+        /// 20 : CR
+        /// 30 : R
         /// </summary>
         private ObservableCollection<string> m_AuthList;
         public ObservableCollection<string> AuthList
@@ -322,11 +271,12 @@ namespace BaobabHRM
             {
                 if (m_AuthList == null)
                 {
-                    m_AuthList = new ObservableCollection<string>();
-                    for (int i = 1; i < 5; i++)
+                    m_AuthList = new ObservableCollection<string>
                     {
-                        m_AuthList.Add(i + "0");
-                    }
+                        "10",
+                        "20",
+                        "30"
+                    };
                 }
                 return m_AuthList;
             }
@@ -351,6 +301,57 @@ namespace BaobabHRM
             {
                 m_SelectedAuth = value;
                 RaisePropertyChanged("SelectedAuth");
+            }
+        }
+
+        /// <summary>
+        /// 등급 리스트
+        /// 000 : 루트
+        /// 100 : 모두 (관리장)
+        /// 200 : 대표
+        /// 300 : 이사
+        /// 400 : 소속 부서
+        /// 410 : 소속 팀
+        /// </summary>
+        private ObservableCollection<string> m_GradeList;
+        public ObservableCollection<string> GradeList
+        {
+            get
+            {
+                if (m_GradeList == null)
+                {
+                    m_GradeList = new ObservableCollection<string>
+                    {
+                        "100",
+                        "200",
+                        "300",
+                        "400",
+                        "410"
+                    };
+                }
+                return m_GradeList;
+            }
+            set
+            {
+                m_GradeList = value;
+                RaisePropertyChanged("GradeList");
+            }
+        }
+
+        /// <summary>
+        /// 선택된 등급
+        /// </summary>
+        private string m_SelectedGrade;
+        public string SelectedGrade
+        {
+            get
+            {
+                return m_SelectedGrade;
+            }
+            set
+            {
+                m_SelectedGrade = value;
+                RaisePropertyChanged("SelectedGrade");
             }
         }
 
@@ -399,8 +400,8 @@ namespace BaobabHRM
                         ADMIN_IDNUMBER = sqlData["idnumber"].ToString(),
                         ADMIN_NAME = sqlData["name"].ToString(),
                         ADMIN_RANK = sqlData["rank"].ToString(),
-                        ADMIN_GRADE = sqlData["grade"].ToString(),
-                        ADMIN_AUTH = sqlData["auth"].ToString()
+                        ADMIN_AUTH = sqlData["auth"].ToString(),
+                        ADMIN_GRADE = sqlData["grade"].ToString()
                     };
                     AdminList.Add(new AdminModel(dto));
                 }
@@ -417,7 +418,7 @@ namespace BaobabHRM
         private void LoadStaff()
         {
             StaffList.Clear();
-            var sqlData = new StaffQuery().SelectAll();
+            var sqlData = new StaffQuery().SelectAllNotRetirement();
             if (sqlData.HasRows)
             {
                 while (sqlData.Read())
@@ -524,16 +525,16 @@ namespace BaobabHRM
                         MessageBox.Show("사원을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
+                    
+                    if (SelectedAuth == null)
+                    {
+                        MessageBox.Show("권한을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
 
                     if (SelectedGrade == null)
                     {
                         MessageBox.Show("등급을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-
-                    if (SelectedAuth == null)
-                    {
-                        MessageBox.Show("권한을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
 
@@ -552,44 +553,66 @@ namespace BaobabHRM
                             ADMIN_IDNUMBER = SelectedStaff.STAFF_IDNUMBER,
                             ADMIN_NAME = Name,
                             ADMIN_RANK = Rank,
-                            ADMIN_GRADE = SelectedGrade,
-                            ADMIN_AUTH = SelectedAuth
+                            ADMIN_AUTH = SelectedAuth,
+                            ADMIN_GRADE = SelectedGrade
                         };
 
-                        new AdminQuery().Insert(dto);
-
+                        var sqlData = new AdminQuery().SelectWithId(Id, Password);
+                        if (sqlData.HasRows)
+                        {
+                            MessageBox.Show("같은 아이디가 이미 존재합니다.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            sqlData.Close();
+                            SharedPreference.Instance.DBM.SqlConn.Close();
+                            return;
+                        }
+                        sqlData.Close();
+                        SharedPreference.Instance.DBM.SqlConn.Close();
                         try
                         {
-                            AllLogDTO logDto = new AllLogDTO
+                            new AdminQuery().Insert(dto);
+
+                            try
                             {
-                                ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
-                                ALLLOG_WHAT = "관리자",
-                                ALLLOG_LOG = Name + "관리자 추가",
-                                ALLLOG_REASON = Reason,
-                                ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
-                            };
+                                AllLogDTO logDto = new AllLogDTO
+                                {
+                                    ALLLOG_ADMIN = SharedPreference.Instance.LoginAdmin.ADMIN_ID,
+                                    ALLLOG_WHAT = "관리자",
+                                    ALLLOG_LOG = Name + "관리자 추가",
+                                    ALLLOG_REASON = Reason,
+                                    ALLLOG_UPDATE_DATE = DateTime.Now.ToString()
+                                };
 
-                            new AllLogQuery().Insert(logDto);
+                                new AllLogQuery().Insert(logDto);
 
-                            MessageBox.Show("관리자를 추가하셨습니다.");
-                            Id = "";
-                            pb1.Password = "";
-                            pb2.Password = "";
-                            Password = "";
-                            PasswordConfirm = "";
-                            SelectedStaff = null;
-                            SelectedGrade = null;
-                            SelectedAuth = null;
-                            Reason = "";
+                                MessageBox.Show("관리자를 추가하셨습니다.");
+                                Id = "";
+                                pb1.Password = "";
+                                pb2.Password = "";
+                                Password = "";
+                                PasswordConfirm = "";
+                                SelectedStaff = null;
+                                SelectedAuth = null;
+                                SelectedGrade = null;
+                                Reason = "";
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("관리자 추가 내역 저장을 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                                if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
+                                {
+                                    SharedPreference.Instance.DBM.SqlConn.Close();
+                                }
+                            }
                         }
                         catch (Exception e)
                         {
-                            MessageBox.Show("관리자 추가 내역 저장을 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                            MessageBox.Show("관리자 추가를 실패하셨습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
                             if (SharedPreference.Instance.DBM.SqlConn.State == System.Data.ConnectionState.Open)
                             {
                                 SharedPreference.Instance.DBM.SqlConn.Close();
                             }
                         }
+                        
                     }
                     catch (Exception e)
                     {
@@ -627,8 +650,8 @@ namespace BaobabHRM
                         ADMIN_IDNUMBER = SelectedAdmin.ADMIN_IDNUMBER,
                         ADMIN_NAME = SelectedAdmin.ADMIN_NAME,
                         ADMIN_RANK = SelectedAdmin.ADMIN_RANK,
-                        ADMIN_GRADE = SelectedAdmin.ADMIN_GRADE,
-                        ADMIN_AUTH = SelectedAdmin.ADMIN_AUTH
+                        ADMIN_AUTH = SelectedAdmin.ADMIN_AUTH,
+                        ADMIN_GRADE = SelectedAdmin.ADMIN_GRADE
                     };
 
                     var what = $"관리자 사번: {SelectedAdmin.ADMIN_IDNUMBER}, ";
@@ -660,20 +683,6 @@ namespace BaobabHRM
                         log += $"비밀번호: {beforeDto.ADMIN_PASSWORD} -> {afterDto.ADMIN_PASSWORD} ";
                     }
 
-                    if (IsCheckedGrade)
-                    {
-                        if (SelectedGrade == null)
-                        {
-                            MessageBox.Show("변경할 등급을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return;
-                        }
-
-                        afterDto.ADMIN_GRADE = SelectedGrade;
-
-                        what += "등급 ";
-                        log += $"등급: {beforeDto.ADMIN_GRADE} -> {afterDto.ADMIN_GRADE} ";
-                    }
-
                     if (IsCheckedAuth)
                     {
                         if (SelectedAuth == null)
@@ -686,6 +695,20 @@ namespace BaobabHRM
 
                         what += "권한 ";
                         log += $"권한: {beforeDto.ADMIN_AUTH} -> {afterDto.ADMIN_AUTH} ";
+                    }
+
+                    if (IsCheckedGrade)
+                    {
+                        if (SelectedGrade == null)
+                        {
+                            MessageBox.Show("변경할 등급을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
+                        afterDto.ADMIN_GRADE = SelectedGrade;
+
+                        what += "등급 ";
+                        log += $"등급: {beforeDto.ADMIN_GRADE} -> {afterDto.ADMIN_GRADE} ";
                     }
 
                     if (Reason == null || Reason.Length == 0)
@@ -722,16 +745,16 @@ namespace BaobabHRM
 
                             MessageBox.Show("관리자를 수정하셨습니다.");
                             IsCheckedPassword = false;
-                            IsCheckedGrade = false;
                             IsCheckedAuth = false;
+                            IsCheckedGrade = false;
                             SelectedAdmin = null;
                             pb1.Password = "";
                             pb2.Password = "";
                             Password = "";
                             PasswordConfirm = "";
                             SelectedStaff = null;
-                            SelectedGrade = null;
                             SelectedAuth = null;
+                            SelectedGrade = null;
                             Reason = "";
                         }
                         catch (Exception e)

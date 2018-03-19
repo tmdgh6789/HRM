@@ -63,6 +63,26 @@ namespace BaobabHRM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap All_inquiry {
+            get {
+                object obj = ResourceManager.GetObject("All_inquiry", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap All_inquiry_over {
+            get {
+                object obj = ResourceManager.GetObject("All_inquiry_over", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap attendance {
             get {
                 object obj = ResourceManager.GetObject("attendance", resourceCulture);
@@ -73,9 +93,9 @@ namespace BaobabHRM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap attendance1 {
+        internal static System.Drawing.Bitmap attendance_over {
             get {
-                object obj = ResourceManager.GetObject("attendance1", resourceCulture);
+                object obj = ResourceManager.GetObject("attendance_over", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +103,9 @@ namespace BaobabHRM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap attendance2 {
+        internal static System.Drawing.Bitmap attendance_popup {
             get {
-                object obj = ResourceManager.GetObject("attendance2", resourceCulture);
+                object obj = ResourceManager.GetObject("attendance_popup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -96,16 +116,6 @@ namespace BaobabHRM.Properties {
         internal static System.Drawing.Bitmap background {
             get {
                 object obj = ResourceManager.GetObject("background", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap background2 {
-            get {
-                object obj = ResourceManager.GetObject("background2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,29 +163,9 @@ namespace BaobabHRM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap inquiry1 {
+        internal static System.Drawing.Bitmap late_popup {
             get {
-                object obj = ResourceManager.GetObject("inquiry1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap inquiry2 {
-            get {
-                object obj = ResourceManager.GetObject("inquiry2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap late {
-            get {
-                object obj = ResourceManager.GetObject("late", resourceCulture);
+                object obj = ResourceManager.GetObject("late_popup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +183,9 @@ namespace BaobabHRM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap leavework1 {
+        internal static System.Drawing.Bitmap leavework_over {
             get {
-                object obj = ResourceManager.GetObject("leavework1", resourceCulture);
+                object obj = ResourceManager.GetObject("leavework_over", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +193,9 @@ namespace BaobabHRM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap leavework2 {
+        internal static System.Drawing.Bitmap leavework_popup {
             get {
-                object obj = ResourceManager.GetObject("leavework2", resourceCulture);
+                object obj = ResourceManager.GetObject("leavework_popup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +213,9 @@ namespace BaobabHRM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap reload1 {
+        internal static System.Drawing.Bitmap Selection_inquiry {
             get {
-                object obj = ResourceManager.GetObject("reload1", resourceCulture);
+                object obj = ResourceManager.GetObject("Selection_inquiry", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +223,9 @@ namespace BaobabHRM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap reload2 {
+        internal static System.Drawing.Bitmap Selection_inquiry_over {
             get {
-                object obj = ResourceManager.GetObject("reload2", resourceCulture);
+                object obj = ResourceManager.GetObject("Selection_inquiry_over", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

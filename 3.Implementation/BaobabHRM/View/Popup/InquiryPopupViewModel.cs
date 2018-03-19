@@ -3,16 +3,32 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace BaobabHRM
 {
     public class InquiryPopupViewModel : BindableBase
     {
         #region property
+
+        private string m_Conditions;
+        public string Conditions
+        {
+            get
+            {
+                return m_Conditions;
+            }
+            set
+            {
+                m_Conditions = value;
+                RaisePropertyChanged("Conditions");
+            }
+        }
 
         /// <summary>
         /// 오늘 출결 리스트
@@ -68,35 +84,83 @@ namespace BaobabHRM
 
         #region method
 
-        private void LoadTodayAttendance()
+        private void LoadTodayAttendance(UserControl uc)
         {
-            TodayAttendanceList.Clear();
-            try
+            if (Conditions == "All")
             {
-                var sqlData = new AttendanceQuery().SelectWithDeptAndDay(SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER, StartDate, EndDate);
-                while (sqlData.Read())
-                {
-                    AttendanceDTO dto = new AttendanceDTO
-                    {
-                        ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
-                        ATTENDANCE_NAME = sqlData["name"].ToString(),
-                        ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
-                        ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
-                        ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
-                        ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
-                        ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
-                        ATTENDANCE_ETC = sqlData["etc"].ToString()
-                    };
-                    TodayAttendanceList.Add(new AttendanceModel(dto));
-                }
-                sqlData.Close();
-                SharedPreference.Instance.DBM.SqlConn.Close();
-            }
-            catch (Exception e)
-            {
-                SharedPreference.Instance.DBM.SqlConn.Close();
+                SharedPreference.Instance.SelectedDept = null;
+                SharedPreference.Instance.SelectedStaff = null;
 
-                MessageBox.Show("오늘 출결 상황을 읽어오지 못했습니다. 관리자에게 문의하세요.\n에러 내용 : " + e.Message);
+                TodayAttendanceList.Clear();
+                var sqlData = new AttendanceQuery().SelectWithAllStaffAndDay(StartDate, EndDate);
+                if (sqlData.HasRows)
+                {
+                    while (sqlData.Read())
+                    {
+                        AttendanceDTO dto = new AttendanceDTO
+                        {
+                            ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
+                            ATTENDANCE_NAME = sqlData["name"].ToString(),
+                            ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
+                            ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
+                            ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
+                            ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
+                            ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
+                            ATTENDANCE_ETC = sqlData["etc"].ToString()
+                        };
+                        TodayAttendanceList.Add(new AttendanceModel(dto));
+                    }
+                    sqlData.Close();
+                    SharedPreference.Instance.DBM.SqlConn.Close();
+                }
+                else
+                {
+                    sqlData.Close();
+                    SharedPreference.Instance.DBM.SqlConn.Close();
+                }
+            }
+            else if (Conditions == "Selection")
+            {
+                if (SharedPreference.Instance.SelectedDept != null)
+                {
+                    TodayAttendanceList.Clear();
+
+                    var sqlData = new AttendanceQuery().SelectWithDeptAndDay(SharedPreference.Instance.SelectedDept.DEPT_CODE, StartDate, EndDate);
+
+                    if (SharedPreference.Instance.SelectedStaff != null)
+                    {
+                        sqlData.Close();
+                        SharedPreference.Instance.DBM.SqlConn.Close();
+
+                        sqlData = new AttendanceQuery().SelectWithIdnumberAndDay(SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER, StartDate, EndDate);
+                    }
+
+                    if (sqlData.HasRows)
+                    {
+                        while (sqlData.Read())
+                        {
+                            AttendanceDTO dto = new AttendanceDTO
+                            {
+                                ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
+                                ATTENDANCE_NAME = sqlData["name"].ToString(),
+                                ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
+                                ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
+                                ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
+                                ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
+                                ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
+                                ATTENDANCE_ETC = sqlData["etc"].ToString()
+                            };
+                            TodayAttendanceList.Add(new AttendanceModel(dto));
+                        }
+                    }
+                    sqlData.Close();
+                    SharedPreference.Instance.DBM.SqlConn.Close();
+                }
+                else
+                {
+                    MessageBox.Show("부서 또는 사원을 선택해주세요.");
+                    Window.GetWindow(uc).DialogResult = false;
+                }
             }
         }
 
@@ -107,13 +171,13 @@ namespace BaobabHRM
         /// <summary>
         /// 페이지 로드 커맨드
         /// </summary>
-        public DelegateCommand LoadedCommand
+        public DelegateCommand<UserControl> LoadedCommand
         {
             get
             {
-                return new DelegateCommand(delegate ()
+                return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
-                    LoadTodayAttendance();
+                    LoadTodayAttendance(uc);
                 });
             }
         }
@@ -121,42 +185,13 @@ namespace BaobabHRM
         /// <summary>
         /// 검색 커맨드
         /// </summary>
-        public DelegateCommand SerchCommand
+        public DelegateCommand<UserControl> SerchCommand
         {
             get
             {
-                return new DelegateCommand(delegate ()
+                return new DelegateCommand<UserControl>(delegate (UserControl uc)
                 {
-                    if (SharedPreference.Instance.SelectedStaff != null)
-                    {
-                        TodayAttendanceList.Clear();
-                        var sqlData = new AttendanceQuery().SelectWithIdnumberAndDay(SharedPreference.Instance.SelectedStaff.STAFF_IDNUMBER, StartDate, EndDate);
-                        if (sqlData.HasRows)
-                        {
-                            while (sqlData.Read())
-                            {
-                                AttendanceDTO dto = new AttendanceDTO
-                                {
-                                    ATTENDANCE_BUSINESS_DAY = sqlData["businessday"].ToString(),
-                                    ATTENDANCE_NAME = sqlData["name"].ToString(),
-                                    ATTENDANCE_IDNUMBER = sqlData["idnumber"].ToString(),
-                                    ATTENDANCE_IN_TIME = sqlData["in_time"].ToString(),
-                                    ATTENDANCE_OUT_TIME = sqlData["out_time"].ToString(),
-                                    ATTENDANCE_OVERTIME = sqlData["overtime"].ToString(),
-                                    ATTENDANCE_OFF_DAY = sqlData["off_day"].ToString(),
-                                    ATTENDANCE_ETC = sqlData["etc"].ToString()
-                                };
-                                TodayAttendanceList.Add(new AttendanceModel(dto));
-                            }
-                            sqlData.Close();
-                            SharedPreference.Instance.DBM.SqlConn.Close();
-                        }
-                        else
-                        {
-                            sqlData.Close();
-                            SharedPreference.Instance.DBM.SqlConn.Close();
-                        }
-                    }
+                    LoadTodayAttendance(uc);
                 });
             }
         }

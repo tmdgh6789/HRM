@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:webEye="clr-namespace:WebEye.Controls.Wpf.StreamPlayerControl;assembly=WebEye.Controls.Wpf.StreamPlayerControl"
              xmlns:local="clr-namespace:BaobabHRM"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920">
+             Background="White"
+             d:DesignHeight="1024" d:DesignWidth="1280">
     
     <UserControl.DataContext>
         <local:AttendanceManagementViewModel/>
@@ -120,8 +120,8 @@
 
             <Button Grid.Column="2" Content="선택 초기화" Command="{Binding Path=SelectedClearCommand}"/>
             <Button Grid.Column="3" Content="검색" Command="{Binding Path=SerchCommand}"/>
-            <Button Grid.Column="4" Content="취소" Command="{Binding Path=CancelCommand}"/>
-            <Button Grid.Column="5" Content="수정" Command="{Binding Path=EditPopupCommand}"/>
+            <Button Grid.Column="4" Content="수정" Command="{Binding Path=EditPopupCommand}"/>
+            <Button Grid.Column="5" Content="뒤로가기" Command="{Binding Path=CancelCommand}"/>
         </Grid>
 
         <!-- 중간 그리드 -->
